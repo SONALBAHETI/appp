@@ -1,7 +1,11 @@
 import { z } from "zod";
 
-const NameSchema = z.string().min(1, {
-  message: "Name is required.",
+const FirstNameSchema = z.string().min(1, {
+  message: "First Name is required.",
+});
+
+const LastNameSchema = z.string().min(1, {
+  message: "Last Name is required.",
 });
 
 const EmailSchema = z
@@ -24,7 +28,8 @@ const PasswordSchema = z
   );
 
 export const SignUpFormSchema = z.object({
-  name: NameSchema,
+  firstName: FirstNameSchema,
+  lastName: LastNameSchema,
   email: EmailSchema,
   password: PasswordSchema,
 });

@@ -1,4 +1,4 @@
-export default function AuthLayout({
+export default function OnboardingLayout({
   children,
 }: {
   children: React.ReactNode;

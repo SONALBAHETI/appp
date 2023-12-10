@@ -1,12 +1,12 @@
-import SignInForm from "@/components/auth/signin-form";
+import OnboardingForm from "@/components/onboarding/onboarding-form";
 
-export default function SignInPage() {
+export default function OnboardingPage() {
   return (
     <div className="flex w-full flex-col md:flex-row">
       {/* Left Column */}
       <div className="flex-1 md:max-w-xl">
-        {/* Sign In Form */}
-        <SignInForm />
+        {/* Onboarding Form */}
+        <OnboardingForm />
       </div>
 
       {/* Right Column */}

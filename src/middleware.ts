@@ -3,7 +3,14 @@ import type { NextRequest } from "next/server";
 
 // match which paths this middleware will be called on
 export const config = {
-  matcher: ["/signin", "/signup", "/", "/dashboard"],
+  matcher: [
+    "/signin",
+    "/signup",
+    "/",
+    "/dashboard",
+    "/onboarding",
+    "/onboarding/success",
+  ],
 };
 
 const serverURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
@@ -105,7 +112,6 @@ async function refreshTokens(request: NextRequest) {
       body: JSON.stringify({ refreshToken: refreshToken.value }),
     });
     const result: IRefreshTokenResponse = await response.json();
-
     // check if response is ok
     if (response.ok && result?.tokens) {
       const nxtResponse = NextResponse.next();
@@ -138,8 +144,6 @@ async function checkAuthorization(request: NextRequest) {
         Authorization: `bearer ${accessToken?.value}`,
       },
     });
-    const result = await response.json();
-    console.log(result);
     if (response.ok) {
       return redirectWithAuth(request, true);
     } else {

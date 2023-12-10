@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { SignInFormSchema, SignInFormValues } from "./validation";
 
 import { cn } from "@/lib/utils";
-import { Loader2, Github } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -23,12 +23,17 @@ import {
 
 import { toast } from "react-toastify";
 
-import { fetcher } from "@/lib/request";
+import { useApi } from "@/hooks/useApi";
+import { useAuth } from "@/hooks/useAuth";
 
 interface SignInFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function SignInForm({ className, ...props }: SignInFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { saveAuth } = useAuth();
+  const [signInWithEmailPassword, isLoading] = useApi({
+    url: "/api/v1/auth/login/email-password",
+    method: "POST",
+  });
   const router = useRouter();
 
   const form = useForm<SignInFormValues>({
@@ -38,16 +43,16 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
 
   async function onSubmit(data: SignInFormValues) {
     try {
-      setIsLoading(true);
-      const { response, result } = await fetcher(
-        "/api/v1/auth/login/email-password",
-        "POST",
-        {
-          options: { body: JSON.stringify(data) },
-        }
-      );
-      if (response.ok && result?.tokens?.access.token) {
-        localStorage.setItem("accessToken", result?.tokens?.access.token);
+      const { response, result } = await signInWithEmailPassword({
+        body: JSON.stringify(data),
+      });
+      console.log(result);
+      const { user, tokens } = result;
+      if (response.ok && user && tokens) {
+        saveAuth({
+          userId: user.id,
+          accessToken: tokens.access.token,
+        });
         router.push("/");
       } else {
         toast.error(
@@ -55,9 +60,7 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
         );
       }
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setIsLoading(false);
+      console.error(error);
     }
   }
 
@@ -107,7 +110,7 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
               </FormItem>
             )}
           />
-          <Button type="submit">
+          <Button type="submit" disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{" "}
             Sign In
           </Button>

@@ -2,11 +2,18 @@ import SignUpForm from "@/components/auth/signup-form";
 
 export default function SignUpPage() {
   return (
-    <main className="flex min-h-screen items-center p-24">
-      <div className="flex-1 max-w-xl">
+    <div className="flex w-full flex-col md:flex-row">
+      {/* Left Column */}
+      <div className="flex-1 md:max-w-xl">
+        {/* Sign Up Form */}
         <SignUpForm />
       </div>
-      <p className="flex-1 text-center">Scholarnetics Forever!</p>
-    </main>
+
+      {/* Right Column */}
+      <div className="flex-1 hidden md:block">
+        {/* Illustration */}
+        <p className="text-center">Scholarnetics Forever!</p>
+      </div>
+    </div>
   );
 }

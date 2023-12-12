@@ -58,6 +58,7 @@ function redirectWithAuth(
   } else {
     // if the user is authenticated and the next url is /signin or /signup
     if (pathname === "/signin" || pathname === "/signup") {
+      // redirect to the home page
       return redirect("/", request.url);
     }
   }
@@ -115,9 +116,10 @@ async function refreshTokens(request: NextRequest) {
     // check if response is ok
     if (response.ok && result?.tokens) {
       const nxtResponse = NextResponse.next();
-      // set the access token and refresh token in the cookies
-      setCookies(nxtResponse, result.tokens);
-      return redirectWithAuth(request, true, nxtResponse);
+      // set the access token and refresh token in the cookies,
+      // we cannot redirect after setting cookies or they will be lost
+      // TODO: Fix bug - after access token is expired and if we redirect to /signin or /signup it does not get redirected to /
+      return setCookies(nxtResponse, result.tokens);
     } else {
       return redirectWithAuth(request);
     }

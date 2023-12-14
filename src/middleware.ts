@@ -10,6 +10,7 @@ export const config = {
     "/dashboard",
     "/onboarding",
     "/onboarding/success",
+    "/chat",
   ],
 };
 

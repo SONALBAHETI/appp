@@ -1,10 +1,10 @@
 import { useChannelListContext } from "@sendbird/uikit-react/ChannelList/context";
-import useSendbirdStateContext from "@sendbird/uikit-react/useSendbirdStateContext";
 import ChannelPreview from "./ChannelPreview";
 
 export default function ChannelListUI() {
-  const { stores } = useSendbirdStateContext();
-  const { allChannels, loading } = useChannelListContext();
+  const { currentChannel, currentUserId } = useChannelListContext();
+  const { allChannels, loading, channelListDispatcher } =
+    useChannelListContext();
 
   return (
     <>
@@ -14,56 +14,14 @@ export default function ChannelListUI() {
         <ChannelPreview
           key={channel.url}
           channel={channel}
-          userId={stores.userStore?.user?.userId}
-        />
-      ))}
-      {allChannels?.map((channel) => (
-        <ChannelPreview
-          key={channel.url}
-          channel={channel}
-          userId={stores.userStore?.user?.userId}
-        />
-      ))}
-      {allChannels?.map((channel) => (
-        <ChannelPreview
-          key={channel.url}
-          channel={channel}
-          userId={stores.userStore?.user?.userId}
-        />
-      ))}
-      {allChannels?.map((channel) => (
-        <ChannelPreview
-          key={channel.url}
-          channel={channel}
-          userId={stores.userStore?.user?.userId}
-        />
-      ))}
-      {allChannels?.map((channel) => (
-        <ChannelPreview
-          key={channel.url}
-          channel={channel}
-          userId={stores.userStore?.user?.userId}
-        />
-      ))}
-      {allChannels?.map((channel) => (
-        <ChannelPreview
-          key={channel.url}
-          channel={channel}
-          userId={stores.userStore?.user?.userId}
-        />
-      ))}
-      {allChannels?.map((channel) => (
-        <ChannelPreview
-          key={channel.url}
-          channel={channel}
-          userId={stores.userStore?.user?.userId}
-        />
-      ))}
-      {allChannels?.map((channel) => (
-        <ChannelPreview
-          key={channel.url}
-          channel={channel}
-          userId={stores.userStore?.user?.userId}
+          isActive={currentChannel?.url === channel.url}
+          userId={currentUserId}
+          onClick={() => {
+            channelListDispatcher({
+              type: "SET_CURRENT_CHANNEL",
+              payload: channel,
+            });
+          }}
         />
       ))}
     </>

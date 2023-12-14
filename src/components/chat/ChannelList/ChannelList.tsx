@@ -1,13 +1,24 @@
 import { ChannelListProvider } from "@sendbird/uikit-react/ChannelList/context";
-import type { ChannelListProviderProps } from "@sendbird/uikit-react/ChannelList/context";
-import { cn } from "@/lib/utils"
+import type { GroupChannel } from "@sendbird/chat/groupChannel";
+import { cn } from "@/lib/utils";
 
 import ChannelListUI from "./ChannelListUI";
-import "./ChannelList.css";
+import "./channel-list.css";
 
-export default function ChannelList({ className, ...props }: ChannelListProviderProps) {
+interface IChannelListProps {
+  className?: string;
+  onChannelSelect?: (channel: GroupChannel) => void;
+}
+
+export default function ChannelList({
+  className,
+  onChannelSelect,
+}: IChannelListProps) {
   return (
-    <ChannelListProvider className={cn("rounded-lg overflow-y-auto", className)} {...props}>
+    <ChannelListProvider
+      onChannelSelect={onChannelSelect}
+      className={cn("overflow-y-auto", className)}
+    >
       <ChannelListUI />
     </ChannelListProvider>
   );

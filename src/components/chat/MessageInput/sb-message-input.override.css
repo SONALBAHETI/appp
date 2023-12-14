@@ -1,0 +1,15 @@
+.sendbird-message-input-wrapper--voice-message
+  .sendbird-message-input-wrapper__message-input,
+.sendbird-message-input-wrapper .sendbird-message-input-wrapper__message-input {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+.sendbird-message-input {
+  display: block !important;
+}
+
+.sendbird-message-input-wrapper
+  .sendbird-message-input-wrapper__quote-message-input {
+  display: none;
+}

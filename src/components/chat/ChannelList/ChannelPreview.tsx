@@ -1,21 +1,16 @@
 import type { GroupChannel } from "@sendbird/chat/groupChannel";
 import type { UserMessage } from "@sendbird/chat/message";
 import { getRelativeTimeString } from "@/lib/date";
-
-const generateChannelName = (channel: GroupChannel, currentUserId: string) => {
-  const members = channel.members.filter(
-    (member) => member.userId !== currentUserId
-  );
-  return {
-    channelName: members[0]?.nickname,
-    channelImageUrl: members[0]?.plainProfileUrl || channel.coverUrl,
-  };
-};
+import { generateChannelName } from "@/components/chat/utils";
 
 const generateLastMessageTime = (channel: GroupChannel) => {
   const lastMessage = channel.lastMessage as UserMessage;
   const date = new Date(lastMessage.createdAt);
   let relativeTime = getRelativeTimeString(date, { style: "narrow" });
+  relativeTime = relativeTime.replace("ago", "");
+  if (relativeTime.includes("sec")) {
+    relativeTime = "now";
+  }
   return relativeTime;
 };
 
@@ -27,20 +22,31 @@ const generateUnreadMessageCount = (channel: GroupChannel): string => {
   return unreadMessageCount + "";
 };
 
+interface IChannelPreviewProps {
+  channel: GroupChannel;
+  isActive?: boolean;
+  userId: string;
+  onClick?: () => void;
+}
+
 export default function ChannelPreview({
   channel,
+  isActive,
   userId,
-}: {
-  channel: GroupChannel;
-  userId: string;
-}) {
+  onClick,
+}: IChannelPreviewProps) {
   const { channelName, channelImageUrl } = generateChannelName(channel, userId);
   const lastMessage = channel.lastMessage as UserMessage;
   const lastMessageTime = generateLastMessageTime(channel);
   const unreadMessageCount = generateUnreadMessageCount(channel);
 
   return (
-    <div className="flex items-center p-3 hover:bg-gray-100 cursor-pointer px-5">
+    <div
+      className={`${
+        isActive ? "bg-gray-100" : ""
+      } flex items-center p-3 hover:bg-gray-100 cursor-pointer px-5`}
+      onClick={onClick}
+    >
       <div className="flex-shrink-0 mr-4">
         <img
           className="w-12 h-12 rounded-full"

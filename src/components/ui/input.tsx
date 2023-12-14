@@ -4,14 +4,16 @@ import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  containerClassName?: string;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, containerClassName, type, ...props }, ref) => {
     const [showPassword, setShowPassword] = React.useState(false);
 
     return (
-      <div className="relative">
+      <div className={cn("relative", containerClassName)}>
         <input
           type={type === "password" && showPassword ? "text" : type}
           className={cn(

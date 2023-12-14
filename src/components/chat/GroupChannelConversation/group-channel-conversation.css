@@ -1,0 +1,18 @@
+.sendbird-theme--light .sendbird-text-message-item-body.outgoing {
+  background-color: #eeeeee !important;
+  color: black !important;
+}
+.sendbird-theme--light .sendbird-message-content-reactions.primary {
+  background-color: #eeeeee !important;
+}
+.sendbird-theme--light .sendbird-text-message-item-body:hover.outgoing {
+  background-color: #e0e0e0 !important;
+}
+.sendbird-message-content__middle__sender-name {
+  visibility: hidden !important;
+}
+
+.sendbird-conversation {
+  border: none !important;
+  @apply rounded-lg;
+}

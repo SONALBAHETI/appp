@@ -61,7 +61,7 @@ export default function OnboardingForm() {
         ),
       };
       const { response, result } = await updateUserDetails({
-        body: JSON.stringify(payload),
+        config: { body: JSON.stringify(payload) },
       });
       if (response.ok) {
         // TODO: Update user in context

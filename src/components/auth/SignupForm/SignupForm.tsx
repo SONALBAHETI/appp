@@ -44,7 +44,7 @@ export default function SignupForm({ className, ...props }: SignupFormProps) {
   async function onSubmit(data: SignUpFormValues) {
     try {
       const { response, result } = await signInWithEmailPassword({
-        body: JSON.stringify(data),
+        config: { body: JSON.stringify(data) },
       });
       const { user, tokens } = result;
       if (response.ok && user && tokens) {

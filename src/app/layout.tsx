@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import { ToastContainer } from "react-toastify";
-import AuthProvider from "@/providers/auth-provider";
+import { AuthProvider } from "@/context/AuthContext";
 
 // Import stylesheets
 import "./globals.css";

@@ -11,6 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Icon from "@/components/ui/Icon";
+import { IconType } from "@/components/ui/Icon";
 import "./sb-message-input.override.css";
 
 export default function MessageInput() {
@@ -46,6 +47,7 @@ export default function MessageInput() {
     <div className="flex flex-col">
       {quoteMessage && (
         <QuoteMessageInput
+          className="border-t"
           replyingMessage={quoteMessage}
           onClose={() => setQuoteMessage(null)}
         />
@@ -54,7 +56,7 @@ export default function MessageInput() {
         <Popover>
           <PopoverTrigger>
             <div className="h-14 w-14 flex flex-col items-center justify-center hover:bg-gray-100 rounded">
-              <Icon type="Plus" size={22} />
+              <Icon type={IconType.PLUS} size={22} />
             </div>
           </PopoverTrigger>
           <PopoverContent side="top" align="start" className="p-0">

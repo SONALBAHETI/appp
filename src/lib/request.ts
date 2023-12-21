@@ -9,15 +9,9 @@ const request = async ({
   baseUrl = process.env.NEXT_PUBLIC_SERVER_BASE_URL,
   useCredentials = true,
 }: IFetcherOptions) => {
-  console.log({
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      ...(config.headers || {}),
-    },
-    credentials: useCredentials ? "include" : "omit",
-    ...config,
-  });
+  if (config && config.body && typeof config.body !== "string") {
+    config.body = JSON.stringify(config.body);
+  }
   return await fetch(`${baseUrl}${url}`, {
     method,
     headers: {

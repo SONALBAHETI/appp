@@ -1,5 +1,10 @@
 import { useChannelListContext } from "@sendbird/uikit-react/ChannelList/context";
 import ChannelPreview from "./ChannelPreview";
+import ChannelListUISkeleton from "./ChannelListUISkeleton";
+
+enum ChannelListActionTypes {
+  SET_CURRENT_CHANNEL = "SET_CURRENT_CHANNEL",
+}
 
 export default function ChannelListUI() {
   const { currentChannel, currentUserId } = useChannelListContext();
@@ -9,7 +14,7 @@ export default function ChannelListUI() {
   return (
     <>
       {/* TODO: Add a loading state */}
-      {loading && <div>Loading...</div>}
+      {loading && <ChannelListUISkeleton numberOfItems={10} />}
       {allChannels?.map((channel) => (
         <ChannelPreview
           key={channel.url}
@@ -18,7 +23,7 @@ export default function ChannelListUI() {
           userId={currentUserId}
           onClick={() => {
             channelListDispatcher({
-              type: "SET_CURRENT_CHANNEL",
+              type: ChannelListActionTypes.SET_CURRENT_CHANNEL,
               payload: channel,
             });
           }}

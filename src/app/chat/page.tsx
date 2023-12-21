@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-const Chat = dynamic(() => import("@/components/chat/ChatView"), {
+const Chat = dynamic(() => import("@/components/chat"), {
   ssr: false,
   loading: () => <p>...</p>,
 });

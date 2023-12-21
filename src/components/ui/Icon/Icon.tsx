@@ -8,6 +8,7 @@ import {
   LucideProps,
   LucideIcon,
   MoreVertical,
+  X
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -20,6 +21,8 @@ function changeTypeToIconComponent(type: IconType) {
       return Heart;
     case IconType.MORE_VERTICAL:
       return MoreVertical;
+    case IconType.X:
+      return X;
     default:
       return Plus; // TODO: Choose default icon?
   }

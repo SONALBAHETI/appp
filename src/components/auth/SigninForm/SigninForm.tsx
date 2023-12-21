@@ -44,7 +44,7 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
   async function onSubmit(data: SignInFormValues) {
     try {
       const { response, result } = await signInWithEmailPassword({
-        body: JSON.stringify(data),
+        config: { body: JSON.stringify(data) },
       });
       console.log(result);
       const { user, tokens } = result;

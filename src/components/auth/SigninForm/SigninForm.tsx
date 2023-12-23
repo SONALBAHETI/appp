@@ -5,7 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { SignInFormSchema, SignInFormValues } from "./validation";
+import {
+  SignInFormSchema,
+  TSignInForm,
+} from "../../../validation/signinForm.validation";
 
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
@@ -22,45 +25,28 @@ import {
 } from "@/components/ui/form";
 
 import { toast } from "react-toastify";
-
-import { useApi } from "@/hooks/useApi";
-import { useAuth } from "@/hooks/useAuth";
+import { useSignInWithEmailPasswordMutation } from "@/api/auth";
+import { AxiosError } from "axios";
 
 interface SignInFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function SignInForm({ className, ...props }: SignInFormProps) {
-  const { saveAuth } = useAuth();
-  const [signInWithEmailPassword, isLoading] = useApi({
-    url: "/api/v1/auth/login/email-password",
-    method: "POST",
-  });
+  const mutationSignInWithEmailPassword = useSignInWithEmailPasswordMutation();
   const router = useRouter();
 
-  const form = useForm<SignInFormValues>({
+  const form = useForm<TSignInForm>({
     resolver: zodResolver(SignInFormSchema),
     mode: "onSubmit",
   });
 
-  async function onSubmit(data: SignInFormValues) {
+  async function onSubmit(data: TSignInForm) {
     try {
-      const { response, result } = await signInWithEmailPassword({
-        config: { body: JSON.stringify(data) },
-      });
-      console.log(result);
-      const { user, tokens } = result;
-      if (response.ok && user && tokens) {
-        saveAuth({
-          userId: user.id,
-          accessToken: tokens.access.token,
-        });
-        router.push("/");
-      } else {
-        toast.error(
-          result?.message || "Something went wrong. Please try again."
-        );
-      }
+      await mutationSignInWithEmailPassword.mutateAsync(data);
+      router.push("/");
     } catch (error) {
-      console.error(error);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
     }
   }
 
@@ -82,7 +68,7 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
                     autoCapitalize="none"
                     autoComplete="email"
                     autoCorrect="off"
-                    disabled={isLoading}
+                    disabled={mutationSignInWithEmailPassword.isPending}
                     {...field}
                   />
                 </FormControl>
@@ -102,7 +88,7 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
                     placeholder="Enter your password"
                     type="password"
                     autoComplete="password"
-                    disabled={isLoading}
+                    disabled={mutationSignInWithEmailPassword.isPending}
                     {...field}
                   />
                 </FormControl>
@@ -110,8 +96,13 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{" "}
+          <Button
+            type="submit"
+            disabled={mutationSignInWithEmailPassword.isPending}
+          >
+            {mutationSignInWithEmailPassword.isPending && (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}{" "}
             Sign In
           </Button>
         </form>

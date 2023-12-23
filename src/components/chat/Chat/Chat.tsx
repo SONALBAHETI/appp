@@ -1,5 +1,4 @@
 import SendbirdProvider from "@sendbird/uikit-react/SendbirdProvider";
-import { ChatViewProvider } from "@/context/ChatViewContext";
 import ChatView from "../ChatView";
 
 export default function Chat() {
@@ -10,9 +9,7 @@ export default function Chat() {
       userId={process.env.NEXT_PUBLIC_SENDBIRD_USER_ID || ""}
       accessToken={process.env.NEXT_PUBLIC_SENDBIRD_ACCESS_TOKEN}
     >
-      <ChatViewProvider>
-        <ChatView />
-      </ChatViewProvider>
+      <ChatView />
     </SendbirdProvider>
   );
 }

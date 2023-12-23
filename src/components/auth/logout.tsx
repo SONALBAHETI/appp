@@ -1,36 +1,33 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useApi } from "@/hooks/useApi";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { useAuth } from "@/hooks/useAuth";
+import { useLogoutMutation } from "@/api/auth";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Logout() {
-  const { removeAuth } = useAuth();
-  const [logout, isLoggingOut] = useApi({
-    url: "/api/v1/auth/logout",
-    method: "POST",
-  });
+  const mutationLogout = useLogoutMutation();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const onSubmit = async () => {
     try {
-      const { response, result } = await logout();
-      if (response.ok) {
-        removeAuth();
-        router.push("/signin");
-      } else {
-        toast.error(
-          result?.message || "Oops! Couldn't log out. Please try again."
-        );
-      }
-    } catch (error) {}
+      await mutationLogout.mutateAsync(undefined);
+      queryClient.invalidateQueries();
+      router.push("/signin");
+    } catch (error) {
+      console.log(error);
+      toast.error("Couldn't logout");
+    }
   };
   return (
-    <Button onClick={onSubmit} disabled={isLoggingOut}>
-      {isLoggingOut && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Logout
+    <Button onClick={onSubmit} disabled={mutationLogout.isPending}>
+      {mutationLogout.isPending && (
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      )}{" "}
+      Logout
     </Button>
   );
 }

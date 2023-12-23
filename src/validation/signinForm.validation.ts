@@ -16,4 +16,4 @@ export const SignInFormSchema = z.object({
       message: "Invalid password", // Password cannot be less than 3 characters
     }),
 });
-export type SignInFormValues = z.infer<typeof SignInFormSchema>;
+export type TSignInForm = z.infer<typeof SignInFormSchema>;

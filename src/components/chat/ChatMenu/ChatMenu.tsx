@@ -6,14 +6,9 @@ import ChannelListUI from "../ChannelList/ChannelListUI";
 import Tabs from "@/components/ui/Tabs";
 import { Input } from "@/components/ui/input";
 
-import {
-  useChatView,
-  useChatViewDispatch,
-  ChatViewActionType,
-} from "@/context/ChatViewContext";
-
 import { TAB } from "../tab";
 import "./chat-menu.css";
+import { useChatStore } from "@/store/useChatStore";
 
 interface IChatMenuProps {
   className?: string;
@@ -22,15 +17,10 @@ interface IChatMenuProps {
 const TAB_LIST = [TAB.CHAT, TAB.REQUESTS];
 
 export default function ChatMenu({ className }: IChatMenuProps) {
-  const { activeTab } = useChatView();
-  const dispatch = useChatViewDispatch();
-
-  const onTabChange = (tab: TAB) => {
-    dispatch({ type: ChatViewActionType.CHANGED_TAB, tab });
-  };
+  const { activeTab, setActiveTab, setCurrentChannelUrl } = useChatStore();
 
   const onChannelSelect = (channel: GroupChannel | null) => {
-    dispatch({ type: ChatViewActionType.CHANGED_CHANNEL, channel });
+    setCurrentChannelUrl(channel?.url || null);
   };
 
   return (
@@ -43,7 +33,7 @@ export default function ChatMenu({ className }: IChatMenuProps) {
         <Tabs
           items={TAB_LIST}
           activeItem={activeTab}
-          onTabChange={onTabChange}
+          onTabChange={setActiveTab}
         />
         <div className="flex items-center justify-between">
           <Input placeholder="Search chats..." />

@@ -20,7 +20,7 @@ export interface IGetChatRequestsResponse {
   chatRequests: IChatRequest[];
 }
 
-export interface IAcceptChatRequestResponse {
+export interface IUpdateChatRequestResponse {
   chatRequest: IChatRequest;
 }
 

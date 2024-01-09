@@ -1,7 +1,13 @@
+const baseUrls = {
+  api: "/api/v1",
+  chatRequests: "/api/v1/chats/requests",
+};
+
 export const apiRoutes = {
-  getChatRequest: "/api/v1/chats/requests/:id",
-  getChatRequests: "/api/v1/chats/requests",
-  acceptChatRequest: "/api/v1/chats/requests/accept",
-  logout: "/api/v1/auth/logout",
-  signInWithEmailPassword: "/api/v1/auth/login/email-password",
+  getChatRequest: `${baseUrls.chatRequests}/:id`,
+  getChatRequests: `${baseUrls.chatRequests}`,
+  acceptChatRequest: `${baseUrls.chatRequests}/accept`,
+  rejectChatRequest: `${baseUrls.chatRequests}/reject`,
+  logout: `${baseUrls.api}/auth/logout`,
+  signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
 };

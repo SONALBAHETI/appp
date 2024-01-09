@@ -13,8 +13,6 @@ export default function ChannelListUI() {
 
   return (
     <>
-      {/* TODO: Add a loading state */}
-      {loading && <ChannelListUISkeleton numberOfItems={10} />}
       {allChannels?.map((channel) => (
         <ChannelPreview
           key={channel.url}
@@ -29,6 +27,7 @@ export default function ChannelListUI() {
           }}
         />
       ))}
+      {loading && <ChannelListUISkeleton numberOfItems={10} />}
     </>
   );
 }

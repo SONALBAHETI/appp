@@ -51,11 +51,13 @@ export default function ChatMenu({ className }: IChatMenuProps) {
           onTabChange={setActiveTab}
         />
         <div className="flex items-center justify-between">
-          <Input
-            placeholder="Search chats..."
-            onChange={(e) => setChannelSearchQuery(e.target.value)}
-          />
-          {/* Add Filter button */}
+          {activeTab === TAB.CHAT && (
+            <Input
+              placeholder="Search chats..."
+              onChange={(e) => setChannelSearchQuery(e.target.value)}
+            />
+            // Add filter button
+          )}
         </div>
 
         {/* Chat List | Favorites | Chat Requests */}

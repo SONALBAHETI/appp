@@ -4,4 +4,7 @@ export enum IconType {
   HEART = "Heart",
   MORE_VERTICAL = "MoreVertical",
   X = "X",
+  DASHBOARD = "Dashboard",
+  CHAT = "Chat",
+  BOT = "Bot",
 }

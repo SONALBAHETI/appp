@@ -8,7 +8,7 @@ export default function MainLayout({
   return (
     <div className="pl-16">
       <MainNavigation />
-      {children}
+      <div className="bg-gray-100 flex flex-col min-h-screen">{children}</div>
     </div>
   );
 }

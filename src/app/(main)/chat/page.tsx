@@ -4,12 +4,12 @@ import dynamic from "next/dynamic";
 
 const Chat = dynamic(() => import("@/components/chat"), {
   ssr: false,
-  loading: () => <p>...</p>,
+  loading: () => <p>...</p>, // TODO: make a better loading state
 });
 
 export default function ChatPage() {
   return (
-    <div className="bg-gray-100 flex min-h-screen max-h-screen p-6 w-full">
+    <div className="flex max-h-screen p-6 w-full">
       <Chat />
     </div>
   );

@@ -1,11 +1,23 @@
+const baseUrls = {
+  api: "/api/v1",
+  chatRequests: "/api/v1/chats/requests",
+  notes: "/api/v1/notes",
+};
+
+const notes = {
+  getNotes: baseUrls.notes,
+  getNote: (id: string) => `${baseUrls.notes}/${id}`,
+  createNote: baseUrls.notes,
+  updateNote: (id: string) => `${baseUrls.notes}/${id}`,
+  deleteNote: (id: string) => `${baseUrls.notes}/${id}`,
+};
+
 export const apiRoutes = {
-  getChatRequest: "/api/v1/chats/requests/:id",
-  getChatRequests: "/api/v1/chats/requests",
-  acceptChatRequest: "/api/v1/chats/requests/accept",
-  logout: "/api/v1/auth/logout",
-  signInWithEmailPassword: "/api/v1/auth/login/email-password",
-  NOTES: "/api/v1/notes",
-  NOTE: (id: string) => `/api/v1/notes/${id}`,
-  updateNote: (id: string) => `/api/v1/notes/${id}`, 
-  deleteNote: (id: string) => `/api/v1/notes/${id}`,
+  getChatRequest: `${baseUrls.chatRequests}/:id`,
+  getChatRequests: `${baseUrls.chatRequests}`,
+  acceptChatRequest: `${baseUrls.chatRequests}/accept`,
+  rejectChatRequest: `${baseUrls.chatRequests}/reject`,
+  notes,
+  logout: `${baseUrls.api}/auth/logout`,
+  signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
 };

@@ -1,8 +1,13 @@
 import ButtonIcon from "@/components/ui/ButtonIcon";
 import { IconType } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/button";
-import { useChatRequestQuery, useAcceptChatRequestMutation } from "@/api/chat";
+import {
+  useChatRequestQuery,
+  useAcceptChatRequestMutation,
+  useRejectChatRequestMutation,
+} from "@/api/chat";
 import { toast } from "react-toastify";
+import RejectChatRequestDialog from "./RejectChatRequestDialog";
 
 interface IChatRequestDetailProps {
   chatRequestId: string;
@@ -17,6 +22,7 @@ export default function ChatRequestDetail({
 }: IChatRequestDetailProps) {
   const { data, isPending, isError } = useChatRequestQuery(chatRequestId);
   const mutationAcceptChatRequest = useAcceptChatRequestMutation(chatRequestId);
+  const mutationRejectChatRequest = useRejectChatRequestMutation(chatRequestId);
 
   const handleAccept = async () => {
     try {
@@ -25,8 +31,20 @@ export default function ChatRequestDetail({
         onAccept();
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong. Please try again.");
+      console.error(error);
+      toast.error("Couldn't accept the chat request");
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      await mutationRejectChatRequest.mutateAsync({ id: chatRequestId });
+      if (onReject) {
+        onReject();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Couldn't reject chat request");
     }
   };
 
@@ -66,13 +84,9 @@ export default function ChatRequestDetail({
         </div>
         <div className="flex justify-end">
           <div className="w-full lg:w-1/2 flex gap-2 items-stretch">
-            <ButtonIcon
-              // disabled={isRejectLoading}
-              className="h-12 w-12"
-              iconType={IconType.X}
-              variant="outline"
-              iconSize={20}
-              onClick={() => {}}
+            <RejectChatRequestDialog
+              onConfirmReject={handleReject}
+              loading={mutationRejectChatRequest.isPending}
             />
             <Button
               // disabled={isAcceptLoading}

@@ -8,7 +8,10 @@ import {
   LucideProps,
   LucideIcon,
   MoreVertical,
-  X
+  X,
+  LayoutDashboard,
+  MessageCircle,
+  Bot,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -23,6 +26,12 @@ function changeTypeToIconComponent(type: IconType) {
       return MoreVertical;
     case IconType.X:
       return X;
+    case IconType.DASHBOARD:
+      return LayoutDashboard;
+    case IconType.CHAT:
+      return MessageCircle;
+    case IconType.BOT:
+      return Bot;
     default:
       return Plus; // TODO: Choose default icon?
   }

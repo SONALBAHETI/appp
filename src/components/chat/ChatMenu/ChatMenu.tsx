@@ -1,4 +1,5 @@
 import { ChannelListProvider } from "@sendbird/uikit-react/ChannelList/context";
+import { GroupChannelListQueryParams } from "@sendbird/chat/groupChannel";
 import type { GroupChannel } from "@sendbird/chat/groupChannel";
 import { ChatRequestList } from "../ChatRequests";
 import ChannelListUI from "../ChannelList/ChannelListUI";
@@ -17,7 +18,18 @@ interface IChatMenuProps {
 const TAB_LIST = [TAB.CHAT, TAB.REQUESTS];
 
 export default function ChatMenu({ className }: IChatMenuProps) {
-  const { activeTab, setActiveTab, setCurrentChannelUrl } = useChatStore();
+  const {
+    activeTab,
+    setActiveTab,
+    setCurrentChannelUrl,
+    channelSearchQuery,
+    setChannelSearchQuery,
+  } = useChatStore();
+
+  // for searching channels
+  const queryParams: GroupChannelListQueryParams = {
+    nicknameContainsFilter: channelSearchQuery,
+  };
 
   const onChannelSelect = (channel: GroupChannel | null) => {
     setCurrentChannelUrl(channel?.url || null);
@@ -26,6 +38,9 @@ export default function ChatMenu({ className }: IChatMenuProps) {
   return (
     <ChannelListProvider
       onChannelSelect={onChannelSelect}
+      queries={{
+        channelListQuery: queryParams, // for searching channels
+      }}
       className={className}
     >
       <div className="flex flex-col gap-4 max-h-full">
@@ -36,8 +51,13 @@ export default function ChatMenu({ className }: IChatMenuProps) {
           onTabChange={setActiveTab}
         />
         <div className="flex items-center justify-between">
-          <Input placeholder="Search chats..." />
-          {/* Add Filter button */}
+          {activeTab === TAB.CHAT && (
+            <Input
+              placeholder="Search chats..."
+              onChange={(e) => setChannelSearchQuery(e.target.value)}
+            />
+            // Add filter button
+          )}
         </div>
 
         {/* Chat List | Favorites | Chat Requests */}

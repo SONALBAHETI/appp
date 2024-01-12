@@ -24,6 +24,7 @@ export default function ChatView() {
                 <ChatRequestDetail
                   chatRequestId={selectedChatRequestId}
                   onAccept={() => setSelectedChatRequestId(null)}
+                  onReject={() => setSelectedChatRequestId(null)}
                 />
               )}
               {!selectedChatRequestId && <div>No chat request selected</div>}

@@ -81,3 +81,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .message {
+    @apply bg-white py-4 px-5 max-w-[70%] rounded-lg;
+  }
+  .bot-message {
+    @apply message self-start;
+  }
+  .user-message {
+    @apply message self-end;
+  }
+}

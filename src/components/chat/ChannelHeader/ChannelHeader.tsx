@@ -8,6 +8,7 @@ import ButtonIcon from "@/components/ui/ButtonIcon";
 import { useEffect } from "react";
 import ChannelHeaderSkeleton from "./ChannelHeaderSkeleton";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import OnlineStatus from "@/components/ui/OnlineStatus/OnlineStatus";
 
 export default function ChannelHeader() {
   const { currentGroupChannel, loading } = useChannelContext();
@@ -38,15 +39,10 @@ export default function ChannelHeader() {
             <AvatarImage src={channelImageUrl} alt="User Profile Picture" />
           </Avatar>
           <div>
-            <h2 className="text-md font-semibold">{channelName}</h2>
-            <div className="flex items-center gap-2">
-              <div
-                className={`w-3 h-3 ${
-                  connectionStatus === "online" ? "bg-green-500" : "bg-gray-300"
-                } rounded-full`}
-              ></div>
-              <p className="text-sm text-gray-500">{connectionStatus}</p>
-            </div>
+            <h4 className="text-md font-semibold leading-none tracking-tight">
+              {channelName}
+            </h4>
+            <OnlineStatus status={connectionStatus} />
           </div>
         </div>
         <div className="flex items-center gap-2">

@@ -1,11 +1,12 @@
 "use client"
+import dynamic from 'next/dynamic'
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as zod from 'zod';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Editor } from 'react-draft-wysiwyg';
+import { EditorProps } from 'react-draft-wysiwyg'
 import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -14,6 +15,10 @@ import { useApi } from "@/hooks/useApi";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { apiRoutes } from "@/api/routes";
+const Editor = dynamic<EditorProps>(
+  () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
+  { ssr: false }
+)
 
 import {
   Dialog,
@@ -98,7 +103,7 @@ const Note = () => {
   };
 
   const updateNote = async (noteId, noteData) => {
-    const url = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${apiRoutes.updateNote(noteId)}`;
+    const url = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${apiRoutes.notes.updateNote(noteId)}`;
 
     try {
       const response = await fetch(url, {
@@ -175,7 +180,7 @@ const Note = () => {
 
   const confirmDeleteNote = async () => {
     try {
-      const url = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${apiRoutes.NOTE(currentNote._id)}`;
+      const url = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}${apiRoutes.notes.deleteNote(currentNote._id)}`;
 
       const response = await fetch(url, {
         method: 'DELETE',
@@ -295,7 +300,7 @@ const Note = () => {
                 &#10005;
               </button>
             </div>
-            <AlertDialog isOpen={isAlertDialogOpen}>
+            <AlertDialog open={isAlertDialogOpen}>
               <AlertDialogHeader>Delete Note</AlertDialogHeader>
               <AlertDialogDescription>
                 Are you sure you want to delete this note? This action cannot be undone.

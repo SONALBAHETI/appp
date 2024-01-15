@@ -12,6 +12,8 @@ import {
   LayoutDashboard,
   MessageCircle,
   Bot,
+  StickyNote,
+  Loader2,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -32,6 +34,10 @@ function changeTypeToIconComponent(type: IconType) {
       return MessageCircle;
     case IconType.BOT:
       return Bot;
+    case IconType.NOTE:
+      return StickyNote;
+    case IconType.LOADING:
+      return Loader2;
     default:
       return Plus; // TODO: Choose default icon?
   }

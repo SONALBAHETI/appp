@@ -2,6 +2,7 @@ import { pathToUrl } from "@/lib/utils";
 import { apiRoutes } from "./routes";
 import {
   IGetNotesResponse,
+  IGetSingleNoteResponse,
   ICreateNoteResponse,
   IUpdateNoteResponse,
   IDeleteNoteResponse,
@@ -14,15 +15,21 @@ import { createQueryKey, isEqualQueryKeys } from "@/lib/react-query/utils";
 export const getGetNotesQueryKey = () =>
   createQueryKey(apiRoutes.notes.getNotes);
 
+export const getGetSingleNoteQueryKey = (id: string) =>
+  createQueryKey(apiRoutes.notes.getNote(id));
+
 export const getUpdateNoteMutationKey = (id: string) =>
   createQueryKey(apiRoutes.notes.updateNote(id));
+
+export const getCreateNoteMutationKey = () =>
+  createQueryKey(apiRoutes.notes.createNote);
 
 export const getDeleteNoteMutationKey = (id: string) =>
   createQueryKey(apiRoutes.notes.deleteNote(id));
 
 /**
- * Custom hook for getting a chat request by id.
- * @param id - The id of the chat request.
+ * Custom hook for getting notes.
+ * @param id - The id of the note.
  * @returns The query result.
  */
 export const useNotesQuery = () =>
@@ -31,13 +38,26 @@ export const useNotesQuery = () =>
   });
 
 /**
+ * Custom hook for getting a single note by id.
+ * @param id - The id of the note.
+ * @returns The query result.
+ */
+export const useSingleNoteQuery = (id: string) =>
+  useFetch<IGetSingleNoteResponse>(getGetSingleNoteQueryKey(id), {
+    staleTime: 1000 * 30,
+  });
+
+/**
  * Generates a mutation hook for updating a note.
  *
- * @param {string} id - The ID of the note to update.
+ * @param id - The ID of the note to update.
  * @return The mutation hook for updating the note.
  */
 export const useUpdateNoteMutation = (id: string) => {
-  const dependentQueryKeys = [getGetNotesQueryKey()];
+  const dependentQueryKeys = [
+    getGetNotesQueryKey(),
+    getGetSingleNoteQueryKey(id),
+  ];
   return usePatch<{ title: string; content: string }, IUpdateNoteResponse>({
     queryKey: getUpdateNoteMutationKey(id),
     dependentQueryKeys,
@@ -61,8 +81,34 @@ export const useUpdateNoteMutation = (id: string) => {
 };
 
 /**
+ * Generates a mutation hook for creating a note.
+ *
+ * @return The mutation hook for creating the note.
+ */
+export const useCreateNoteMutation = () => {
+  const dependentQueryKeys = [getGetNotesQueryKey()];
+  return usePost<{ title: string; content: string }, ICreateNoteResponse>({
+    queryKey: getCreateNoteMutationKey(),
+    dependentQueryKeys,
+    // optimistically create the content of the note
+    optimisticUpdater: (queryKey, oldQueryData, mutatedData) => {
+      // check if this function is called for the getNotes query
+      if (isEqualQueryKeys(queryKey, getGetNotesQueryKey())) {
+        return {
+          ...oldQueryData,
+          notes: [
+            ...oldQueryData.notes,
+            { ...mutatedData, id: "temporary" } as INote, // temporary id to prevent the missing key prop error in console
+          ],
+        } as IGetNotesResponse;
+      }
+    },
+  });
+};
+
+/**
  * Custom hook for deleting a note.
- * 
+ *
  * @param id The ID of the note to delete.
  * @returns The result of the delete operation.
  */
@@ -78,7 +124,7 @@ export const useDeleteNoteMutation = (id: string) => {
     // The dependent query keys that should be updated after the delete operation
     dependentQueryKeys,
 
-    // Optimistic updater function to update the query data optimistically
+    // Optimistically delete the note from the old query data
     optimisticUpdater: (queryKey, oldQueryData) => {
       if (isEqualQueryKeys(queryKey, getGetNotesQueryKey())) {
         // Filter out the deleted note from the old query data

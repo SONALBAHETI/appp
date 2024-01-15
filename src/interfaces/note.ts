@@ -1,5 +1,5 @@
 export interface INote {
-  id?: string;
+  id: string;
   title: string;
   content: string;
   createdBy?: string | object;
@@ -10,6 +10,10 @@ export interface INote {
 
 export interface IGetNotesResponse {
   notes: INote[];
+}
+
+export interface IGetSingleNoteResponse {
+  note: INote;
 }
 
 export interface ICreateNoteResponse {

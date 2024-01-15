@@ -24,6 +24,7 @@ export const useAuth = () => {
     const authData = { ...auth, accessToken: token };
     setAuth(authData);
     setItem("auth", JSON.stringify(authData));
+    
   };
 
   const removeAuth = () => {

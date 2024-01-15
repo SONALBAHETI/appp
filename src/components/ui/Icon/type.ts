@@ -7,4 +7,6 @@ export enum IconType {
   DASHBOARD = "Dashboard",
   CHAT = "Chat",
   BOT = "Bot",
+  NOTE = "Note",
+  LOADING = "Loading",
 }

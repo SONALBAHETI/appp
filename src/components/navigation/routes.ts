@@ -18,4 +18,8 @@ export const NAV_ROUTES: { [key: string]: IRoute } = {
     path: "/chatbot",
     icon: IconType.BOT,
   },
+  NOTES: {
+    path: "/notes",
+    icon: IconType.NOTE,
+  },
 };

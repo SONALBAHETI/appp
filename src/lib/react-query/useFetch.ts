@@ -10,9 +10,10 @@ import type { TQueryKey } from "./types";
  */
 export const fetcher = async <T>({
   queryKey,
+  signal,
 }: QueryFunctionContext<TQueryKey>): Promise<T> => {
   const [url, params] = queryKey;
-  return api.get<T>(url, { params }).then((res) => res.data);
+  return api.get<T>(url, { params, signal }).then((res) => res.data);
 };
 
 interface UseFetchOptions<T>

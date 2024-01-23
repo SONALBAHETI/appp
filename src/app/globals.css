@@ -77,19 +77,50 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+  
+  h1 {
+    @apply text-4xl font-bold;
+  }
+
+  h2 {
+    @apply text-3xl font-bold;
+  }
+
+  h3 {
+    @apply text-2xl font-bold;
+  }
+
+  h4 {
+    @apply text-xl font-bold;
+  }
+
+  h5 {
+    @apply text-lg font-bold;
+  }
+
+  h6 {
+    @apply text-base font-bold;
+  }
+  a {
+    @apply text-accent-2 font-semibold;
   }
 }
 
 @layer components {
   .message {
-    @apply bg-white py-4 px-5 max-w-[70%] rounded-lg;
+    @apply bg-white py-3 px-4 max-w-[70%] rounded-lg;
   }
   .bot-message {
-    @apply message self-start;
+    @apply bg-accent-2/10 message self-start;
   }
   .user-message {
     @apply message self-end;
+  }
+  .page-width {
+    @apply w-full max-w-screen-2xl mx-auto;
   }
 }

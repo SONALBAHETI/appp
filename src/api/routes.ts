@@ -3,6 +3,7 @@ const baseUrls = {
   chatRequests: "/api/v1/chats/requests",
   notes: "/api/v1/notes",
   chatbot: "api/v1/chatbot",
+  auth: "/api/v1/auth",
 };
 
 const notes = {
@@ -19,6 +20,10 @@ const chatbot = {
     `${baseUrls.chatbot}/runstatus/${runId}`,
 };
 
+const auth = {
+  loginWithGoogle: `${baseUrls.auth}/login/google`,
+};
+
 export const apiRoutes = {
   getChatRequest: `${baseUrls.chatRequests}/:id`,
   getChatRequests: `${baseUrls.chatRequests}`,
@@ -26,6 +31,7 @@ export const apiRoutes = {
   rejectChatRequest: `${baseUrls.chatRequests}/reject`,
   notes,
   chatbot,
+  auth,
   logout: `${baseUrls.api}/auth/logout`,
   signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
 };

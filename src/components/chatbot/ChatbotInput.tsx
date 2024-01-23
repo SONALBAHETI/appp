@@ -42,6 +42,9 @@ export default function ChatbotInput() {
   const submitMessage = async () => {
     try {
       const msg = message;
+      if (!msg) {
+        return;
+      }
       resetMessage();
       const response = await sendMessage(msg);
       let { runId, status } = response;

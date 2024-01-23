@@ -1,22 +1,23 @@
 import SignInWithGoogle from "@/components/auth/SignInWithGoogle/SignInWithGoogle";
 import SignInForm from "@/components/auth/SigninForm";
+import TextLine from "@/components/ui/TextLine";
+import Link from "next/link";
 
 export default function SignInPage() {
   return (
-    <div className="flex w-full flex-col md:flex-row">
-      {/* Left Column */}
-      <div className="flex-1 flex flex-col gap-4 md:max-w-xl">
-        {/* Sign In Form */}
-        <SignInForm />
-        <div className="text-center text-muted-foreground text-sm">OR</div>
+    <div className="flex flex-col gap-4">
+      <div>
+        <h1>Sign in</h1>
+        <p className="mt-2 text-sm font-light">Log in to your Scholarnetics account.</p>
+      </div>
+      <div>
         <SignInWithGoogle />
+        <TextLine className="mt-2" text="or" />
       </div>
-
-      {/* Right Column */}
-      <div className="flex-1 hidden md:block">
-        {/* Illustration */}
-        <p className="text-center">Scholarnetics Forever!</p>
-      </div>
+      <SignInForm />
+      <p className="font-light text-sm">
+        Not registered yet? <Link href={"/signup"}>Create an account</Link>
+      </p>
     </div>
   );
 }

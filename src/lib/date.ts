@@ -11,3 +11,18 @@ export function getRelativeTimeString(
   const timeString = intlFormatDistance(date, new Date(), options);
   return timeString;
 }
+
+export function getFormattedDate(date: Date): string {
+  return date.toLocaleString("en-US", {
+    day: "numeric",
+    month: "short",
+  });
+}
+
+export function getFormattedTime(date: Date): string {
+  return date.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+}

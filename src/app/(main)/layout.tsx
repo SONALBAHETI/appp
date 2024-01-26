@@ -1,4 +1,5 @@
 import MainNavigation from "@/components/navigation/MainNavigation";
+import { SocketProvider } from "@/providers/SocketProvider";
 
 export default function MainLayout({
   children,
@@ -7,8 +8,10 @@ export default function MainLayout({
 }) {
   return (
     <div className="pl-16">
-      <MainNavigation />
-      <div className="bg-gray-100 flex flex-col min-h-screen">{children}</div>
+      <SocketProvider>
+        <MainNavigation />
+        <div className="bg-gray-100 flex flex-col min-h-screen">{children}</div>
+      </SocketProvider>
     </div>
   );
 }

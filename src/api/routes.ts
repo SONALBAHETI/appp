@@ -4,6 +4,7 @@ const baseUrls = {
   notes: "/api/v1/notes",
   chatbot: "api/v1/chatbot",
   auth: "/api/v1/auth",
+  notifications: "/api/v1/notifications",
 };
 
 const notes = {
@@ -20,6 +21,10 @@ const chatbot = {
     `${baseUrls.chatbot}/runstatus/${runId}`,
 };
 
+const notifications = {
+  base: `${baseUrls.notifications}`,
+};
+
 const auth = {
   loginWithGoogle: `${baseUrls.auth}/login/google`,
 };
@@ -32,6 +37,7 @@ export const apiRoutes = {
   notes,
   chatbot,
   auth,
+  notifications,
   logout: `${baseUrls.api}/auth/logout`,
   signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
 };

@@ -1,4 +1,3 @@
-import { pathToUrl } from "@/lib/utils";
 import { apiRoutes } from "./routes";
 import {
   IGetNotesResponse,

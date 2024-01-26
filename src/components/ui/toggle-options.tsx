@@ -1,3 +1,4 @@
+// Imports the cn utility function from the specified directory
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 
@@ -31,13 +32,7 @@ interface IToggleOptionsProps {
 /**
  * Renders toggle options.
  *
- * @param {IToggleOptionsProps} props - {
- *   options: IToggleOption[],
- *   selectedOptions: IToggleOption[],
- *   allowMultipleSelection?: Boolean,
- *   onChange?: (option: IToggleOption[]) => void,
- *   className?: string
- * }
+ * @param {IToggleOptionsProps} props
  *
  * @return The rendered toggle options component.
  */
@@ -46,12 +41,14 @@ export default function ToggleOptions({
   ...props
 }: IToggleOptionsProps) {
   return (
+    // Renders a div with specified class names
     <div className={cn("flex flex-col sm:flex-row gap-4", props.className)}>
+      {/* Maps over the options and renders a Button component for each option */}
       {props.options.map((option) => (
         <Button
           key={option.value}
           variant={
-            props.selectedOptions.includes(option) ? "default" : "outline"
+            props.selectedOptions.includes(option) ? "accent" : "outline"
           }
           className="flex-1"
           onClick={() => {

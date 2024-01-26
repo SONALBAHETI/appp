@@ -27,12 +27,15 @@ import {
 import { toast } from "react-toastify";
 import { useSignInWithEmailPasswordMutation } from "@/api/auth";
 import { AxiosError } from "axios";
+import { useAuth } from "@/hooks/useAuth";
+import { ISignInWithEmailPasswordResponse } from "@/interfaces/auth";
 
 interface SignInFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function SignInForm({ className, ...props }: SignInFormProps) {
   const mutationSignInWithEmailPassword = useSignInWithEmailPasswordMutation();
   const router = useRouter();
+  const { saveAuth } = useAuth();
 
   const form = useForm<TSignInForm>({
     resolver: zodResolver(SignInFormSchema),
@@ -41,7 +44,11 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
 
   async function onSubmit(data: TSignInForm) {
     try {
-      await mutationSignInWithEmailPassword.mutateAsync(data);
+      const response = await mutationSignInWithEmailPassword.mutateAsync(data) as ISignInWithEmailPasswordResponse;
+      saveAuth({
+        userId: response.userId,
+        accessToken: response.accessToken,
+      });
       router.push("/");
     } catch (error) {
       if (error instanceof AxiosError) {

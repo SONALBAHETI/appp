@@ -11,13 +11,17 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
 import {
-  UserOccupations,
-  UserObjectives,
   USER_OCCUPATION_OPTIONS,
   USER_OBJECTIVE_OPTIONS,
   MENTOR_SPECIALISATIONS,
 } from "@/constants/onboarding";
 import { Button } from "../ui/button";
+import {
+  isHealthcareProfessional,
+  isLookingForMentor,
+  isLookingToMentorOthers,
+} from "./utils";
+import SearchAndSelect from "../ui/SearchAndSelect";
 
 export default function OnboardingForm() {
   const { auth } = useAuth();
@@ -34,6 +38,13 @@ export default function OnboardingForm() {
     label: "",
     value: "",
   });
+  const [primaryAreasSearchTerm, setPrimaryAreasSearchTerm] =
+    useState<string>("");
+  const [primaryAreasOfInterest, setPrimaryAreasOfInterest] = useState<
+    Array<string>
+  >(["Physical Therapy", "Speech Pathology", "Cardiology"]);
+  const [selectedPrimaryAreasOfInterest, setSelectedPrimaryAreasOfInterest] =
+    useState<string[]>([]);
 
   const [mentorSpecialisations, setMentorSpecialisations] = useState<
     IToggleOption[]
@@ -76,11 +87,10 @@ export default function OnboardingForm() {
 
   return (
     <div>
-      <h2 className="text-4xl font-medium">Tell us about yourself.</h2>
-      <p className="text-md text-inactive mt-3">
-        Help us understand you better.
-      </p>
+      <h1>Tell us about yourself.</h1>
+      <p className="text-md text-faded mt-3">Help us understand you better.</p>
 
+      {/* User occupations */}
       <div className="flex flex-col gap-2 mt-6">
         <Label className="text-md">I am a</Label>
         <ToggleOptions
@@ -90,7 +100,8 @@ export default function OnboardingForm() {
         />
       </div>
 
-      {userOccupation.value === UserOccupations.HEALTHCARE_PROFESSIONAL && (
+      {/* User's objectives if the user is a healthcare professional */}
+      {isHealthcareProfessional(userOccupation) && (
         <div className="flex flex-col gap-2 mt-6">
           <Label className="text-md">I want to</Label>
           <ToggleOptions
@@ -101,19 +112,35 @@ export default function OnboardingForm() {
         </div>
       )}
 
-      {userOccupation.value === UserOccupations.HEALTHCARE_PROFESSIONAL &&
-        userObjective.value === UserObjectives.MENTOR_OTHERS && (
-          <div className="flex flex-col gap-2 mt-6">
-            <Label className="text-md">I specialise in</Label>
-            <ToggleOptions
-              className="flex-wrap"
-              options={MENTOR_SPECIALISATIONS}
-              allowMultipleSelection={true}
-              selectedOptions={mentorSpecialisations}
-              onChange={(options) => setMentorSpecialisations(options)}
-            />
-          </div>
-        )}
+      {/* User's primary areas of interest if the user wants to find a mentor */}
+      {isLookingForMentor(userOccupation, userObjective) && (
+        <div className="flex flex-col gap-2 mt-6">
+          <Label className="text-md">Primary areas of interest</Label>
+          <SearchAndSelect
+            placeholder="eg. Physical Therapy, Education, Administration, Researcher"
+            value={primaryAreasSearchTerm}
+            suggestions={primaryAreasOfInterest}
+            selectedSuggestions={selectedPrimaryAreasOfInterest}
+            onSelectedSuggestionsChange={setSelectedPrimaryAreasOfInterest}
+            onValueChange={setPrimaryAreasSearchTerm}
+          />
+        </div>
+      )}
+
+      {/* Specialisations if the user is a healthcare professional and wants to mentor others */}
+      {isLookingToMentorOthers(userOccupation, userObjective) && (
+        <div className="flex flex-col gap-2 mt-6">
+          <Label className="text-md">I specialise in</Label>
+          <ToggleOptions
+            className="flex-wrap"
+            options={MENTOR_SPECIALISATIONS}
+            allowMultipleSelection={true}
+            selectedOptions={mentorSpecialisations}
+            onChange={(options) => setMentorSpecialisations(options)}
+          />
+        </div>
+      )}
+
       {mentorSpecialisations && mentorSpecialisations.length > 0 && (
         <Button
           disabled={updateUserDetailsLoading}

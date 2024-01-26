@@ -28,4 +28,18 @@ declare global {
     useRefreshAuth?: boolean;
     setAccessToken?: (token: IToken) => void;
   }
+  interface PaginationResult<T> {
+    docs: T[];
+    totalDocs: number;
+    limit: number;
+    hasPrevPage: boolean;
+    hasNextPage: boolean;
+    page: number;
+    totalPages: number;
+    offset: number | null;
+    prevPage: number | null;
+    nextPage: number | null;
+    pagingCounter: number;
+    meta: object;
+  }
 }

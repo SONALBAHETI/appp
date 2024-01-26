@@ -14,6 +14,7 @@ import {
   Bot,
   StickyNote,
   Loader2,
+  Video,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -38,12 +39,14 @@ function changeTypeToIconComponent(type: IconType) {
       return StickyNote;
     case IconType.LOADING:
       return Loader2;
+    case IconType.VIDEO:
+      return Video;
     default:
       return Plus; // TODO: Choose default icon?
   }
 }
 
-interface IIconProps extends LucideProps {
+export interface IIconProps extends LucideProps {
   type: IconType;
 }
 

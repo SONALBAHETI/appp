@@ -9,4 +9,5 @@ export enum IconType {
   BOT = "Bot",
   NOTE = "Note",
   LOADING = "Loading",
+  VIDEO = "Video",
 }

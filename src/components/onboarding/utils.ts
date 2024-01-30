@@ -17,12 +17,12 @@ export const isHealthcareProfessional = (userOccupation: IToggleOption) => {
  */
 export const isLookingForMentor = (
   userOccupation: IToggleOption,
-  userObjective: IToggleOption
+  userObjective?: IToggleOption
 ) => {
   return (
-    userOccupation.value === UserOccupations.HEALTHCARE_LEARNER ||
+    userOccupation.value === UserOccupations.HEALTHCARE_STUDENT ||
     (userOccupation.value === UserOccupations.HEALTHCARE_PROFESSIONAL &&
-      userObjective.value === UserObjectives.FIND_A_MENTOR)
+      userObjective?.value === UserObjectives.FIND_A_MENTOR)
   );
 };
 

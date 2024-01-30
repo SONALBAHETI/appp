@@ -25,7 +25,7 @@ interface IToggleOptionsProps {
   options: IToggleOption[];
   selectedOptions: IToggleOption[];
   allowMultipleSelection?: Boolean;
-  onChange?: (option: IToggleOption[]) => void;
+  onChange?: (options: IToggleOption[]) => void;
   className?: string;
 }
 
@@ -48,7 +48,11 @@ export default function ToggleOptions({
         <Button
           key={option.value}
           variant={
-            props.selectedOptions.includes(option) ? "accent" : "outline"
+            props.selectedOptions.find(
+              (selectedOption) => selectedOption.value === option.value
+            )
+              ? "accent"
+              : "outline"
           }
           className="flex-1"
           onClick={() => {
@@ -63,6 +67,7 @@ export default function ToggleOptions({
               }
             }
           }}
+          type="button"
         >
           {option.label}
         </Button>

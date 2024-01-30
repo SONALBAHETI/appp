@@ -5,6 +5,7 @@ const baseUrls = {
   chatbot: "api/v1/chatbot",
   auth: "/api/v1/auth",
   notifications: "/api/v1/notifications",
+  onboarding: "/api/v1/onboarding",
 };
 
 const notes = {
@@ -25,6 +26,11 @@ const notifications = {
   base: `${baseUrls.notifications}`,
 };
 
+const onboarding = {
+  getPrimaryInterestSuggestions: (searchTerm: string) =>
+    `${baseUrls.onboarding}/suggestions/primaryinterests?q=${searchTerm}`,
+};
+
 const auth = {
   loginWithGoogle: `${baseUrls.auth}/login/google`,
 };
@@ -38,6 +44,7 @@ export const apiRoutes = {
   chatbot,
   auth,
   notifications,
+  onboarding,
   logout: `${baseUrls.api}/auth/logout`,
   signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
 };

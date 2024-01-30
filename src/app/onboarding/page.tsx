@@ -7,7 +7,7 @@ import TwoColumnsPageTemplate, {
 export default function OnboardingPage() {
   return (
     <TwoColumnsPageTemplate>
-      <LeftColumn>
+      <LeftColumn className="self-start">
         <OnboardingForm />
       </LeftColumn>
       <RightColumn>

@@ -1,10 +1,29 @@
-export function LeftColumn({ children }: { children: React.ReactNode }) {
-  return <div className="flex-1 w-full md:max-w-lg">{children}</div>;
+import { cn } from "@/lib/utils";
+
+interface LeftColumnProps extends React.ComponentPropsWithoutRef<"div"> {}
+interface RightColumnProps extends React.ComponentPropsWithoutRef<"div"> {}
+
+export function LeftColumn({ children, className, ...props }: LeftColumnProps) {
+  return (
+    <div className={cn("flex-1 w-full md:max-w-lg", className)} {...props}>
+      {children}
+    </div>
+  );
 }
 
-export function RightColumn({ children }: { children: React.ReactNode }) {
+export function RightColumn({
+  children,
+  className,
+  ...props
+}: RightColumnProps) {
   return (
-    <div className="flex-1 hidden md:flex md:flex-col md:items-center">
+    <div
+      className={cn(
+        "flex-1 hidden md:flex md:flex-col md:items-center",
+        className
+      )}
+      {...props}
+    >
       {children}
     </div>
   );

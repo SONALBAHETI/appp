@@ -65,7 +65,7 @@ export default function OnboardingForm() {
   const userObjective = form.watch("userObjective");
 
   function onSubmit(data: TOnboardingForm) {
-    console.log(data);
+    console.log(data); // TODO: implement form submission
   }
 
   return (

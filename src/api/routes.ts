@@ -29,6 +29,10 @@ const notifications = {
 const onboarding = {
   getPrimaryInterestSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/primaryinterests?q=${searchTerm}`,
+  getExpertiseAreaSuggestions: (searchTerm: string) =>
+    `${baseUrls.onboarding}/suggestions/expertiseareas?q=${searchTerm}`,
+  getPracticeAreaSuggestions: (searchTerm: string) =>
+    `${baseUrls.onboarding}/suggestions/practiceareas?q=${searchTerm}`,
 };
 
 const auth = {

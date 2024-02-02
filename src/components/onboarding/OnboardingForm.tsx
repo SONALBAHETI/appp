@@ -28,6 +28,7 @@ import {
   useExpertiseAreaSuggestionsQuery,
   usePracticeAreaSuggestionsQuery,
   usePrimaryInterestSuggestionsQuery,
+  useSubmitOnboardingFormMutation,
 } from "@/api/onboarding";
 
 import { useForm } from "react-hook-form";
@@ -38,6 +39,9 @@ import {
 } from "@/validation/onboardingForm.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
+import { toast } from "react-toastify";
+import Loader from "../ui/Loader";
+import { ISubmitOnboardingFormResponse } from "@/interfaces/onboarding";
 
 export default function OnboardingForm() {
   const router = useRouter();
@@ -68,6 +72,8 @@ export default function OnboardingForm() {
   const { data: practiceAreasData, isPending: isPracticeAreasDataPending } =
     usePracticeAreaSuggestionsQuery(debouncedPracticeAreasSearchTerm);
 
+  const mutationSubmitForm = useSubmitOnboardingFormMutation();
+
   const form = useForm<TOnboardingForm>({
     resolver: zodResolver(OnboardingFormSchema),
     mode: "onSubmit",
@@ -76,8 +82,14 @@ export default function OnboardingForm() {
   const userOccupation = form.watch("userOccupation");
   const userObjective = form.watch("userObjective");
 
-  function onSubmit(data: TOnboardingForm) {
-    console.log(data); // TODO: implement form submission
+  async function onSubmit(data: TOnboardingForm) {
+    try {
+      await mutationSubmitForm.mutateAsync(data);
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while submitting the form");
+    }
   }
 
   return (
@@ -98,19 +110,16 @@ export default function OnboardingForm() {
           <FormField
             control={form.control}
             name="userOccupation"
-            defaultValue={{
-              label: "",
-              value: "",
-            }}
+            defaultValue=""
             render={({ field: { value, onChange } }) => (
               <FormItem>
                 <FormLabel className="text-md">I am a</FormLabel>
                 <FormControl>
                   <ToggleOptions
                     options={USER_OCCUPATION_OPTIONS}
-                    selectedOptions={[value]}
+                    selectedOptions={[{ label: value, value }]}
                     onChange={(selectedOptions) => {
-                      onChange(selectedOptions[0]);
+                      onChange(selectedOptions[0].value);
                     }}
                   />
                 </FormControl>
@@ -124,19 +133,16 @@ export default function OnboardingForm() {
             <FormField
               control={form.control}
               name="userObjective"
-              defaultValue={{
-                label: "",
-                value: "",
-              }}
+              defaultValue=""
               render={({ field: { value, onChange } }) => (
                 <FormItem>
                   <FormLabel className="text-md">I want to</FormLabel>
                   <FormControl>
                     <ToggleOptions
                       options={USER_OBJECTIVE_OPTIONS}
-                      selectedOptions={value ? [value] : []}
+                      selectedOptions={[{ label: value, value }]}
                       onChange={(selectedOptions) =>
-                        onChange(selectedOptions[0])
+                        onChange(selectedOptions[0].value)
                       }
                     />
                   </FormControl>
@@ -240,6 +246,7 @@ export default function OnboardingForm() {
             )}
 
           <Button className="w-full" type="submit">
+            {mutationSubmitForm.isPending && <Loader />}
             Continue
           </Button>
         </form>

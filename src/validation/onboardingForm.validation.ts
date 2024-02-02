@@ -1,29 +1,20 @@
-import {
-  USER_OCCUPATION_OPTIONS,
-  UserObjectives,
-  UserOccupations,
-} from "@/constants/onboarding";
+import { UserObjectives, UserOccupations } from "@/constants/onboarding";
 import { z } from "zod";
 
 export const OnboardingFormSchema = z
   .object({
-    userOccupation: z.object({
-      label: z.string(),
-      value: z.string(),
-    }),
-    userObjective: z
-      .object({
-        label: z.string(),
-        value: z.string(),
-      })
-      .optional(),
+    userOccupation: z.string().default(""),
+    userObjective: z.string().default(""),
     primaryAreasOfInterest: z.array(z.string()).default([]),
     primaryAreasOfPractice: z.array(z.string()).default([]),
     areasOfExpertise: z.array(z.string()).default([]),
   })
   .refine(
     (data) => {
-      return !!data.userOccupation.value;
+      if (!data.userOccupation) {
+        return false;
+      }
+      return true;
     },
     {
       message: "Please select an option",
@@ -32,10 +23,8 @@ export const OnboardingFormSchema = z
   )
   .refine(
     (data) => {
-      if (
-        data.userOccupation.value === UserOccupations.HEALTHCARE_PROFESSIONAL
-      ) {
-        return !!data.userObjective?.value;
+      if (data.userOccupation === UserOccupations.HEALTHCARE_PROFESSIONAL) {
+        return !!data.userObjective;
       }
       return true;
     },
@@ -47,8 +36,8 @@ export const OnboardingFormSchema = z
   .refine(
     (data) => {
       if (
-        data.userOccupation.value === UserOccupations.HEALTHCARE_PROFESSIONAL &&
-        data.userObjective?.value === UserObjectives.MENTOR_OTHERS
+        data.userOccupation === UserOccupations.HEALTHCARE_PROFESSIONAL &&
+        data.userObjective === UserObjectives.MENTOR_OTHERS
       ) {
         return (
           data.primaryAreasOfPractice.length >= 1 &&
@@ -65,8 +54,8 @@ export const OnboardingFormSchema = z
   .refine(
     (data) => {
       if (
-        data.userOccupation.value === UserOccupations.HEALTHCARE_PROFESSIONAL &&
-        data.userObjective?.value === UserObjectives.MENTOR_OTHERS
+        data.userOccupation === UserOccupations.HEALTHCARE_PROFESSIONAL &&
+        data.userObjective === UserObjectives.MENTOR_OTHERS
       ) {
         return (
           data.areasOfExpertise.length >= 1 && data.areasOfExpertise.length <= 7
@@ -82,10 +71,9 @@ export const OnboardingFormSchema = z
   .refine(
     (data) => {
       if (
-        (data.userOccupation.value ===
-          UserOccupations.HEALTHCARE_PROFESSIONAL &&
-          data.userObjective?.value === UserObjectives.FIND_A_MENTOR) ||
-        data.userOccupation.value === UserOccupations.HEALTHCARE_STUDENT
+        (data.userOccupation === UserOccupations.HEALTHCARE_PROFESSIONAL &&
+          data.userObjective === UserObjectives.FIND_A_MENTOR) ||
+        data.userOccupation === UserOccupations.HEALTHCARE_STUDENT
       ) {
         return (
           data.primaryAreasOfInterest.length >= 1 &&

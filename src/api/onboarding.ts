@@ -1,7 +1,11 @@
-import { IGetSuggestionsResponse } from "@/interfaces/onboarding";
+import {
+  IGetSuggestionsResponse,
+  ISubmitOnboardingFormResponse,
+} from "@/interfaces/onboarding";
 import { createQueryKey } from "@/lib/react-query/utils";
 import { apiRoutes } from "./routes";
-import { useFetch } from "@/lib/react-query";
+import { useFetch, usePost } from "@/lib/react-query";
+import { TOnboardingForm } from "@/validation/onboardingForm.validation";
 
 const useFetchOptions = (searchTerm: string) => ({
   staleTime: 1000 * 30, // 30 seconds
@@ -37,6 +41,14 @@ export const getExpertiseAreaSuggestionsQueryKey = (searchTerm: string) =>
  */
 export const getPracticeAreaSuggestionsQueryKey = (searchTerm: string) =>
   createQueryKey(apiRoutes.onboarding.getPracticeAreaSuggestions(searchTerm));
+
+/**
+ * Generates the query key for useSubmitOnboardingFormMutation.
+ *
+ * @returns The query key.
+ */
+export const getSubmitOnboardingFormMutationQueryKey = () =>
+  createQueryKey(apiRoutes.onboarding.submitOnboardingForm);
 
 /**
  * Custom hook for getting suggestions for primary interests.
@@ -79,3 +91,15 @@ export const usePracticeAreaSuggestionsQuery = (searchTerm: string) =>
     getPracticeAreaSuggestionsQueryKey(searchTerm),
     useFetchOptions(searchTerm)
   );
+
+/**
+ * Custom hook for submitting the onboarding form.
+ *
+ * This hook is used to submit the onboarding form and returns the query result.
+ *
+ * @returns The query result for the onboarding form mutation.
+ */
+export const useSubmitOnboardingFormMutation = () =>
+  usePost<TOnboardingForm, ISubmitOnboardingFormResponse>({
+    queryKey: getSubmitOnboardingFormMutationQueryKey(),
+  });

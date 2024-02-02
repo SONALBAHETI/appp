@@ -3,4 +3,9 @@ export interface ISignInWithEmailPasswordResponse {
   userId: string;
 }
 
+export interface ILoginWithGoogleResponse {
+  accessToken: IToken;
+  user: any;
+}
+
 export interface ILogoutResponse {}

@@ -1,6 +1,7 @@
 "use client";
 
 import { apiRoutes } from "@/api/routes";
+import { ILoginWithGoogleResponse } from "@/interfaces/auth";
 import { api } from "@/lib/api";
 import { GoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
@@ -10,10 +11,15 @@ export default function SignInWithGoogle() {
   const router = useRouter();
 
   const sendCode = async (credential?: string) => {
-    await api.post(apiRoutes.auth.loginWithGoogle, {
-      credential,
-    });
-    router.push("/");
+    const response = await api.post<ILoginWithGoogleResponse>(
+      apiRoutes.auth.loginWithGoogle,
+      {
+        credential,
+      }
+    );
+    response.data.user?.accountStatus?.isOnboarded
+      ? router.push("/")
+      : router.push("/onboarding");
   };
 
   return (

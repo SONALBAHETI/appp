@@ -33,6 +33,7 @@ const onboarding = {
     `${baseUrls.onboarding}/suggestions/expertiseareas?q=${searchTerm}`,
   getPracticeAreaSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/practiceareas?q=${searchTerm}`,
+  submitOnboardingForm: `${baseUrls.onboarding}/form/submit`,
 };
 
 const auth = {

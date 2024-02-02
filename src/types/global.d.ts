@@ -9,12 +9,6 @@ declare global {
     userId: string | null;
     accessToken: IToken | null;
   }
-  interface IUser {
-    id: string;
-    name: string;
-    email: string;
-    accessToken?: string;
-  }
   interface IToggleOption {
     label: string;
     value: string;

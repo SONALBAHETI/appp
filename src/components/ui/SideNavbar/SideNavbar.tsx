@@ -5,7 +5,7 @@ import React from "react";
 
 interface Field {
   fields: string;
-  nevigationLink: string;
+  navigationLink: string;
 }
 
 interface SideNavbarProps {
@@ -21,13 +21,13 @@ export default function SideNavbar({ data }: SideNavbarProps) {
         {data.map((item, index) => (
           <li
             className={`${
-              pathname === item.nevigationLink
+              pathname === item.navigationLink
                 ? "bg-[#E8F3F3] text-[#349997] font-bold"
                 : "hover:bg-[#E8F3F3] hover:text-[#349997] hover:font-bold"
             } transition duration-300 ease-in-out py-3 px-5 rounded-xl cursor-pointer font-medium mt-5`}
             key={index}
           >
-            <Link href={item.nevigationLink ? item.nevigationLink : "/"}>
+            <Link href={item.navigationLink ? item.navigationLink : "/"}>
               {item.fields}
             </Link>
           </li>

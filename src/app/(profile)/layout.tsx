@@ -2,20 +2,20 @@ import SideNavbar from "@/components/ui/SideNavbar/SideNavbar";
 
 const sideNavField = [
   {
-    fields: "Personal details",
-    nevigationLink: "/personal-details",
+    fields: "My information",
+    navigationLink: "/my-information",
   },
   {
     fields: "Verification details ",
-    nevigationLink: "/verify-document",
+    navigationLink: "/verify-document",
   },
   {
     fields: "Bank details",
-    nevigationLink: "/bank-details",
+    navigationLink: "/bank-details",
   },
   {
     fields: "Certificated & Badges",
-    nevigationLink: "/certificated",
+    navigationLink: "/certificated",
   },
 ];
 

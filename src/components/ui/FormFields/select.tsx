@@ -22,7 +22,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           )}
           ref={ref}
           {...props}
-          placeholder="select"
+          placeholder={placeholder}
         >
           <option
             value=""

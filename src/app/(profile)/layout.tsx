@@ -1,4 +1,4 @@
-import SideNavbar from "@/components/ui/SideNavbar/SideNavbar";
+import { SideNavbar } from "@/components/ui/SideNavbar";
 
 const sideNavField = [
   {

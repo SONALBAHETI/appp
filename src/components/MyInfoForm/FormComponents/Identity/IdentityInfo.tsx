@@ -1,4 +1,6 @@
 import React from "react";
+import ToggleSwitch from "@/components/ui/Switch/ToggleSwitch";
+import SearchAndSelect from "@/components/ui/SearchAndSelect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
@@ -8,7 +10,7 @@ import {
 } from "../../validation";
 import {
   Input,
-  Select,
+  SelectDropdown,
   Textarea,
   NumberInput,
   DatePicker,
@@ -21,8 +23,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import ToggleSwitch from "@/components/ui/Switch/ToggleSwitch";
-import SearchAndSelect from "@/components/ui/SearchAndSelect";
 
 export default function IdentityInfo() {
   const form = useForm<PersonalDetailsValues>({
@@ -84,9 +84,9 @@ export default function IdentityInfo() {
                       <FormLabel>First Name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="First Name"
+                          placeholder="First nme"
                           autoCapitalize="words"
-                          autoComplete="given-name"
+                          autoComplete="given-firstName"
                           {...field}
                         />
                       </FormControl>
@@ -99,16 +99,16 @@ export default function IdentityInfo() {
               <div className="flex-grow w-1/2">
                 <FormField
                   control={form.control}
-                  name="firstName"
+                  name="lastName"
                   defaultValue=""
                   render={({ field }) => (
                     <FormItem className="flex-1">
                       <FormLabel>First Name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="First Name"
+                          placeholder="Last name "
                           autoCapitalize="words"
-                          autoComplete="given-name"
+                          autoComplete="given-lastName"
                           {...field}
                         />
                       </FormControl>
@@ -149,19 +149,18 @@ export default function IdentityInfo() {
                 <div className="relative">
                   <FormField
                     control={form.control}
-                    name="degree"
+                    name="pronouns"
                     defaultValue=""
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Pronouns</FormLabel>
                         <FormControl>
-                          <Select
+                          <SelectDropdown
                             placeholder="Select an option"
                             autoCapitalize="words"
-                            autoComplete="given-name"
+                            autoComplete="given-pronouns"
                             options={["asdas", "sadasd", "sdas"]}
-                            {...field}
-                          />
+                          ></SelectDropdown>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -169,24 +168,22 @@ export default function IdentityInfo() {
                   />
                 </div>
               </div>
-
               <div className="flex-grow w-1/3">
                 <div className="relative">
                   <FormField
                     control={form.control}
-                    name="collage"
+                    name="gender"
                     defaultValue=""
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Gender</FormLabel>
                         <FormControl>
-                          <Select
+                          <SelectDropdown
                             placeholder="Select an option"
                             autoCapitalize="words"
-                            autoComplete="given-name"
+                            autoComplete="given-gender"
                             options={["asdas", "sadasd", "sdas"]}
-                            {...field}
-                          />
+                          ></SelectDropdown>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -199,7 +196,7 @@ export default function IdentityInfo() {
                 <div className="relative">
                   <FormField
                     control={form.control}
-                    name="YearOfCompletion"
+                    name="year"
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Date</FormLabel>
@@ -276,7 +273,7 @@ export default function IdentityInfo() {
                   defaultValue=""
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel>Tell us about yourself</FormLabel>
+                      <FormLabel>Write your bio</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Type your message here"
@@ -298,7 +295,7 @@ export default function IdentityInfo() {
                   defaultValue=""
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel>Tell us about yourself</FormLabel>
+                      <FormLabel>A fun fact about you (Optional)</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Type your message here"
@@ -353,8 +350,7 @@ export default function IdentityInfo() {
               Understanding your background helps us connect you with the right
               people.
             </p>
-
-            <label htmlFor="education">Education:</label>
+            {/*  Need to make its validation  */}
             <div className="flex space-x-4">
               <div className="flex-grow w-1/3">
                 <div className="relative">

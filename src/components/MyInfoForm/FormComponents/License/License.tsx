@@ -3,13 +3,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LicenseSchema, licenseSchemaObj } from "./validation";
-import {
-  Input,
-  Select,
-  Textarea,
-  NumberInput,
-  DatePicker,
-} from "@/components/ui/FormFields";
+import { Input, NumberInput, DatePicker } from "@/components/ui/FormFields";
 import {
   Form,
   FormControl,
@@ -18,8 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Calendar } from "@/components/ui/calendar";
-import UploadLicense from "../UploadLicense/UploadLicense";
 
 export default function License() {
   const form = useForm<LicenseSchema>({

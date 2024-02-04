@@ -17,7 +17,7 @@ export default function MainFormComponent() {
   return (
     <>
       <div className="relative flex-grow top-4 left-4 bottom-4 bg-white p-4 rounded-xl shadow-md border w-64  ml-4 sm:ml-8 md:ml-64 lg:ml-64 xl:ml-64 sm:ml-0 md:ml-0">
-      <AutoFillPopup></AutoFillPopup>
+        <AutoFillPopup></AutoFillPopup>
         <div className="font-bold mt-5 text-black text-center ">
           <h3>Your account has been created </h3>
           <p className="text-lg mt-6">Fill the details in 4-easy steps!</p>
@@ -89,7 +89,7 @@ export default function MainFormComponent() {
               return <IdentityInfo />;
 
             case "expertise":
-              return <Expertise/>;
+              return <Expertise />;
 
             case "education":
               return <Education />;

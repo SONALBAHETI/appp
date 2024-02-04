@@ -1,3 +1,6 @@
+//TODO: Need to create validation for fields
+//TODO: Need to make popup box to add value in field
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EducationFormSchema, EducationFormSchemaObj } from "./validation";
@@ -12,12 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import ToggleSwitch from "@/components/ui/Switch/ToggleSwitch";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
-import {
-  Input,
-  Select,
-  Textarea,
-  NumberInput,
-} from "@/components/ui/FormFields";
+
 import {
   Form,
   FormControl,
@@ -161,7 +159,6 @@ export default function Education() {
           </div>
         </Form>
       </div>
-
     </>
   );
 }

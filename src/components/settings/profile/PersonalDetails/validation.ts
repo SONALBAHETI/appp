@@ -6,19 +6,13 @@ const FirstNameSchema = z.string().min(1, {
 
 
 const LastNameSchema = z.string().min(1, {
-    message: "First Name is required.",
+    message: "Last Name is required.",
 });
 
 
 const PronounsSchema = z.string().min(1, {
-    message: "Last Name is required.",
+    message: "Please select a pronoun.",
 });
-
-const Gender = z
-    .string()
-    .min(1, {
-        message: "Please enter an email.",
-    })
 
 const dob = z.date()
 
@@ -32,26 +26,26 @@ const EmailSchema = z
 const AboutSchema = z
     .string()
     .min(1, {
-        message: "Please about yourself.",
+        message: "Please tell us about yourself.",
     })
 
 const StateSchema = z
     .string()
     .min(1, {
-        message: "Please enter  State name.",
+        message: "Please enter a state name.",
     })
 
 const PostalCodeSchema = z
     .number()
     .min(1, {
-        message: "Please enter  Postal code.",
+        message: "Please enter your postal code.",
     })
 
 
 const specialitySchema = z
     .string()
     .min(1, {
-        message: "Please enter your Collage name.",
+        message: "Please enter your specialties.",
     })
 
 const GenderSchema = z

@@ -105,9 +105,7 @@
   h6 {
     @apply text-base font-bold;
   }
-  a {
-    @apply text-accent-2 font-semibold;
-  }
+
 }
 
 @layer components {

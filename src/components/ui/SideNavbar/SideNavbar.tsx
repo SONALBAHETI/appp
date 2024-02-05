@@ -1,38 +1,31 @@
 "use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
 
-interface Field {
-  fields: string;
-  navigationLink: string;
-}
+import React from "react";
+import { Card, CardContent } from "../card";
+import NavLink from "../NavLink/NavLink";
 
 interface SideNavbarProps {
-  data: Field[];
+  links: INavLink[];
 }
 
-export default function SideNavbar({ data }: SideNavbarProps) {
-  const pathname = usePathname();
-
+export default function SideNavbar({ links }: SideNavbarProps) {
   return (
-    <div className="fixed top-4 left-4 bottom-4 bg-white p-4 rounded-xl shadow-md border  flex flex-col justify-between w-64">
-      <ul className="space-y-6">
-        {data.map((item, index) => (
-          <li
-            className={`${
-              pathname === item.navigationLink
-                ? "bg-[#E8F3F3] text-[#349997] font-bold"
-                : "hover:bg-[#E8F3F3] hover:text-[#349997] hover:font-bold"
-            } transition duration-300 ease-in-out py-3 px-5 rounded-xl cursor-pointer font-medium mt-5`}
-            key={index}
-          >
-            <Link href={item.navigationLink ? item.navigationLink : "/"}>
-              {item.fields}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Card className="shadow-md h-full">
+      <CardContent className="mt-6">
+        <ul className="flex flex-col gap-2 sticky top-5">
+          {links.map((item, index) => (
+            <NavLink
+              key={index}
+              className="w-full p-4 rounded-xl"
+              activeClassName="text-accent-2 bg-accent-2/10 font-bold"
+              inactiveClassName="hover:bg-muted transition duration-300 ease-in-out"
+              href={item.link}
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
   );
 }

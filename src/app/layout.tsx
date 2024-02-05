@@ -7,6 +7,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import { cn } from "@/lib/utils";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -24,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={dmSans.className}>
+      <body className={cn(dmSans.className, "bg-secondary")}>
         <ReactQueryProvider>
           <AuthProvider>{children}</AuthProvider>
         </ReactQueryProvider>

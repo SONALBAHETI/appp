@@ -1,5 +1,4 @@
 import React from "react";
-import ToggleSwitch from "@/components/ui/Switch/ToggleSwitch";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,7 +6,7 @@ import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import {
   PersonalDetailsFormSchema,
   PersonalDetailsValues,
-} from "../../validation";
+} from "../validation";
 import {
   Input,
   SelectDropdown,
@@ -23,6 +22,23 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
+
+const genders = [
+  "Male",
+  "Female",
+  "Non-binary",
+  "Agender",
+  "Bigender",
+  "Genderqueer",
+  "Genderfluid",
+  "Gender nonconforming",
+  "Two-spirit",
+  "Transgender",
+  "Cisgender",
+];
+
+const pronouns = ["he/him", "she/her", "they/them"];
 
 export default function IdentityInfo() {
   const form = useForm<PersonalDetailsValues>({
@@ -30,7 +46,7 @@ export default function IdentityInfo() {
     mode: "onSubmit",
   });
 
-  const [checked, setChecked] = React.useState<boolean>(false);
+  const [isShareMoreDetailsEnabled, setShareMoreDetailsEnabled] = React.useState<boolean>(false);
 
   const [selectedDate, setSelectedDate] = React.useState<Date>();
 
@@ -41,13 +57,13 @@ export default function IdentityInfo() {
   async function onSubmit(data: PersonalDetailsValues) {
     console.log(data);
   }
-  function handleClick(checked: any) {
-    setChecked(true);
+  function handleClick(checked: boolean) {
+    setShareMoreDetailsEnabled(checked);
   }
 
   return (
     <>
-      <div className="relative flex-grow top-4 left-4 bottom-4 bg-white p-4 rounded-xl shadow-md border  ml-4 mr-12 mb-4 border-slate-300	">
+      <div className="py-5 px-6 rounded-xl border">
         <h6 className="p-2 mb-4">Personal Details</h6>
         <Form {...form}>
           <form
@@ -74,19 +90,19 @@ export default function IdentityInfo() {
             </div>
 
             <div className="flex space-x-4">
-              <div className="flex-grow w-1/2">
+              <div className="flex-grow">
                 <FormField
                   control={form.control}
                   name="firstName"
                   defaultValue=""
                   render={({ field }) => (
-                    <FormItem className="flex-1">
+                    <FormItem>
                       <FormLabel>First Name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="First nme"
+                          placeholder="First name"
                           autoCapitalize="words"
-                          autoComplete="given-firstName"
+                          autoComplete="given-name"
                           {...field}
                         />
                       </FormControl>
@@ -96,19 +112,19 @@ export default function IdentityInfo() {
                 />
               </div>
 
-              <div className="flex-grow w-1/2">
+              <div className="flex-grow">
                 <FormField
                   control={form.control}
                   name="lastName"
                   defaultValue=""
                   render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel>First Name</FormLabel>
+                    <FormItem>
+                      <FormLabel>Last Name</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Last name "
                           autoCapitalize="words"
-                          autoComplete="given-lastName"
+                          autoComplete="family-name"
                           {...field}
                         />
                       </FormControl>
@@ -118,28 +134,25 @@ export default function IdentityInfo() {
                 />
               </div>
 
-              <div className="flex-grow w-2/4 relative">
-                <div className="relative">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    defaultValue=""
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="name@example.com"
-                            autoCapitalize="words"
-                            autoComplete="given-email"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+              <div className="flex-grow">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  defaultValue=""
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="name@example.com"
+                          autoComplete="email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
 
@@ -157,9 +170,7 @@ export default function IdentityInfo() {
                         <FormControl>
                           <SelectDropdown
                             placeholder="Select an option"
-                            autoCapitalize="words"
-                            autoComplete="given-pronouns"
-                            options={["asdas", "sadasd", "sdas"]}
+                            options={pronouns}
                           ></SelectDropdown>
                         </FormControl>
                         <FormMessage />
@@ -180,9 +191,7 @@ export default function IdentityInfo() {
                         <FormControl>
                           <SelectDropdown
                             placeholder="Select an option"
-                            autoCapitalize="words"
-                            autoComplete="given-gender"
-                            options={["asdas", "sadasd", "sdas"]}
+                            options={genders}
                           ></SelectDropdown>
                         </FormControl>
                         <FormMessage />
@@ -202,8 +211,8 @@ export default function IdentityInfo() {
                         <FormLabel>Date</FormLabel>
                         <FormControl>
                           <DatePicker
-                            selectedDate={selectedDate}
-                            onDateChange={handleDateChange}
+                            selectedDate={field.value}
+                            onDateChange={field.onChange}
                           />
                         </FormControl>
                         <FormMessage />
@@ -215,7 +224,7 @@ export default function IdentityInfo() {
             </div>
 
             {/* First Name and Pronouns input */}
-            <h6>Location</h6>
+            <h6 className="pt-4">Location</h6>
             <div className="flex space-x-4">
               <div className="flex-grow w-1/2">
                 <FormField
@@ -227,9 +236,8 @@ export default function IdentityInfo() {
                       <FormLabel>State</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Unites States"
-                          autoCapitalize="words"
-                          autoComplete="given-name"
+                          placeholder="eg. Florida"
+                          autoComplete="address-level1"
                           {...field}
                         />
                       </FormControl>
@@ -250,8 +258,7 @@ export default function IdentityInfo() {
                         <FormControl>
                           <NumberInput
                             placeholder="009039"
-                            autoCapitalize="words"
-                            autoComplete="given-postalCode"
+                            autoComplete="postal-code"
                             {...field}
                           />
                         </FormControl>
@@ -264,7 +271,7 @@ export default function IdentityInfo() {
             </div>
 
             {/* About Yourself input */}
-            <h6>Share your background</h6>
+            <h6 className="pt-4">Share your background</h6>
             <div className="flex space-x-4">
               <div className="flex-grow">
                 <FormField
@@ -299,8 +306,6 @@ export default function IdentityInfo() {
                       <FormControl>
                         <Textarea
                           placeholder="Type your message here"
-                          autoCapitalize="words"
-                          autoComplete="given-name"
                           {...field}
                         />
                       </FormControl>
@@ -314,42 +319,42 @@ export default function IdentityInfo() {
             {/* <TODO> Implement search and select for Area of speciality <TODO />  */}
 
             {/* Multi select */}
-            <div className="relative">
-              <FormField
-                control={form.control}
-                name="speciality"
-                defaultValue=""
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Add your personal interests</FormLabel>
-                    <FormControl>
-                      <SearchAndSelect
-                        placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                        // value={boardSpecialtiesSearchTerm}
-                        // onClear={() => setBoardSpecialtiesSearchTerm("")}
-                        // selectedSuggestions={value}
-                        // onSelectedSuggestionsChange={onChange}
-                        // onValueChange={setBoardSpecialtiesSearchTerm}
-                        // {...props}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="speciality"
+              defaultValue=""
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel>Add your personal interests</FormLabel>
+                  <FormControl>
+                    <SearchAndSelect
+                      placeholder="eg. Physical Therapy, Education, Administration, Researcher"
+                      // value={boardSpecialtiesSearchTerm}
+                      // onClear={() => setBoardSpecialtiesSearchTerm("")}
+                      // selectedSuggestions={value}
+                      // onSelectedSuggestionsChange={onChange}
+                      // onValueChange={setBoardSpecialtiesSearchTerm}
+                      // {...props}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <div className="flex items-center space-x-2">
-              <ToggleSwitch Toggle={{ handleClick: handleClick }} />
-              <h5 className="text-[#616467]">
-                Share more details for better matches
-              </h5>
+            <div className="pt-4">
+              <div className="flex items-center space-x-2">
+                <Switch onCheckedChange={handleClick} />
+                <h6>
+                  Share more details for better matches
+                </h6>
+              </div>
+              <p className="text-muted-foreground mt-1">
+                Understanding your background helps us connect you with the
+                right people.
+              </p>
             </div>
-
-            <p className="text-[#616467] font-extrabold	">
-              Understanding your background helps us connect you with the right
-              people.
-            </p>
+            
             {/*  Need to make its validation  */}
             <div className="flex space-x-4">
               <div className="flex-grow w-1/3">
@@ -357,7 +362,7 @@ export default function IdentityInfo() {
                   <FormField
                     control={form.control}
                     name="firstName"
-                    disabled={!checked}
+                    disabled={!isShareMoreDetailsEnabled}
                     defaultValue=""
                     render={({ field }) => (
                       <FormItem className="flex-1">
@@ -383,7 +388,7 @@ export default function IdentityInfo() {
                     control={form.control}
                     name="firstName"
                     defaultValue=""
-                    disabled={!checked}
+                    disabled={!isShareMoreDetailsEnabled}
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Etnicity</FormLabel>
@@ -405,7 +410,7 @@ export default function IdentityInfo() {
                 <div className="relative">
                   <FormField
                     control={form.control}
-                    disabled={!checked}
+                    disabled={!isShareMoreDetailsEnabled}
                     name="firstName"
                     defaultValue=""
                     render={({ field }) => (

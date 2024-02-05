@@ -26,7 +26,7 @@ export default function License() {
   };
 
   return (
-    <div className="relative flex-grow top-4 left-4 bottom-4 bg-white p-4 rounded-xl shadow-md border  ml-4 mr-12 border-slate-300 mb-4">
+    <div className="py-5 px-6 rounded-xl border">
       <h3 className="mb-7 mt-3">License Details</h3>
       <Form {...form}>
         <form>

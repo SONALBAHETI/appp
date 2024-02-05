@@ -13,7 +13,6 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import ToggleSwitch from "@/components/ui/Switch/ToggleSwitch";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
 
 import {
@@ -25,6 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
 
 export default function Education() {
   const form = useForm<EducationFormSchema>({
@@ -37,7 +37,7 @@ export default function Education() {
   function handleClick(checked: any) {}
   return (
     <>
-      <div className="relative flex-grow top-4 left-4 bottom-4 bg-white p-4 rounded-xl shadow-md border  ml-4 mr-12 border-slate-300 mb-4">
+      <div className="py-5 px-6 rounded-xl border">
         <h6 className="p-2 mb-4">Your Education</h6>
 
         <Form {...form}>
@@ -121,8 +121,8 @@ export default function Education() {
 
           <h6 className="p-2 mt-4">Residency and/or fellowship trained?</h6>
 
-          <div className="flex mt-2 mb-3">
-            <ToggleSwitch Toggle={{ handleClick: handleClick }} />
+          <div className="flex items-center mt-2 mb-3">
+            <Switch onCheckedChange={handleClick} />
             <p className="ml-2 font-bold text-sm ">Residency</p>
           </div>
 
@@ -153,8 +153,8 @@ export default function Education() {
             )}
           />
 
-          <div className="flex mt-2 mb-3">
-            <ToggleSwitch Toggle={{ handleClick: handleClick }} />
+          <div className="flex items-center mt-2 mb-3">
+            <Switch onCheckedChange={handleClick} />
             <p className="ml-2 font-bold text-sm ">Fellowship</p>
           </div>
         </Form>

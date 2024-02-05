@@ -9,6 +9,10 @@ declare global {
     userId: string | null;
     accessToken: IToken | null;
   }
+  interface INavLink {
+    label: string;
+    link: string;
+  }
   interface IToggleOption {
     label: string;
     value: string;

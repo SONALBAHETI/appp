@@ -15,6 +15,8 @@ import {
   StickyNote,
   Loader2,
   Video,
+  Settings,
+  ArrowLeft,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -41,6 +43,10 @@ function changeTypeToIconComponent(type: IconType) {
       return Loader2;
     case IconType.VIDEO:
       return Video;
+    case IconType.SETTINGS:
+      return Settings;
+    case IconType.BACK:
+      return ArrowLeft;
     default:
       return Plus; // TODO: Choose default icon?
   }

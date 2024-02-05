@@ -58,7 +58,7 @@ export default function Expertise() {
 
   return (
     <>
-      <div className="relative flex-grow top-4 left-4 bottom-4 bg-white p-4 rounded-xl shadow-md border  ml-4 mr-12 border-slate-300 mb-4">
+      <div className="py-5 px-6 rounded-xl border">
         <Form {...form}>
           <form action="">
             <div className="flex flex-col space-y-4">

@@ -15,7 +15,6 @@ import {
 import {
   USER_OCCUPATION_OPTIONS,
   USER_OBJECTIVE_OPTIONS,
-  MENTOR_SPECIALISATIONS,
 } from "@/constants/onboarding";
 
 import {
@@ -25,9 +24,13 @@ import {
 } from "./utils";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { usePrimaryInterestSuggestionsQuery } from "@/api/onboarding";
-import { useDebounce } from "usehooks-ts";
+import {
+  useExpertiseAreaSuggestionsQuery,
+  usePracticeAreaSuggestionsQuery,
+  usePrimaryInterestSuggestionsQuery,
+  useSubmitOnboardingFormMutation,
+} from "@/api/onboarding";
+
 import { useForm } from "react-hook-form";
 
 import {
@@ -35,26 +38,41 @@ import {
   TOnboardingForm,
 } from "@/validation/onboardingForm.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
+import { toast } from "react-toastify";
+import Loader from "../ui/Loader";
+import { ISubmitOnboardingFormResponse } from "@/interfaces/onboarding";
 
 export default function OnboardingForm() {
   const router = useRouter();
-  const [primaryAreasSearchTerm, setPrimaryAreasSearchTerm] =
-    useState<string>("");
-  const [expertiseAreasSearchTerm, setExpertiseAreasSearchTerm] =
-    useState<string>("");
-  const debouncedPrimaryAreasSearchTerm = useDebounce<string>(
-    primaryAreasSearchTerm || "",
-    500
-  );
-  const debouncedExpertiseAreasSearchTerm = useDebounce<string>(
-    expertiseAreasSearchTerm || "",
-    500
-  )
+  const [
+    primaryInterestsSearchTerm,
+    setPrimaryInterestsSearchTerm,
+    debouncedPrimaryInterestsSearchTerm,
+  ] = useDebouncedSearchTerm();
+
+  const [
+    expertiseAreasSearchTerm,
+    setExpertiseAreasSearchTerm,
+    debouncedExpertiseAreasSearchTerm,
+  ] = useDebouncedSearchTerm();
+
+  const [
+    practiceAreasSearchTerm,
+    setPracticeAreasSearchTerm,
+    debouncedPracticeAreasSearchTerm,
+  ] = useDebouncedSearchTerm();
+
   const { data: primaryInterestData, isPending: isPrimaryInterestDataPending } =
-    usePrimaryInterestSuggestionsQuery(debouncedPrimaryAreasSearchTerm);
-  
-  const { data: expertiseInterestData, isPending: isExpertiseInterestDataPending } =
-    usePrimaryInterestSuggestionsQuery(debouncedExpertiseAreasSearchTerm);
+    usePrimaryInterestSuggestionsQuery(debouncedPrimaryInterestsSearchTerm);
+
+  const { data: expertiseAreasData, isPending: isExpertiseAreasDataPending } =
+    useExpertiseAreaSuggestionsQuery(debouncedExpertiseAreasSearchTerm);
+
+  const { data: practiceAreasData, isPending: isPracticeAreasDataPending } =
+    usePracticeAreaSuggestionsQuery(debouncedPracticeAreasSearchTerm);
+
+  const mutationSubmitForm = useSubmitOnboardingFormMutation();
 
   const form = useForm<TOnboardingForm>({
     resolver: zodResolver(OnboardingFormSchema),
@@ -64,8 +82,14 @@ export default function OnboardingForm() {
   const userOccupation = form.watch("userOccupation");
   const userObjective = form.watch("userObjective");
 
-  function onSubmit(data: TOnboardingForm) {
-    console.log(data); // TODO: implement form submission
+  async function onSubmit(data: TOnboardingForm) {
+    try {
+      await mutationSubmitForm.mutateAsync(data);
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while submitting the form");
+    }
   }
 
   return (
@@ -86,19 +110,16 @@ export default function OnboardingForm() {
           <FormField
             control={form.control}
             name="userOccupation"
-            defaultValue={{
-              label: "",
-              value: "",
-            }}
+            defaultValue=""
             render={({ field: { value, onChange } }) => (
               <FormItem>
                 <FormLabel className="text-md">I am a</FormLabel>
                 <FormControl>
                   <ToggleOptions
                     options={USER_OCCUPATION_OPTIONS}
-                    selectedOptions={[value]}
+                    selectedOptions={[{ label: value, value }]}
                     onChange={(selectedOptions) => {
-                      onChange(selectedOptions[0]);
+                      onChange(selectedOptions[0].value);
                     }}
                   />
                 </FormControl>
@@ -112,19 +133,16 @@ export default function OnboardingForm() {
             <FormField
               control={form.control}
               name="userObjective"
-              defaultValue={{
-                label: "",
-                value: "",
-              }}
+              defaultValue=""
               render={({ field: { value, onChange } }) => (
                 <FormItem>
                   <FormLabel className="text-md">I want to</FormLabel>
                   <FormControl>
                     <ToggleOptions
                       options={USER_OBJECTIVE_OPTIONS}
-                      selectedOptions={[value]}
+                      selectedOptions={[{ label: value, value }]}
                       onChange={(selectedOptions) =>
-                        onChange(selectedOptions[0])
+                        onChange(selectedOptions[0].value)
                       }
                     />
                   </FormControl>
@@ -149,13 +167,13 @@ export default function OnboardingForm() {
                     <FormControl>
                       <SearchAndSelect
                         placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                        value={primaryAreasSearchTerm}
+                        value={primaryInterestsSearchTerm}
                         isLoading={isPrimaryInterestDataPending}
-                        suggestions={primaryInterestData?.docs.map((doc) => doc.title) || []}
-                        onClear={() => setPrimaryAreasSearchTerm("")}
+                        suggestions={primaryInterestData?.suggestions || []}
+                        onClear={() => setPrimaryInterestsSearchTerm("")}
                         selectedSuggestions={value}
                         onSelectedSuggestionsChange={onChange}
-                        onValueChange={setPrimaryAreasSearchTerm}
+                        onValueChange={setPrimaryInterestsSearchTerm}
                         {...props}
                       />
                     </FormControl>
@@ -183,21 +201,21 @@ export default function OnboardingForm() {
                       <FormControl>
                         <SearchAndSelect
                           placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                          value={primaryAreasSearchTerm}
-                          isLoading={isPrimaryInterestDataPending}
-                          suggestions={primaryInterestData?.docs.map((doc) => doc.title) || []}
-                          onClear={() => setPrimaryAreasSearchTerm("")}
+                          value={practiceAreasSearchTerm}
+                          isLoading={isPracticeAreasDataPending}
+                          suggestions={practiceAreasData?.suggestions || []}
+                          onClear={() => setPracticeAreasSearchTerm("")}
                           selectedSuggestions={value}
                           onSelectedSuggestionsChange={onChange}
-                          onValueChange={setPrimaryAreasSearchTerm}
+                          onValueChange={setPracticeAreasSearchTerm}
                           {...props}
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
-              />
-              
+                />
+
                 <FormField
                   control={form.control}
                   name="areasOfExpertise"
@@ -211,8 +229,8 @@ export default function OnboardingForm() {
                         <SearchAndSelect
                           placeholder="eg. Cardiovascular system, pulmonary system, geriatrics, aging"
                           value={expertiseAreasSearchTerm}
-                          isLoading={isExpertiseInterestDataPending}
-                          suggestions={expertiseInterestData?.docs.map((doc) => doc.title) || []}
+                          isLoading={isExpertiseAreasDataPending}
+                          suggestions={expertiseAreasData?.suggestions || []}
                           onClear={() => setExpertiseAreasSearchTerm("")}
                           selectedSuggestions={value}
                           onSelectedSuggestionsChange={onChange}
@@ -228,6 +246,7 @@ export default function OnboardingForm() {
             )}
 
           <Button className="w-full" type="submit">
+            {mutationSubmitForm.isPending && <Loader />}
             Continue
           </Button>
         </form>

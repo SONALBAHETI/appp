@@ -5,8 +5,8 @@ import { UserObjectives, UserOccupations } from "@/constants/onboarding";
  * @param userOccupation - the user's occupation
  * @returns true if the user is a healthcare professional, false otherwise
  */
-export const isHealthcareProfessional = (userOccupation: IToggleOption) => {
-  return userOccupation.value === UserOccupations.HEALTHCARE_PROFESSIONAL;
+export const isHealthcareProfessional = (userOccupation: string) => {
+  return userOccupation === UserOccupations.HEALTHCARE_PROFESSIONAL;
 };
 
 /**
@@ -16,13 +16,13 @@ export const isHealthcareProfessional = (userOccupation: IToggleOption) => {
  * @returns true if the user is looking for a mentor, false otherwise
  */
 export const isLookingForMentor = (
-  userOccupation: IToggleOption,
-  userObjective?: IToggleOption
+  userOccupation: string,
+  userObjective?: string
 ) => {
   return (
-    userOccupation.value === UserOccupations.HEALTHCARE_STUDENT ||
-    (userOccupation.value === UserOccupations.HEALTHCARE_PROFESSIONAL &&
-      userObjective?.value === UserObjectives.FIND_A_MENTOR)
+    userOccupation === UserOccupations.HEALTHCARE_STUDENT ||
+    (userOccupation === UserOccupations.HEALTHCARE_PROFESSIONAL &&
+      userObjective === UserObjectives.FIND_A_MENTOR)
   );
 };
 
@@ -33,11 +33,11 @@ export const isLookingForMentor = (
  * @returns true if the user is looking to mentor others, false otherwise
  */
 export const isLookingToMentorOthers = (
-  userOccupation: IToggleOption,
-  userObjective: IToggleOption
+  userOccupation: string,
+  userObjective: string
 ) => {
   return (
-    userOccupation.value === UserOccupations.HEALTHCARE_PROFESSIONAL &&
-    userObjective.value === UserObjectives.MENTOR_OTHERS
+    userOccupation === UserOccupations.HEALTHCARE_PROFESSIONAL &&
+    userObjective === UserObjectives.MENTOR_OTHERS
   );
 };

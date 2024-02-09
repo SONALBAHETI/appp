@@ -38,7 +38,7 @@ const genders = [
   "Cisgender",
 ];
 
-const pronouns = ["he/him", "she/her", "they/them"];
+const pronouns: string[] = ["he/him", "she/her", "they/them"];
 
 export default function IdentityInfo() {
   const form = useForm<PersonalDetailsValues>({
@@ -46,7 +46,8 @@ export default function IdentityInfo() {
     mode: "onSubmit",
   });
 
-  const [isShareMoreDetailsEnabled, setShareMoreDetailsEnabled] = React.useState<boolean>(false);
+  const [isShareMoreDetailsEnabled, setShareMoreDetailsEnabled] =
+    React.useState<boolean>(false);
 
   const [selectedDate, setSelectedDate] = React.useState<Date>();
 
@@ -171,6 +172,7 @@ export default function IdentityInfo() {
                           <SelectDropdown
                             placeholder="Select an option"
                             options={pronouns}
+                            field={field}
                           ></SelectDropdown>
                         </FormControl>
                         <FormMessage />
@@ -192,6 +194,7 @@ export default function IdentityInfo() {
                           <SelectDropdown
                             placeholder="Select an option"
                             options={genders}
+                            field={field}
                           ></SelectDropdown>
                         </FormControl>
                         <FormMessage />
@@ -345,16 +348,14 @@ export default function IdentityInfo() {
             <div className="pt-4">
               <div className="flex items-center space-x-2">
                 <Switch onCheckedChange={handleClick} />
-                <h6>
-                  Share more details for better matches
-                </h6>
+                <h6>Share more details for better matches</h6>
               </div>
               <p className="text-muted-foreground mt-1">
                 Understanding your background helps us connect you with the
                 right people.
               </p>
             </div>
-            
+
             {/*  Need to make its validation  */}
             <div className="flex space-x-4">
               <div className="flex-grow w-1/3">

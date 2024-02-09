@@ -14,7 +14,7 @@ import StepsContainer, {
 } from "@/components/ui/Steps/StepsContainer";
 
 export default function PersonalDetails() {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState<number>(0);
 
   return (
     <Card className="shadow-md h-full">

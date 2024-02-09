@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+const yearsOfExperience = z.string();
 
 const aresOfExpertise = z.array(z.string()).min(1);
 
@@ -13,8 +14,8 @@ export const expertiseFormSchemaObj = z.object({
     aresOfExpertise: aresOfExpertise,
     commonlyTreatedDiagnoses: targetedDiagnoses,
     areasOfPractice: aresOfPractice,
-    boardSpecialties: boardSpecialties
-
+    boardSpecialties: boardSpecialties,
+    yearsOfExperience : yearsOfExperience
 })
 
 

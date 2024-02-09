@@ -25,7 +25,10 @@ import {
 } from "@/components/ui/form";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
-
+import { AddCertificateDialogBox } from "@/components/ui/DialogePopup/CertificatePopup/AddCertificatePopup";
+import { CertificateFormSchema } from "@/components/ui/DialogePopup/CertificatePopup/validation";
+import { AddDegreeDialogBox } from "@/components/ui/DialogePopup/DegreePopup/AddDegreePopup";
+import { DegreeFormSchema } from "@/components/ui/DialogePopup/DegreePopup/validate";
 export default function Education() {
   const form = useForm<EducationFormSchema>({
     resolver: zodResolver(EducationFormSchemaObj),
@@ -35,11 +38,19 @@ export default function Education() {
   const [primaryAreasSearchTerm, setPrimaryAreasSearchTerm] =
     useState<string>("");
   function handleClick(checked: any) {}
+
+  function handleAddCertificate(certificateData: CertificateFormSchema): void {
+    console.log(certificateData);
+  }
+
+  function handelAddDegree(certificateData: DegreeFormSchema): void {
+    console.log(certificateData);
+  }
+
   return (
     <>
       <div className="py-5 px-6 rounded-xl border">
         <h6 className="p-2 mb-4">Your Education</h6>
-
         <Form {...form}>
           <p className="font-semibold ml-2 mb-1">Add degrees</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
@@ -82,9 +93,10 @@ export default function Education() {
               <CardFooter className="text-sm">Year of Completion</CardFooter>
             </Card>
           </div>
-          <Button className="bg-[#349997] p-1 text-sm text-white mt-3 ml-2 w-1/6">
-            + &nbsp; Add degrees
-          </Button>
+
+          <AddCertificateDialogBox
+            handleAddCertificate={handleAddCertificate}
+          />
 
           <p className="font-semibold ml-2 mb-1 mt-10">Add degrees</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
@@ -115,9 +127,7 @@ export default function Education() {
             </Card>
           </div>
 
-          <Button className="bg-[#349997] p-1 text-sm text-white mt-3 ml-2 w-1/6">
-            + &nbsp; Add certificate
-          </Button>
+          <AddDegreeDialogBox handelAddDegree={handelAddDegree} />
 
           <h6 className="p-2 mt-4">Residency and/or fellowship trained?</h6>
 

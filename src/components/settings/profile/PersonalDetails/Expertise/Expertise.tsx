@@ -14,12 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useExpertiseSuggestionsQuery } from "@/api/expertise";
-
-interface FormState {
-  experience: string;
-  areasOfExpertise: string[];
-  commonlyTreatedDiagnoses: string[];
-}
+import { Card } from "@/components/ui/card";
 
 export default function Expertise() {
   const form = useForm<ExpertiseSchema>({
@@ -27,21 +22,14 @@ export default function Expertise() {
     mode: "onSubmit",
   });
 
-  const [formState, setFormState] = useState<FormState>({
-    experience: "20+",
-    areasOfExpertise: ["Orthopedic", "Administration", "Education", "Research"],
-    commonlyTreatedDiagnoses: [
-      "Orthopedic",
-      "Administration",
-      "Education",
-      "Research",
-    ],
-  });
- //TODO: Create debouncing for all the input fields 
+  //TODO: Create debouncing for all the input fields
   const [primaryExpertise, setPrimaryExpertise] = useState<string>("");
+
   const [diagnosesSearchTerm, setDiagnosesSearchTerm] = useState<string>("");
+
   const [practiceAreasSearchTerm, setPracticeAreasSearchTerm] =
     useState<string>("");
+
   const [boardSpecialtiesSearchTerm, setBoardSpecialtiesSearchTerm] =
     useState<string>("");
 
@@ -49,12 +37,11 @@ export default function Expertise() {
     primaryExpertise || "",
     500
   );
+
   const { data: primaryInterestData, isPending: isPrimaryInterestDataPending } =
     useExpertiseSuggestionsQuery(debouncedExpertiseAreasSearchTerm);
 
-  const handleExperienceChange = (value: string) => {
-    setFormState({ ...formState, experience: value });
-  };
+  const experienceRange: string[] = ["0-1", "2-5", "6-10", "11-19", "20+"];
 
   return (
     <>
@@ -62,28 +49,37 @@ export default function Expertise() {
         <Form {...form}>
           <form action="">
             <div className="flex flex-col space-y-4">
-              <div>
-                <label
-                  htmlFor="experience"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  How many years of clinical experience do you have?
-                </label>
-                <div className="mt-2">
-                  {["0-1", "2-5", "6-10", "11-19", "20+"].map((range) => (
-                    <button
-                      key={range}
-                      className={`mr-2 px-4 py-2 text-sm font-medium rounded-full border-2 ${
-                        formState.experience === range
-                          ? " border-[#349997] bg-[#349997] text-white"
-                          : "border-gray-300"
-                      }`}
-                      onClick={() => handleExperienceChange(range)}
-                    >
-                      {range}
-                    </button>
-                  ))}
-                </div>
+              <div className="mt-2">
+                <FormField
+                  control={form.control}
+                  name="yearsOfExperience"
+                  defaultValue={experienceRange[0]}
+                  render={({ field: { value, onChange, ...props } }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-bold">
+                        How many years of clinical experience do you have?
+                      </FormLabel>
+                      <FormControl>
+                        <div className="w-1/2 flex hover:cursor-pointer">
+                          {experienceRange.map((range) => (
+                            <Card
+                              key={range}
+                              className={`mr-2 px-4 py-2 text-sm  font-medium rounded-full border-2 ${
+                                value === range
+                                  ? "border-[#349997] bg-[#349997] text-white"
+                                  : ""
+                              }`}
+                              onClick={() => onChange(range)}
+                            >
+                              {range}
+                            </Card>
+                          ))}
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
             <div className="mt-5">

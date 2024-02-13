@@ -19,15 +19,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { DegreeSchemaObj, DegreeFormSchema } from "./validate";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectLabel,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-} from "../../select";
 
 type onAddDegree = (data: DegreeFormSchema) => void;
 

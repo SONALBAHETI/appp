@@ -114,6 +114,7 @@ async function refreshTokens(request: NextRequest) {
       body: JSON.stringify({ refreshToken: refreshToken.value }),
     });
     const result: IRefreshTokenResponse = await response.json();
+    console.log(result)
     // check if response is ok
     if (response.ok && result?.tokens) {
       const nxtResponse = NextResponse.next();

@@ -16,7 +16,7 @@ export default function AutoFillPopup() {
   useEffect(() => {
     async function fetchData() {
       try {
-        // readPdf(fileUrl);
+        readPdf(fileUrl);
       } catch (error) {
         console.error("Error reading PDF:", error);
       }

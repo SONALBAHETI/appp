@@ -2,12 +2,12 @@
 // https://stackoverflow.com/a/63486898/7699841
 import * as pdfjs from "pdfjs-dist";
 // @ts-ignore
-// import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
-// pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 
 import type { TextItem as PdfjsTextItem } from "pdfjs-dist/types/src/display/api";
 import type { TextItem, TextItems } from "@/lib/parse-resume-from-pdf/types";
 
+pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 /**
  * Step 1: Read pdf and output textItems by concatenating results from each page.
  *

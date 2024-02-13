@@ -22,6 +22,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
  * }
  */
 export const readPdf = async (fileUrl: string): Promise<TextItems> => {
+  console.log(fileUrl)
   const pdfFile = await pdfjs.getDocument(fileUrl).promise;
   let textItems: TextItems = [];
 

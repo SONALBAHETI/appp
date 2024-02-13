@@ -5,18 +5,13 @@ import {
   type TypedUseSelectorHook,
 } from "react-redux";
 import { store, type RootState, type AppDispatch } from "@/lib/redux/store";
+import { initialResumeState, setResume } from "@/lib/redux/resumeSlice";
 import {
   loadStateFromLocalStorage,
   saveStateToLocalStorage,
 } from "@/lib/redux/local-storage";
-import { initialResumeState, setResume } from "@/lib/redux/resumeSlice";
-import {
-  initialSettings,
-  setSettings,
-  type Settings,
-} from "@/lib/redux/settingsSlice";
 import { deepMerge } from "@/lib/deep-merge";
-import type { Resume } from "@/lib/redux/types";
+import type { Resume } from "@/lib/parse-resume-from-pdf/types";
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -47,13 +42,6 @@ export const useSetInitialStore = () => {
         state.resume
       ) as Resume;
       dispatch(setResume(mergedResumeState));
-    }
-    if (state.settings) {
-      const mergedSettingsState = deepMerge(
-        initialSettings,
-        state.settings
-      ) as Settings;
-      dispatch(setSettings(mergedSettingsState));
     }
   }, []);
 };

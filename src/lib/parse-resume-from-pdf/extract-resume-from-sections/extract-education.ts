@@ -3,7 +3,7 @@ import type {
   FeatureSet,
   ResumeSectionToLines,
 } from "@/lib/parse-resume-from-pdf/types";
-import type { ResumeEducation } from "@/lib/redux/types";
+import type { ResumeEducation } from "@/lib/parse-resume-from-pdf/types"
 import { getSectionLinesByKeywords } from "@/lib/parse-resume-from-pdf/extract-resume-from-sections/lib/get-section-lines";
 import { divideSectionIntoSubsections } from "@/lib/parse-resume-from-pdf/extract-resume-from-sections/lib/subsections";
 import {

@@ -1,4 +1,4 @@
-import type { Resume } from "@/lib/redux/types";
+import type { Resume } from "@/lib/parse-resume-from-pdf/types";
 import type { ResumeSectionToLines } from "@/lib/parse-resume-from-pdf/types";
 import { extractProfile } from "@/lib/parse-resume-from-pdf/extract-resume-from-sections/extract-profile";
 import { extractEducation } from "@/lib/parse-resume-from-pdf/extract-resume-from-sections/extract-education";

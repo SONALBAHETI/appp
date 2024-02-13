@@ -1,12 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import resumeReducer from "@/lib/redux/resumeSlice";
-import settingsReducer from "@/lib/redux/settingsSlice";
 
 export const store = configureStore({
-  reducer: {
-    resume: resumeReducer,
-    settings: settingsReducer,
-  },
+    reducer: {
+        resume: resumeReducer,
+    },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

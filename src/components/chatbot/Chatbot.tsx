@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/card";
 import ChatbotHeader from "./ChatbotHeader";
 import BotMessage from "./BotMessage";
-import UserMessage from "./UserMessage";
 import Space from "@/components/ui/space";
 import ChatbotInput from "./ChatbotInput";
 import { useMessages } from "@/api/chatbot";
 import { useEffect, useRef } from "react";
 import { useChatbotStore } from "@/store/useChatbotStore";
+import Message from "./Message";
 
 export default function Chatbot() {
   const { data, isPending, isError, isSuccess } = useMessages();
@@ -42,13 +42,12 @@ export default function Chatbot() {
             {isError && <div>Something went wrong</div>}
             {!isPending &&
               !isError &&
-              data.messages.map((message) => (
+              data.messages.map((message, index) => (
                 <div className="flex flex-col gap-2" key={message.id}>
-                  {message.role === "assistant" ? (
-                    <BotMessage message={message.content[0].text.value} />
-                  ) : (
-                    <UserMessage message={message.content[0].text.value} />
-                  )}
+                  <Message
+                    message={message}
+                    previousMessage={data.messages[index - 1]}
+                  />
                 </div>
               ))}
             {thinking && <BotMessage message="typing..." />}

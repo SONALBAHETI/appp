@@ -6,6 +6,7 @@ const baseUrls = {
   auth: "/api/v1/auth",
   notifications: "/api/v1/notifications",
   onboarding: "/api/v1/onboarding",
+  userMatch: "/api/v1/usermatch",
 };
 
 const notes = {
@@ -21,6 +22,10 @@ const chatbot = {
   retrieveRunStatus: (runId: string) =>
     `${baseUrls.chatbot}/runstatus/${runId}`,
 };
+
+const userMatch = {
+  getUserMatch: (id: string) => `${baseUrls.userMatch}/${id}`,
+}
 
 const notifications = {
   base: `${baseUrls.notifications}`,
@@ -47,6 +52,7 @@ export const apiRoutes = {
   rejectChatRequest: `${baseUrls.chatRequests}/reject`,
   notes,
   chatbot,
+  userMatch,
   auth,
   notifications,
   onboarding,

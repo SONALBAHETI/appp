@@ -25,6 +25,7 @@ export interface IChatbotMessage {
     type: string;
   }[];
   role: "assistant" | "user";
+  metadata?: any;
 }
 
 export interface IGetMessagesResponse {

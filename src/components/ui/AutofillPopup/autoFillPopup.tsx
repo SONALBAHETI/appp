@@ -14,6 +14,7 @@ export default function AutoFillPopup() {
   const sections = groupLinesIntoSections(lines);
   const resume = extractResumeFromSections(sections);
 
+  console.log(resume)
   const handleClose = () => {
     setIsOpen(false);
   };

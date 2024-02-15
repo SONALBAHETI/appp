@@ -22,17 +22,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { AddCertificateDialogBox } from "@/components/ui/DialogePopup/CertificatePopup/AddCertificatePopup";
 import { CertificateFormSchema } from "@/components/ui/DialogePopup/CertificatePopup/validation";
 import { AddDegreeDialogBox } from "@/components/ui/DialogePopup/DegreePopup/AddDegreePopup";
 import { DegreeFormSchema } from "@/components/ui/DialogePopup/DegreePopup/validate";
+import { ResumeContext } from "@/context/ResumeContext";
 export default function Education() {
+
+  
   const form = useForm<EducationFormSchema>({
     resolver: zodResolver(EducationFormSchemaObj),
     mode: "onSubmit",
   });
+
 
   const [primaryAreasSearchTerm, setPrimaryAreasSearchTerm] =
     useState<string>("");

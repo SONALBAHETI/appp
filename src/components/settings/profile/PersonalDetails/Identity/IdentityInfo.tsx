@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
+import { ResumeContext } from "@/context/ResumeContext";
 
 const genders = [
   "Male",
@@ -48,12 +49,6 @@ export default function IdentityInfo() {
 
   const [isShareMoreDetailsEnabled, setShareMoreDetailsEnabled] =
     React.useState<boolean>(false);
-
-  const [selectedDate, setSelectedDate] = React.useState<Date>();
-
-  const handleDateChange = (date: Date) => {
-    setSelectedDate(date);
-  };
 
   async function onSubmit(data: PersonalDetailsValues) {
     console.log(data);

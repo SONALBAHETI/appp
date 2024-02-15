@@ -8,6 +8,7 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { cn } from "@/lib/utils";
+import { ResumeProvider } from "@/context/ResumeContext";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -27,7 +28,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(dmSans.className, "bg-secondary")}>
         <ReactQueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <ResumeProvider>{children}</ResumeProvider>
+          </AuthProvider>
         </ReactQueryProvider>
         {/* This is a global container for toast, which is used in all pages */}
         <ToastContainer progressStyle={{ top: 0, bottom: "unset" }} />

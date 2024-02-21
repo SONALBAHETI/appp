@@ -6,6 +6,8 @@ const baseUrls = {
   auth: "/api/v1/auth",
   notifications: "/api/v1/notifications",
   onboarding: "/api/v1/onboarding",
+  userMatch: "/api/v1/usermatch",
+  mentorVerification: "/api/v1/verification/mentor",
 };
 
 const notes = {
@@ -20,6 +22,21 @@ const chatbot = {
   messages: `${baseUrls.chatbot}/messages`,
   retrieveRunStatus: (runId: string) =>
     `${baseUrls.chatbot}/runstatus/${runId}`,
+};
+
+const userMatch = {
+  getUserMatch: (id: string) => `${baseUrls.userMatch}/${id}`,
+};
+
+const mentorVerification = {
+  getCurrentStep: `${baseUrls.mentorVerification}/current-step`,
+  submitVerificationData: `${baseUrls.mentorVerification}/submit-data`,
+  getOrgSearchUrl: `${baseUrls.mentorVerification}/organizations/search-url`,
+  getOrganizations: (orgSearchUrl?: string, searchTerm?: string) =>
+    `${baseUrls.mentorVerification}/organizations/search?orgSearchUrl=${
+      orgSearchUrl && encodeURIComponent(orgSearchUrl)
+    }&searchTerm=${searchTerm}`,
+  submitData: `${baseUrls.mentorVerification}/submit-data`,
 };
 
 const notifications = {
@@ -47,6 +64,8 @@ export const apiRoutes = {
   rejectChatRequest: `${baseUrls.chatRequests}/reject`,
   notes,
   chatbot,
+  userMatch,
+  mentorVerification,
   auth,
   notifications,
   onboarding,

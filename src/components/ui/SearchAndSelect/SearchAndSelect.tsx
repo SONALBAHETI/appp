@@ -32,6 +32,7 @@ export interface ISearchAndSelectProps
   extends React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> {
   isLoading?: boolean;
   suggestions?: string[];
+  multiple?: boolean;
   selectedSuggestions?: string[];
   onClear?: () => void;
   onSelectedSuggestionsChange?: (selectedSuggestions: string[]) => void;
@@ -46,10 +47,12 @@ const SearchAndSelect = React.forwardRef<
       className,
       isLoading = false,
       suggestions = [],
+      multiple = true,
       selectedSuggestions = [],
       onSelectedSuggestionsChange,
       onClear,
       value,
+      onValueChange,
       ...props
     },
     ref
@@ -71,6 +74,7 @@ const SearchAndSelect = React.forwardRef<
             ref={ref}
             onClick={() => setOpen(true)}
             onClear={onClear}
+            onValueChange={onValueChange}
             {...props}
           />
           {open && value && (
@@ -102,6 +106,10 @@ const SearchAndSelect = React.forwardRef<
                           ...selectedSuggestions,
                           suggestion,
                         ]);
+                        if (!multiple) {
+                          onValueChange?.(suggestion);
+                          setOpen(false);
+                        }
                       }
                     }}
                   >
@@ -112,23 +120,27 @@ const SearchAndSelect = React.forwardRef<
             </CommandList>
           )}
         </Command>
-        <div className="mt-1 flex gap-1 flex-wrap">
-          {selectedSuggestions.map((selectedSuggestion) => (
-            <Badge key={selectedSuggestion} variant="outline">
-              {selectedSuggestion}{" "}
-              <Icon
-                type={IconType.X}
-                size={14}
-                className="ml-1 cursor-pointer"
-                onClick={() =>
-                  onSelectedSuggestionsChange?.(
-                    selectedSuggestions.filter((s) => s !== selectedSuggestion)
-                  )
-                }
-              />
-            </Badge>
-          ))}
-        </div>
+        {multiple && (
+          <div className="mt-1 flex gap-1 flex-wrap">
+            {selectedSuggestions.map((selectedSuggestion) => (
+              <Badge key={selectedSuggestion} variant="outline">
+                {selectedSuggestion}{" "}
+                <Icon
+                  type={IconType.X}
+                  size={14}
+                  className="ml-1 cursor-pointer"
+                  onClick={() =>
+                    onSelectedSuggestionsChange?.(
+                      selectedSuggestions.filter(
+                        (s) => s !== selectedSuggestion
+                      )
+                    )
+                  }
+                />
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
     );
   }

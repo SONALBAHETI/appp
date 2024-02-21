@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { ExpertiseSchema, expertiseFormSchemaObj } from "./validation";
+import {
+  ExpertiseSchema,
+  expertiseFormSchemaObj,
+} from "@/validation/settingsValidations/expertise.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
 import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
@@ -20,7 +23,7 @@ import {
 import {
   useBoardSpecialtiesQuery,
   useCommonlyTreatedQuery,
-} from "@/api/expertise";
+} from "@/api/profileSettings";
 
 export default function Expertise() {
   const form = useForm<ExpertiseSchema>({
@@ -70,9 +73,7 @@ export default function Expertise() {
 
   const experienceRange: string[] = ["0-1", "2-5", "6-10", "11-19", "20+"];
 
-  async function onExpertiseFormSubmit(data: ExpertiseSchema):Promise<void>{
-    
-  }
+  async function onExpertiseFormSubmit(data: ExpertiseSchema): Promise<void> {}
 
   return (
     <>

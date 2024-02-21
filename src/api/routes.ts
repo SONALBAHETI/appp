@@ -34,8 +34,7 @@ const mentorVerification = {
   submitVerificationData: `${baseUrls.mentorVerification}/submit-data`,
   getOrgSearchUrl: `${baseUrls.mentorVerification}/organizations/search-url`,
   getOrganizations: (orgSearchUrl?: string, searchTerm?: string) =>
-    `${baseUrls.mentorVerification}/organizations/search?orgSearchUrl=${
-      orgSearchUrl && encodeURIComponent(orgSearchUrl)
+    `${baseUrls.mentorVerification}/organizations/search?orgSearchUrl=${orgSearchUrl && encodeURIComponent(orgSearchUrl)
     }&searchTerm=${searchTerm}`,
   submitData: `${baseUrls.mentorVerification}/submit-data`,
 };
@@ -57,7 +56,9 @@ const onboarding = {
 const profile = {
   getCommonlyDiagnoses: (searchTerm: string) => `${baseUrls.profileSetting}/suggestions/commonlydiagnoses?q=${searchTerm}`,
 
-  getBoardSpecialties: (searchTerm: string) => `${baseUrls.profileSetting}/suggestions/boardSpecialties?q=${searchTerm}`
+  getBoardSpecialties: (searchTerm: string) => `${baseUrls.profileSetting}/suggestions/boardSpecialties?q=${searchTerm}`,
+
+  submitProfileSettingForm: `${baseUrls.profileSetting}/form/submit`,
 
 }
 

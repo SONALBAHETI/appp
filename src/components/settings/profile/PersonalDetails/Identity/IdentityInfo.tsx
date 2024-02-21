@@ -3,7 +3,10 @@ import SearchAndSelect from "@/components/ui/SearchAndSelect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { PersonalDetailsFormSchema, PersonalDetailsValues } from "./validation";
+import {
+  PersonalDetailsFormSchema,
+  PersonalDetailsValues,
+} from "@/validation/settingsValidations/IdentityInfo.validation";
 import {
   Input,
   SelectDropdown,

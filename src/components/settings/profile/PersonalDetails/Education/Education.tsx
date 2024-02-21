@@ -1,10 +1,11 @@
 //TODO: Need to create validation for fields
-//TODO: Need to make popup box to add value in field
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EducationFormSchema, EducationFormSchemaObj } from "./validation";
-
+import {
+  EducationFormSchemaObj,
+  EducationFormSchema,
+} from "@/validation/settingsValidations/education.validation";
 import {
   Card,
   CardHeader,
@@ -22,7 +23,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { AddCertificateDialogBox } from "@/components/ui/DialogPopup/CertificatePopup/AddCertificatePopup";
 import { CertificateFormSchema } from "@/components/ui/DialogPopup/CertificatePopup/validation";

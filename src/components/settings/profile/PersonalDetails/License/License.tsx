@@ -2,7 +2,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LicenseSchema, licenseSchemaObj } from "./validation";
+import {
+  LicenseSchema,
+  licenseSchemaObj,
+} from "@/validation/settingsValidations/license.validation";
 import { Input, NumberInput, DatePicker } from "@/components/ui/FormFields";
 import {
   Form,

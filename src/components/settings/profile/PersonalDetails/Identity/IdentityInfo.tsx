@@ -3,10 +3,7 @@ import SearchAndSelect from "@/components/ui/SearchAndSelect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import {
-  PersonalDetailsFormSchema,
-  PersonalDetailsValues,
-} from "../validation";
+import { PersonalDetailsFormSchema, PersonalDetailsValues } from "./validation";
 import {
   Input,
   SelectDropdown,
@@ -42,17 +39,20 @@ const genders = [
 const pronouns: string[] = ["he/him", "she/her", "they/them"];
 
 export default function IdentityInfo() {
+  const { resume } = useContext(ResumeContext);
+
   const form = useForm<PersonalDetailsValues>({
     resolver: zodResolver(PersonalDetailsFormSchema),
     mode: "onSubmit",
+    defaultValues: {
+      email: resume?.profile?.email || "",
+    },
   });
 
   const [isShareMoreDetailsEnabled, setShareMoreDetailsEnabled] =
     React.useState<boolean>(false);
 
-  async function onSubmit(data: PersonalDetailsValues) {
-    console.log(data);
-  }
+  async function onIdentityInfoFormSubmit(data: PersonalDetailsValues) {}
   function handleClick(checked: boolean) {
     setShareMoreDetailsEnabled(checked);
   }
@@ -63,7 +63,7 @@ export default function IdentityInfo() {
         <h6 className="p-2 mb-4">Personal Details</h6>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onIdentityInfoFormSubmit)}
             className="flex flex-col space-y-4"
           >
             <div className="flex">
@@ -90,7 +90,6 @@ export default function IdentityInfo() {
                 <FormField
                   control={form.control}
                   name="firstName"
-                  defaultValue=""
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>First Name</FormLabel>
@@ -152,7 +151,7 @@ export default function IdentityInfo() {
               </div>
             </div>
 
-            {/* Degree, College/University, and Year of Completion input */}
+            {/* Pronouns, Gender Date */}
             <div className="flex space-x-4">
               <div className="flex-grow w-1/3">
                 <div className="relative">
@@ -221,7 +220,7 @@ export default function IdentityInfo() {
               </div>
             </div>
 
-            {/* First Name and Pronouns input */}
+            {/* state and postal code  */}
             <h6 className="pt-4">Location</h6>
             <div className="flex space-x-4">
               <div className="flex-grow w-1/2">
@@ -296,7 +295,7 @@ export default function IdentityInfo() {
               <div className="flex-grow">
                 <FormField
                   control={form.control}
-                  name="about"
+                  name="funFact"
                   defaultValue=""
                   render={({ field }) => (
                     <FormItem className="flex-1">
@@ -340,6 +339,7 @@ export default function IdentityInfo() {
               )}
             />
 
+            {/*Identity , Ethnicity  , ReligiousAffiliation*/}
             <div className="pt-4">
               <div className="flex items-center space-x-2">
                 <Switch onCheckedChange={handleClick} />
@@ -350,24 +350,22 @@ export default function IdentityInfo() {
                 right people.
               </p>
             </div>
-
-            {/*  Need to make its validation  */}
             <div className="flex space-x-4">
               <div className="flex-grow w-1/3">
                 <div className="relative">
                   <FormField
                     control={form.control}
-                    name="firstName"
+                    name="Identity"
                     disabled={!isShareMoreDetailsEnabled}
-                    defaultValue=""
+                    defaultValue="v"
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Identity</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="First Name"
+                            placeholder="Identity"
                             autoCapitalize="words"
-                            autoComplete="given-name"
+                            autoComplete="given-Identity"
                             {...field}
                           />
                         </FormControl>
@@ -382,12 +380,12 @@ export default function IdentityInfo() {
                 <div className="relative">
                   <FormField
                     control={form.control}
-                    name="firstName"
+                    name="Ethnicity"
                     defaultValue=""
                     disabled={!isShareMoreDetailsEnabled}
                     render={({ field }) => (
                       <FormItem className="flex-1">
-                        <FormLabel>Etnicity</FormLabel>
+                        <FormLabel>Ethnicity</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="First Name"

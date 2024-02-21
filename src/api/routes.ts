@@ -8,6 +8,7 @@ const baseUrls = {
   onboarding: "/api/v1/onboarding",
   userMatch: "/api/v1/usermatch",
   mentorVerification: "/api/v1/verification/mentor",
+  profileSetting: "/api/v1/settings/profile"
 };
 
 const notes = {
@@ -53,6 +54,13 @@ const onboarding = {
   submitOnboardingForm: `${baseUrls.onboarding}/form/submit`,
 };
 
+const profile = {
+  getCommonlyDiagnoses: (searchTerm: string) => `${baseUrls.profileSetting}/suggestions/commonlydiagnoses?q=${searchTerm}`,
+
+  getBoardSpecialties: (searchTerm: string) => `${baseUrls.profileSetting}/suggestions/boardSpecialties?q=${searchTerm}`
+
+}
+
 const auth = {
   loginWithGoogle: `${baseUrls.auth}/login/google`,
 };
@@ -69,6 +77,7 @@ export const apiRoutes = {
   auth,
   notifications,
   onboarding,
+  profile,
   logout: `${baseUrls.api}/auth/logout`,
   signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
 };

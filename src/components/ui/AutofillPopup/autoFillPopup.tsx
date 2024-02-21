@@ -11,10 +11,6 @@ export default function AutoFillPopup() {
   const { setResume } = useContext(ResumeContext);
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [fileUrl, setFileUrl] = useState<string>("");
-  const [textItems, setTextItems] = useState<TextItems>([]);
-  const lines = groupTextItemsIntoLines(textItems || []);
-  const sections = groupLinesIntoSections(lines);
-  const resumeData = extractResumeFromSections(sections);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -24,7 +20,9 @@ export default function AutoFillPopup() {
     async function fetchData() {
       try {
         const textItems = await readPdf(fileUrl);
-        setTextItems(textItems);
+        const lines = groupTextItemsIntoLines(textItems || []);
+        const sections = groupLinesIntoSections(lines);
+        const resumeData = extractResumeFromSections(sections);
         setResume(resumeData);
       } catch (error) {
         console.error("Error reading PDF:", error);

@@ -3,8 +3,7 @@ import { useForm } from "react-hook-form";
 import { ExpertiseSchema, expertiseFormSchemaObj } from "./validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
-import { useDebounce } from "usehooks-ts";
-
+import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
 import {
   Form,
   FormControl,
@@ -13,8 +12,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useExpertiseSuggestionsQuery } from "@/api/expertise";
 import { Card } from "@/components/ui/card";
+import {
+  useExpertiseAreaSuggestionsQuery,
+  usePracticeAreaSuggestionsQuery,
+} from "@/api/onboarding";
+import {
+  useBoardSpecialtiesQuery,
+  useCommonlyTreatedQuery,
+} from "@/api/expertise";
 
 export default function Expertise() {
   const form = useForm<ExpertiseSchema>({
@@ -22,32 +28,57 @@ export default function Expertise() {
     mode: "onSubmit",
   });
 
-  //TODO: Create debouncing for all the input fields
-  const [primaryExpertise, setPrimaryExpertise] = useState<string>("");
+  const [
+    practiceAreasSearchTerm,
+    setPracticeAreasSearchTerm,
+    debouncedPracticeAreasSearchTerm,
+  ] = useDebouncedSearchTerm();
 
-  const [diagnosesSearchTerm, setDiagnosesSearchTerm] = useState<string>("");
+  const [
+    boardSpecialtiesTerm,
+    setBoardSpecialtiesTerm,
+    debouncedBoardSpecialtiesTerm,
+  ] = useDebouncedSearchTerm();
 
-  const [practiceAreasSearchTerm, setPracticeAreasSearchTerm] =
-    useState<string>("");
+  const [
+    expertiseAreasSearchTerm,
+    setExpertiseAreasSearchTerm,
+    debouncedExpertiseAreasSearchTerm,
+  ] = useDebouncedSearchTerm();
 
-  const [boardSpecialtiesSearchTerm, setBoardSpecialtiesSearchTerm] =
-    useState<string>("");
+  const [
+    commonlyTreatedDiagnosesSearchTerm,
+    setCommonlyTreatedDiagnosesSearchTerm,
+    debouncedCommonlyTreatedDiagnosesSearchTerm,
+  ] = useDebouncedSearchTerm();
 
-  const debouncedExpertiseAreasSearchTerm = useDebounce<string>(
-    primaryExpertise || "",
-    500
-  );
+  const { data: expertiseAreasData, isPending: isExpertiseAreasDataPending } =
+    useExpertiseAreaSuggestionsQuery(debouncedExpertiseAreasSearchTerm);
 
-  const { data: primaryInterestData, isPending: isPrimaryInterestDataPending } =
-    useExpertiseSuggestionsQuery(debouncedExpertiseAreasSearchTerm);
+  const { data: practiceAreasData, isPending: isPracticeAreasDataPending } =
+    usePracticeAreaSuggestionsQuery(debouncedPracticeAreasSearchTerm);
+
+  const {
+    data: boardSpecialtiesData,
+    isPending: isBoardSpecialtiesDatPending,
+  } = useBoardSpecialtiesQuery(debouncedBoardSpecialtiesTerm);
+
+  const {
+    data: commonlyTreatedDiagnosesData,
+    isPending: isCommonlyTreatedDiagnosesData,
+  } = useCommonlyTreatedQuery(debouncedBoardSpecialtiesTerm);
 
   const experienceRange: string[] = ["0-1", "2-5", "6-10", "11-19", "20+"];
+
+  async function onExpertiseFormSubmit(data: ExpertiseSchema):Promise<void>{
+    
+  }
 
   return (
     <>
       <div className="py-5 px-6 rounded-xl border">
         <Form {...form}>
-          <form action="">
+          <form onSubmit={form.handleSubmit(onExpertiseFormSubmit)}>
             <div className="flex flex-col space-y-4">
               <div className="mt-2">
                 <FormField
@@ -94,17 +125,14 @@ export default function Expertise() {
                     </FormLabel>
                     <FormControl>
                       <SearchAndSelect
-                        placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                        value={primaryExpertise}
-                        isLoading={isPrimaryInterestDataPending}
-                        suggestions={
-                          primaryInterestData?.docs.map((doc) => doc.title) ||
-                          []
-                        }
-                        onClear={() => setPrimaryExpertise("")}
+                        placeholder="eg. Cardiovascular system, pulmonary system, geriatrics, aging"
+                        value={expertiseAreasSearchTerm}
+                        isLoading={isExpertiseAreasDataPending}
+                        suggestions={expertiseAreasData?.suggestions || []}
+                        onClear={() => setExpertiseAreasSearchTerm("")}
                         selectedSuggestions={value}
                         onSelectedSuggestionsChange={onChange}
-                        onValueChange={setPrimaryExpertise}
+                        onValueChange={setExpertiseAreasSearchTerm}
                         {...props}
                       />
                     </FormControl>
@@ -126,11 +154,17 @@ export default function Expertise() {
                     <FormControl>
                       <SearchAndSelect
                         placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                        value={diagnosesSearchTerm}
-                        onClear={() => setDiagnosesSearchTerm("")}
+                        value={commonlyTreatedDiagnosesSearchTerm}
+                        isLoading={isCommonlyTreatedDiagnosesData}
+                        suggestions={
+                          commonlyTreatedDiagnosesData?.suggestions || []
+                        }
+                        onClear={() =>
+                          setCommonlyTreatedDiagnosesSearchTerm("")
+                        }
                         selectedSuggestions={value}
                         onSelectedSuggestionsChange={onChange}
-                        onValueChange={setDiagnosesSearchTerm}
+                        onValueChange={setCommonlyTreatedDiagnosesSearchTerm}
                         {...props}
                       />
                     </FormControl>
@@ -153,6 +187,8 @@ export default function Expertise() {
                       <SearchAndSelect
                         placeholder="eg. Physical Therapy, Education, Administration, Researcher"
                         value={practiceAreasSearchTerm}
+                        isLoading={isPracticeAreasDataPending}
+                        suggestions={practiceAreasData?.suggestions || []}
                         onClear={() => setPracticeAreasSearchTerm("")}
                         selectedSuggestions={value}
                         onSelectedSuggestionsChange={onChange}
@@ -178,11 +214,13 @@ export default function Expertise() {
                     <FormControl>
                       <SearchAndSelect
                         placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                        value={boardSpecialtiesSearchTerm}
-                        onClear={() => setBoardSpecialtiesSearchTerm("")}
+                        value={boardSpecialtiesTerm}
+                        isLoading={isBoardSpecialtiesDatPending}
+                        suggestions={boardSpecialtiesData?.suggestions || []}
+                        onClear={() => setBoardSpecialtiesTerm("")}
                         selectedSuggestions={value}
                         onSelectedSuggestionsChange={onChange}
-                        onValueChange={setBoardSpecialtiesSearchTerm}
+                        onValueChange={setBoardSpecialtiesTerm}
                         {...props}
                       />
                     </FormControl>

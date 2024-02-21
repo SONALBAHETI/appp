@@ -33,7 +33,7 @@ export function AddCertificateDialogBox({
     mode: "onSubmit",
   });
 
-  async function onSubmit(data: CertificateFormSchema) {
+  async function onCertificateFormSubmit(data: CertificateFormSchema) {
     console.log(data);
     handleAddCertificate(data);
   }
@@ -54,7 +54,7 @@ export function AddCertificateDialogBox({
         </DialogHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onCertificateFormSubmit)}
             className="flex flex-col space-y-4"
           >
             <div className="grid gap-4 py-4">

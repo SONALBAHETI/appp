@@ -25,11 +25,13 @@ export default function License() {
     setSelectedDate(date);
   };
 
+  async function onLicenseInfoSubmit(data: LicenseSchema): Promise<void> {}
+
   return (
     <div className="py-5 px-6 rounded-xl border">
       <h3 className="mb-7 mt-3">License Details</h3>
       <Form {...form}>
-        <form>
+        <form onSubmit={form.handleSubmit(onLicenseInfoSubmit)}>
           <div className="flex space-x-4 mb-6">
             <div className="flex-grow w-1/2">
               <FormField

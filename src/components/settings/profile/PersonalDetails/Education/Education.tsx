@@ -24,19 +24,16 @@ import {
 } from "@/components/ui/form";
 import { useContext, useState } from "react";
 import { Switch } from "@/components/ui/switch";
-import { AddCertificateDialogBox } from "@/components/ui/DialogePopup/CertificatePopup/AddCertificatePopup";
-import { CertificateFormSchema } from "@/components/ui/DialogePopup/CertificatePopup/validation";
-import { AddDegreeDialogBox } from "@/components/ui/DialogePopup/DegreePopup/AddDegreePopup";
-import { DegreeFormSchema } from "@/components/ui/DialogePopup/DegreePopup/validate";
+import { AddCertificateDialogBox } from "@/components/ui/DialogPopup/CertificatePopup/AddCertificatePopup";
+import { CertificateFormSchema } from "@/components/ui/DialogPopup/CertificatePopup/validation";
+import { AddDegreeDialogBox } from "@/components/ui/DialogPopup/DegreePopup/AddDegreePopup";
+import { DegreeFormSchema } from "@/components/ui/DialogPopup/DegreePopup/validate";
 import { ResumeContext } from "@/context/ResumeContext";
 export default function Education() {
-
-  
   const form = useForm<EducationFormSchema>({
     resolver: zodResolver(EducationFormSchemaObj),
     mode: "onSubmit",
   });
-
 
   const [primaryAreasSearchTerm, setPrimaryAreasSearchTerm] =
     useState<string>("");
@@ -50,11 +47,16 @@ export default function Education() {
     console.log(certificateData);
   }
 
+  async function onEducationFormSubmit(
+    data: EducationFormSchema
+  ): Promise<void> {}
+
   return (
     <>
       <div className="py-5 px-6 rounded-xl border">
         <h6 className="p-2 mb-4">Your Education</h6>
         <Form {...form}>
+          <form onSubmit={form.handleSubmit(onEducationFormSubmit)}></form>
           <p className="font-semibold ml-2 mb-1">Add degrees</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
             <Card className="bg-[#F8F8F8] w-44">

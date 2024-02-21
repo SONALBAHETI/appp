@@ -1,5 +1,6 @@
 import Icon, { IconType } from "@/components/ui/Icon";
 import NavLink from "@/components/ui/NavLink/NavLink";
+import { ResumeProvider } from "@/context/ResumeContext";
 import BaseTemplate from "@/templates/BaseTemplate";
 import Link from "next/link";
 
@@ -53,7 +54,9 @@ export default function SettingsLayout({
           </NavLink>
         ))}
       </div>
-      <div className="mt-4">{children}</div>
+      <div className="mt-4">
+        <ResumeProvider>{children}</ResumeProvider>
+      </div>
     </BaseTemplate>
   );
 }

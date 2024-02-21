@@ -22,7 +22,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className
           )}
           ref={ref}
+          // defaultValue={props.defaultValue}
           {...props}
+          placeholder={props.placeholder}
         />
         {type === "password" ? (
           showPassword ? ( // Render the eye icon based on the "showPassword" state

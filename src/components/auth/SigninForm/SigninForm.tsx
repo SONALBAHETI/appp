@@ -43,6 +43,7 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
   });
 
   async function onSubmit(data: TSignInForm) {
+    console.log(data)
     try {
       const response = await mutationSignInWithEmailPassword.mutateAsync(data) as ISignInWithEmailPasswordResponse;
       saveAuth({

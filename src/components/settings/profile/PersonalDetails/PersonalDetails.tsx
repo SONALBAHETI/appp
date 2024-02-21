@@ -1,10 +1,8 @@
 import Link from "next/link";
 import React, { useState } from "react";
-import { Button } from "../../../ui/button";
 import IdentityInfo from "./Identity/IdentityInfo";
 import Education from "./Education/Education";
 import License from "./License/License";
-import AutoFillPopup from "../../../ui/AutofillPopup/autoFillPopup";
 import Expertise from "./Expertise/Expertise";
 import { Card, CardContent } from "@/components/ui/card";
 import StepsContainer, {
@@ -12,8 +10,12 @@ import StepsContainer, {
   StepContent,
   StepsList,
 } from "@/components/ui/Steps/StepsContainer";
+import AutoFillPopup from "@/components/ui/AutofillPopup/autoFillPopup";
+import { Button } from "@/components/ui/button";
 
 export default function PersonalDetails() {
+  const saveAndNext = async (data: any): Promise<void> => {};
+
   const [activeStep, setActiveStep] = useState<number>(0);
 
   return (
@@ -39,7 +41,9 @@ export default function PersonalDetails() {
                 >
                   View Profile
                 </Link>
-                <Button type="submit">Save Changes</Button>
+                <Button type="submit" onClick={saveAndNext}>
+                  Save Changes
+                </Button>
               </div>
             </StepsList>
 

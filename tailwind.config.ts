@@ -11,17 +11,18 @@ module.exports = {
       },
     },
     screens: {
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px',
-      '3xl': '1920px',
-      '4xl': '2560px',
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+      "3xl": "1920px",
+      "4xl": "2560px",
     },
     extend: {
       colors: {
         border: "hsl(var(--border))",
+        "file-border": "hsl(var(--file-border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -50,6 +51,10 @@ module.exports = {
         },
         "accent-2": {
           DEFAULT: "hsl(var(--accent-2))",
+          foreground: "hsl(var(--accent-2-foreground))",
+        },
+        "accent-2-lite": {
+          DEFAULT: "hsl(var(--accent-2-light))",
           foreground: "hsl(var(--accent-2-foreground))",
         },
         popover: {

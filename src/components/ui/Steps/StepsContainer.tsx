@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../tabs";
 import * as React from "react";
 
 export const Step = React.forwardRef<

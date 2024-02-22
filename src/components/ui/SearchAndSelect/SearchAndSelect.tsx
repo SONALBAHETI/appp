@@ -73,7 +73,10 @@ const SearchAndSelect = React.forwardRef<
             value={value}
             ref={ref}
             onClick={() => setOpen(true)}
-            onClear={onClear}
+            onClear={() => {
+              onValueChange?.("");
+              onClear?.();
+            }}
             onValueChange={onValueChange}
             {...props}
           />

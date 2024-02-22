@@ -4,7 +4,7 @@ import type { GroupChannel } from "@sendbird/chat/groupChannel";
 import { ChatRequestList } from "../ChatRequests";
 import ChannelListUI from "../ChannelList/ChannelListUI";
 
-import Tabs from "@/components/ui/Tabs";
+import Tabs from "./Tabs";
 import { Input } from "@/components/ui/input";
 
 import { TAB } from "../tab";

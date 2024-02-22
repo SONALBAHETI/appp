@@ -22,7 +22,7 @@ import {
 } from "@/api/onboarding";
 import {
   useBoardSpecialtiesQuery,
-  useCommonlyTreatedQuery,
+  useCommonlyTreatedDiagnosesQuery,
 } from "@/api/profileSettings";
 
 export default function Expertise() {
@@ -69,7 +69,7 @@ export default function Expertise() {
   const {
     data: commonlyTreatedDiagnosesData,
     isPending: isCommonlyTreatedDiagnosesData,
-  } = useCommonlyTreatedQuery(debouncedBoardSpecialtiesTerm);
+  } = useCommonlyTreatedDiagnosesQuery(debouncedBoardSpecialtiesTerm);
 
   const experienceRange: string[] = ["0-1", "2-5", "6-10", "11-19", "20+"];
 
@@ -130,7 +130,6 @@ export default function Expertise() {
                         value={expertiseAreasSearchTerm}
                         isLoading={isExpertiseAreasDataPending}
                         suggestions={expertiseAreasData?.suggestions || []}
-                        onClear={() => setExpertiseAreasSearchTerm("")}
                         selectedSuggestions={value}
                         onSelectedSuggestionsChange={onChange}
                         onValueChange={setExpertiseAreasSearchTerm}
@@ -160,9 +159,6 @@ export default function Expertise() {
                         suggestions={
                           commonlyTreatedDiagnosesData?.suggestions || []
                         }
-                        onClear={() =>
-                          setCommonlyTreatedDiagnosesSearchTerm("")
-                        }
                         selectedSuggestions={value}
                         onSelectedSuggestionsChange={onChange}
                         onValueChange={setCommonlyTreatedDiagnosesSearchTerm}
@@ -190,7 +186,6 @@ export default function Expertise() {
                         value={practiceAreasSearchTerm}
                         isLoading={isPracticeAreasDataPending}
                         suggestions={practiceAreasData?.suggestions || []}
-                        onClear={() => setPracticeAreasSearchTerm("")}
                         selectedSuggestions={value}
                         onSelectedSuggestionsChange={onChange}
                         onValueChange={setPracticeAreasSearchTerm}
@@ -218,7 +213,6 @@ export default function Expertise() {
                         value={boardSpecialtiesTerm}
                         isLoading={isBoardSpecialtiesDatPending}
                         suggestions={boardSpecialtiesData?.suggestions || []}
-                        onClear={() => setBoardSpecialtiesTerm("")}
                         selectedSuggestions={value}
                         onSelectedSuggestionsChange={onChange}
                         onValueChange={setBoardSpecialtiesTerm}

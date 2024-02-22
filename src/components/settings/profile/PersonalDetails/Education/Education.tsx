@@ -2,10 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  EducationFormSchemaObj,
-  EducationFormSchema,
-} from "@/validation/settingsValidations/education.validation";
+import { EducationFormSchema } from "@/validation/settingsValidations/education.validation";
 import {
   Card,
   CardHeader,
@@ -32,7 +29,7 @@ import { DegreeFormSchema } from "@/components/ui/DialogPopup/DegreePopup/valida
 import { ResumeContext } from "@/context/ResumeContext";
 export default function Education() {
   const form = useForm<EducationFormSchema>({
-    resolver: zodResolver(EducationFormSchemaObj),
+    resolver: zodResolver(EducationFormSchema),
     mode: "onSubmit",
   });
 
@@ -157,7 +154,6 @@ export default function Education() {
                     value={primaryAreasSearchTerm}
                     // isLoading={isPrimaryInterestDataPending}
                     // suggestions={primaryInterestData?.docs.map((doc) => doc.title) || []}
-                    onClear={() => setPrimaryAreasSearchTerm("")}
                     selectedSuggestions={value}
                     onSelectedSuggestionsChange={onChange}
                     onValueChange={setPrimaryAreasSearchTerm}

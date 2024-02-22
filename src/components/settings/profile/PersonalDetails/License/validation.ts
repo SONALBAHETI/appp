@@ -1,3 +1,4 @@
+import { PostalCodeSchema } from "@/validation/common.validation";
 import * as z from "zod";
 
 const firstName = z.string().min(1, {
@@ -15,13 +16,6 @@ const email = z
   })
   .email("Please enter a valid email.");
 
-const postalCode = z
-  .string()
-  .min(1, {
-    message: "Please enter postal code",
-  })
-  .regex(/^[0-9]{5}(?:-[0-9]{4})?$/, "Please enter a valid postal code");
-
 const birthDate = z.date();
 
 const status = z.string().min(1, { message: "Please select a status" });
@@ -37,7 +31,7 @@ export const LicenseFormSchema = z.object({
   firstName,
   lastName,
   email,
-  postalCode,
+  postalCode: PostalCodeSchema,
   birthDate,
   status,
   organization,

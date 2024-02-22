@@ -8,7 +8,7 @@ const baseUrls = {
   onboarding: "/api/v1/onboarding",
   userMatch: "/api/v1/usermatch",
   mentorVerification: "/api/v1/verification/mentor",
-  profileSetting: "/api/v1/settings/profile"
+  settings: "/api/v1/settings",
 };
 
 const notes = {
@@ -34,7 +34,8 @@ const mentorVerification = {
   submitVerificationData: `${baseUrls.mentorVerification}/submit-data`,
   getOrgSearchUrl: `${baseUrls.mentorVerification}/organizations/search-url`,
   getOrganizations: (orgSearchUrl?: string, searchTerm?: string) =>
-    `${baseUrls.mentorVerification}/organizations/search?orgSearchUrl=${orgSearchUrl && encodeURIComponent(orgSearchUrl)
+    `${baseUrls.mentorVerification}/organizations/search?orgSearchUrl=${
+      orgSearchUrl && encodeURIComponent(orgSearchUrl)
     }&searchTerm=${searchTerm}`,
   submitData: `${baseUrls.mentorVerification}/submit-data`,
 };
@@ -53,14 +54,27 @@ const onboarding = {
   submitOnboardingForm: `${baseUrls.onboarding}/form/submit`,
 };
 
-const profile = {
-  getCommonlyDiagnoses: (searchTerm: string) => `${baseUrls.profileSetting}/suggestions/commonlydiagnoses?q=${searchTerm}`,
+const profileSettings = {
+  getCommonlyTreatedDiagnoses: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/commonly-treated-diagnoses?q=${searchTerm}`,
+  
+  getBoardSpecialties: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/board-specialties?q=${searchTerm}`,
+  
+  submitIdentityInfoForm: `${baseUrls.settings}/profile/form/identity-info/submit`,
 
-  getBoardSpecialties: (searchTerm: string) => `${baseUrls.profileSetting}/suggestions/boardSpecialties?q=${searchTerm}`,
+  getPersonalInterests: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/personal-interests?q=${searchTerm}`,
+  
+  getUserProfile: `${baseUrls.settings}/profile/user-profile`,
+  
+  getReligiousAffiliations: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/religious-affiliations?q=${searchTerm}`,
+};
 
-  submitProfileSettingForm: `${baseUrls.profileSetting}/form/submit`,
-
-}
+const settings = {
+  profile: profileSettings,
+};
 
 const auth = {
   loginWithGoogle: `${baseUrls.auth}/login/google`,
@@ -78,7 +92,7 @@ export const apiRoutes = {
   auth,
   notifications,
   onboarding,
-  profile,
+  settings,
   logout: `${baseUrls.api}/auth/logout`,
   signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
 };

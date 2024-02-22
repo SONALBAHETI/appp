@@ -1,16 +1,14 @@
-
 import { z } from "zod";
-import { EducationFormSchemaObj } from './education.validation';
-import { PersonalDetailsFormSchema } from "./IdentityInfo.validation";
+import { EducationFormSchema } from "./education.validation";
+import { IdentityInfoFormSchema } from "./identityInfo.validation";
 import { expertiseFormSchemaObj } from "./expertise.validation";
-import { licenseSchemaObj } from "./license.validation";
+import { LicenseFormSchema } from "./license.validation";
 
-export const ProfileSettingFormSchema = z
-    .object({
-        Education: EducationFormSchemaObj,
-        IdentityInfo: PersonalDetailsFormSchema,
-        Expertise: expertiseFormSchemaObj,
-        license: licenseSchemaObj
-    })
+export const ProfileSettingFormSchema = z.object({
+  Education: EducationFormSchema,
+  IdentityInfo: IdentityInfoFormSchema,
+  Expertise: expertiseFormSchemaObj,
+  license: LicenseFormSchema,
+});
 
-export type TProfileSettingForm = z.infer<typeof ProfileSettingFormSchema>;
+export type TProfileSettingsForm = z.infer<typeof ProfileSettingFormSchema>;

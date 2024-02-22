@@ -1,19 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import {
-  PersonalDetailsFormSchema,
-  PersonalDetailsValues,
-} from "@/validation/settingsValidations/IdentityInfo.validation";
+import { IdentityInfoFormSchema } from "@/validation/settingsValidations/identityInfo.validation";
+
 import {
   Input,
   SelectDropdown,
   Textarea,
-  NumberInput,
   DatePicker,
 } from "@/components/ui/FormFields";
+
 import {
   Form,
   FormControl,
@@ -22,40 +20,128 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { Switch } from "@/components/ui/switch";
 import { ResumeContext } from "@/context/ResumeContext";
+import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
+import {
+  useIdentityInfoFormMutation,
+  usePersonalInterestSuggestionsQuery,
+  useReligiousAffiliationsSuggestionsQuery,
+  useUserProfileQuery,
+} from "@/api/profileSettings";
+import { toast } from "react-toastify";
 
 const genders = [
-  "Male",
-  "Female",
-  "Non-binary",
-  "Agender",
-  "Bigender",
-  "Genderqueer",
-  "Genderfluid",
-  "Gender nonconforming",
-  "Two-spirit",
-  "Transgender",
-  "Cisgender",
+  "male",
+  "female",
+  "non-binary",
+  "agender",
+  "bigender",
+  "genderqueer",
+  "genderfluid",
+  "gender nonconforming",
+  "two-spirit",
+  "transgender",
+  "cisgender",
 ];
 
 const pronouns: string[] = ["he/him", "she/her", "they/them"];
 
-export default function IdentityInfo() {
+interface IIdentityInfo {
+  onSubmitting: (isSubmitting: boolean) => void;
+}
+
+export default function IdentityInfo({ onSubmitting }: IIdentityInfo) {
   const { resume } = useContext(ResumeContext);
 
-  const form = useForm<PersonalDetailsValues>({
-    resolver: zodResolver(PersonalDetailsFormSchema),
+  const [
+    personalInterestsSearchTerm,
+    setPersonalInterestsSearchTerm,
+    debouncedPersonalInterestsSearchTerm,
+  ] = useDebouncedSearchTerm();
+
+  const [
+    religiousAffiliationsSearchTerm,
+    setReligiousAffiliationsSearchTerm,
+    debouncedReligiousAffiliationsSearchTerm,
+  ] = useDebouncedSearchTerm();
+
+  const personalInterestSuggestionsQuery = usePersonalInterestSuggestionsQuery(
+    debouncedPersonalInterestsSearchTerm
+  );
+  const religiousAffiliationsSuggestionsQuery =
+    useReligiousAffiliationsSuggestionsQuery(
+      debouncedReligiousAffiliationsSearchTerm
+    );
+
+  const userProfileQuery = useUserProfileQuery();
+
+  const identityInfoFormMutation = useIdentityInfoFormMutation();
+
+  const form = useForm<IdentityInfoFormSchema>({
+    resolver: zodResolver(IdentityInfoFormSchema),
     mode: "onSubmit",
     defaultValues: {
       email: resume?.profile?.email || "",
     },
   });
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   const [isShareMoreDetailsEnabled, setShareMoreDetailsEnabled] =
     React.useState<boolean>(false);
 
-  async function onIdentityInfoFormSubmit(data: PersonalDetailsValues) {}
+  useEffect(() => {
+    const handleSaveAndNextEvent = () => {
+      if (formRef.current) {
+        formRef.current.dispatchEvent(
+          new Event("submit", { cancelable: true, bubbles: true })
+        );
+      }
+    };
+    document.addEventListener("saveAndNextEvent", handleSaveAndNextEvent);
+    return () => {
+      document.removeEventListener("saveAndNextEvent", handleSaveAndNextEvent);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (userProfileQuery.data) {
+      form.setValue("email", userProfileQuery.data.email);
+      // set form values from profile data
+      Object.keys(userProfileQuery.data.profile).forEach((key) => {
+        if (
+          key === "dateOfBirth" &&
+          userProfileQuery.data.profile.dateOfBirth
+        ) {
+          // convert string to date
+          form.setValue(
+            "dateOfBirth",
+            new Date(userProfileQuery.data.profile.dateOfBirth)
+          );
+        } else {
+          form.setValue(
+            key as keyof IdentityInfoFormSchema,
+            (userProfileQuery.data.profile as { [key: string]: any })[key]
+          );
+        }
+      });
+    }
+  }, [userProfileQuery.data]);
+
+  async function onIdentityInfoFormSubmit(data: IdentityInfoFormSchema) {
+    try {
+      onSubmitting(true);
+      await identityInfoFormMutation.mutateAsync(data);
+      toast.success("Identity details successfully updated!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Couldn't update identity details.");
+    } finally {
+      onSubmitting(false);
+    }
+  }
   function handleClick(checked: boolean) {
     setShareMoreDetailsEnabled(checked);
   }
@@ -66,6 +152,7 @@ export default function IdentityInfo() {
         <h6 className="p-2 mb-4">Personal Details</h6>
         <Form {...form}>
           <form
+            ref={formRef}
             onSubmit={form.handleSubmit(onIdentityInfoFormSubmit)}
             className="flex flex-col space-y-4"
           >
@@ -93,6 +180,7 @@ export default function IdentityInfo() {
                 <FormField
                   control={form.control}
                   name="firstName"
+                  defaultValue=""
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>First Name</FormLabel>
@@ -136,7 +224,6 @@ export default function IdentityInfo() {
                 <FormField
                   control={form.control}
                   name="email"
-                  defaultValue=""
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Email</FormLabel>
@@ -205,14 +292,14 @@ export default function IdentityInfo() {
                 <div className="relative">
                   <FormField
                     control={form.control}
-                    name="year"
+                    name="dateOfBirth"
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Date</FormLabel>
                         <FormControl>
                           <DatePicker
-                            selectedDate={field.value}
-                            onDateChange={field.onChange}
+                            selected={field.value}
+                            onSelect={field.onChange}
                           />
                         </FormControl>
                         <FormMessage />
@@ -252,12 +339,13 @@ export default function IdentityInfo() {
                   <FormField
                     control={form.control}
                     name="postalCode"
+                    defaultValue=""
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Postal Code</FormLabel>
                         <FormControl>
-                          <NumberInput
-                            placeholder="009039"
+                          <Input
+                            placeholder="98101"
                             autoComplete="postal-code"
                             {...field}
                           />
@@ -270,13 +358,13 @@ export default function IdentityInfo() {
               </div>
             </div>
 
-            {/* About Yourself input */}
+            {/* bio input */}
             <h6 className="pt-4">Share your background</h6>
             <div className="flex space-x-4">
               <div className="flex-grow">
                 <FormField
                   control={form.control}
-                  name="about"
+                  name="bio"
                   defaultValue=""
                   render={({ field }) => (
                     <FormItem className="flex-1">
@@ -321,20 +409,23 @@ export default function IdentityInfo() {
             {/* Multi select */}
             <FormField
               control={form.control}
-              name="speciality"
-              defaultValue=""
-              render={({ field }) => (
+              name="personalInterests"
+              defaultValue={[]}
+              render={({ field: { value, onChange, ...props } }) => (
                 <FormItem className="flex-1">
                   <FormLabel>Add your personal interests</FormLabel>
                   <FormControl>
                     <SearchAndSelect
-                      placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                      // value={boardSpecialtiesSearchTerm}
-                      // onClear={() => setBoardSpecialtiesSearchTerm("")}
-                      // selectedSuggestions={value}
-                      // onSelectedSuggestionsChange={onChange}
-                      // onValueChange={setBoardSpecialtiesSearchTerm}
-                      // {...props}
+                      placeholder="eg. Reading, Cooking, Traveling, Photography, Hiking"
+                      value={personalInterestsSearchTerm}
+                      isLoading={personalInterestSuggestionsQuery.isPending}
+                      suggestions={
+                        personalInterestSuggestionsQuery.data?.suggestions || []
+                      }
+                      selectedSuggestions={value}
+                      onSelectedSuggestionsChange={onChange}
+                      onValueChange={setPersonalInterestsSearchTerm}
+                      {...props}
                     />
                   </FormControl>
                   <FormMessage />
@@ -342,7 +433,7 @@ export default function IdentityInfo() {
               )}
             />
 
-            {/*Identity , Ethnicity  , ReligiousAffiliation*/}
+            {/* Identity, Ethnicity, ReligiousAffiliation */}
             <div className="pt-4">
               <div className="flex items-center space-x-2">
                 <Switch onCheckedChange={handleClick} />
@@ -358,9 +449,9 @@ export default function IdentityInfo() {
                 <div className="relative">
                   <FormField
                     control={form.control}
-                    name="Identity"
+                    name="identity"
                     disabled={!isShareMoreDetailsEnabled}
-                    defaultValue="v"
+                    defaultValue=""
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Identity</FormLabel>
@@ -383,7 +474,7 @@ export default function IdentityInfo() {
                 <div className="relative">
                   <FormField
                     control={form.control}
-                    name="Ethnicity"
+                    name="ethnicity"
                     defaultValue=""
                     disabled={!isShareMoreDetailsEnabled}
                     render={({ field }) => (
@@ -408,17 +499,27 @@ export default function IdentityInfo() {
                   <FormField
                     control={form.control}
                     disabled={!isShareMoreDetailsEnabled}
-                    name="firstName"
-                    defaultValue=""
-                    render={({ field }) => (
+                    name="religiousAffiliations"
+                    defaultValue={[]}
+                    render={({ field: { value, onChange, ...props } }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Religious Affiliation(s)</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="First Name"
-                            autoCapitalize="words"
-                            autoComplete="given-name"
-                            {...field}
+                          <SearchAndSelect
+                            placeholder="eg. Christianity, Hinduism, Buddhism"
+                            disabled={!isShareMoreDetailsEnabled}
+                            value={religiousAffiliationsSearchTerm}
+                            isLoading={
+                              religiousAffiliationsSuggestionsQuery.isPending
+                            }
+                            suggestions={
+                              religiousAffiliationsSuggestionsQuery.data
+                                ?.suggestions || []
+                            }
+                            selectedSuggestions={value}
+                            onSelectedSuggestionsChange={onChange}
+                            onValueChange={setReligiousAffiliationsSearchTerm}
+                            {...props}
                           />
                         </FormControl>
                         <FormMessage />

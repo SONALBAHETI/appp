@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import React, { useState } from "react";
 import IdentityInfo from "./Identity/IdentityInfo";
 import Education from "./Education/Education";
-import License from "./License/License";
+import { LicenseVerification } from "./License";
+import AutoFillPopup from "../../../ui/AutofillPopup/autoFillPopup";
 import Expertise from "./Expertise/Expertise";
 import { Card, CardContent } from "@/components/ui/card";
 import StepsContainer, {
@@ -10,13 +13,18 @@ import StepsContainer, {
   StepContent,
   StepsList,
 } from "@/components/ui/Steps/StepsContainer";
-import AutoFillPopup from "@/components/ui/AutofillPopup/autoFillPopup";
 import { Button } from "@/components/ui/button";
+import { createCustomEvent } from "@/lib/events";
+import Loader from "@/components/ui/Loader";
 
 export default function PersonalDetails() {
-  const saveAndNext = async (data: any): Promise<void> => {};
-
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [activeStep, setActiveStep] = useState<number>(0);
+
+  const submit = () => {
+    // to be handled in child components
+    document.dispatchEvent(createCustomEvent("saveAndNextEvent"));
+  };
 
   return (
     <Card className="shadow-md h-full">
@@ -41,14 +49,19 @@ export default function PersonalDetails() {
                 >
                   View Profile
                 </Link>
-                <Button type="submit" onClick={saveAndNext}>
-                  Save Changes
+                <Button onClick={submit}>
+                  {isSubmitting && <Loader />}
+                  {isSubmitting
+                    ? "Saving..."
+                    : activeStep === 3
+                    ? "Submit"
+                    : "Save & Next"}
                 </Button>
               </div>
             </StepsList>
 
             <StepContent stepNumber={0}>
-              <IdentityInfo />
+              <IdentityInfo onSubmitting={setIsSubmitting} />
             </StepContent>
             <StepContent stepNumber={1}>
               <Education />
@@ -57,7 +70,7 @@ export default function PersonalDetails() {
               <Expertise />
             </StepContent>
             <StepContent stepNumber={3}>
-              <License />
+              <LicenseVerification />
             </StepContent>
           </StepsContainer>
         </div>

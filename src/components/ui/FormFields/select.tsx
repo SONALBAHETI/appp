@@ -26,6 +26,7 @@ const SelectDropdown: React.FC<SelectDropdownProps> = ({
 }) => {
   return (
     <Select
+      value={field.value}
       onValueChange={(e) => {
         field.onChange(e);
       }}

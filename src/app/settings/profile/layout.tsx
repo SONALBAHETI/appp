@@ -26,7 +26,7 @@ export default function ProfileSettingsLayout({
 }) {
   return (
     <div className="flex gap-4 items-stretch">
-      <div className="w-[22%]">
+      <div className="w-[22%] flex-shrink-0">
         <SideNavbar links={sideNavField} />
       </div>
       <div className="flex-grow">{children}</div>

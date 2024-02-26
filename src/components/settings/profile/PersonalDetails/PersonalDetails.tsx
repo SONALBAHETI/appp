@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import IdentityInfo from "./Identity/IdentityInfo";
 import Education from "./Education/Education";
 import { LicenseVerification } from "./License";
-import AutoFillPopup from "../../../ui/AutofillPopup/autoFillPopup";
 import Expertise from "./Expertise/Expertise";
 import { Card, CardContent } from "@/components/ui/card";
 import StepsContainer, {
@@ -29,7 +28,6 @@ export default function PersonalDetails() {
   return (
     <Card className="shadow-md h-full">
       <CardContent className="mt-6">
-        <AutoFillPopup></AutoFillPopup>
         <div className="flex items-center">
           <StepsContainer
             className="w-full"

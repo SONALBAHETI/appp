@@ -3,13 +3,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EducationFormSchema } from "@/validation/settingsValidations/education.validation";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
 
 import {
@@ -22,12 +15,32 @@ import {
 } from "@/components/ui/form";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
-import { AddCertificateDialogBox } from "@/components/ui/DialogPopup/CertificatePopup/AddCertificatePopup";
-import { CertificateFormSchema } from "@/components/ui/DialogPopup/CertificatePopup/validation";
-import { AddDegreeDialogBox } from "@/components/ui/DialogPopup/DegreePopup/AddDegreePopup";
-import { DegreeFormSchema } from "@/components/ui/DialogPopup/DegreePopup/validate";
+import { CertificateFormSchema } from "@/components/settings/profile/PersonalDetails/Education/Certificates/validation";
+import { DegreeFormSchema } from "@/components/settings/profile/PersonalDetails/Education/Degrees/validation";
 import { ResumeContext } from "@/context/ResumeContext";
+import { Label } from "@/components/ui/label";
+import Degrees from "./Degrees";
+import {
+  useAddCertificateMutation,
+  useAddDegreeMutation,
+  useUserProfileQuery,
+} from "@/api/profileSettings";
+import { AddDegreeDialog } from "./Degrees/AddDegreeDialog";
+import { toast } from "react-toastify";
+import Certificates from "./Certificates";
+import { AddCertificateDialog } from "./Certificates/AddCertificateDialog";
+
 export default function Education() {
+  /* component states */
+  const [degreeDialogOpen, setDegreeDialogOpen] = useState(false);
+  const [certificateDialogOpen, setCertificateDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  /* server states */
+  const userProfileQuery = useUserProfileQuery();
+  const addDegreeMutation = useAddDegreeMutation();
+  const addCertificateMutation = useAddCertificateMutation();
+
   const form = useForm<EducationFormSchema>({
     resolver: zodResolver(EducationFormSchema),
     mode: "onSubmit",
@@ -37,12 +50,26 @@ export default function Education() {
     useState<string>("");
   function handleClick(checked: any) {}
 
-  function handleAddCertificate(certificateData: CertificateFormSchema): void {
-    console.log(certificateData);
+  async function handleAddDegree(certificateData: DegreeFormSchema) {
+    try {
+      setIsLoading(true);
+      await addDegreeMutation.mutateAsync(certificateData);
+      setIsLoading(false);
+      setDegreeDialogOpen(false);
+    } catch (error) {
+      toast.error("Something went wrong. Please try again later.");
+    }
   }
 
-  function handelAddDegree(certificateData: DegreeFormSchema): void {
-    console.log(certificateData);
+  async function handleAddCertificate(certificateData: CertificateFormSchema) {
+    try {
+      setIsLoading(true);
+      await addCertificateMutation.mutateAsync(certificateData);
+      setIsLoading(false);
+      setCertificateDialogOpen(false);
+    } catch (error) {
+      toast.error("Something went wrong. Please try again later.");
+    }
   }
 
   async function onEducationFormSubmit(
@@ -51,124 +78,88 @@ export default function Education() {
 
   return (
     <>
-      <div className="py-5 px-6 rounded-xl border">
-        <h6 className="p-2 mb-4">Your Education</h6>
+      <div className="flex flex-col gap-y-5 py-5 px-6 rounded-xl border">
+        <h4>Your education</h4>
+        {/* Degrees */}
+        <div className="flex flex-col gap-y-2">
+          <Label className="text-base">Degrees</Label>
+          {!userProfileQuery.isError && !userProfileQuery.isPending && (
+            <Degrees
+              isLoading={userProfileQuery.isPending}
+              degrees={userProfileQuery.data?.profile?.education?.degrees}
+            />
+          )}
+          <AddDegreeDialog
+            open={degreeDialogOpen}
+            className="w-max"
+            isLoading={isLoading}
+            onOpenChange={setDegreeDialogOpen}
+            onAddDegree={handleAddDegree}
+          />
+        </div>
+
+        {/* Certificates */}
+        <div className="flex flex-col gap-y-2">
+          <Label className="text-base">Certificates</Label>
+          {!userProfileQuery.isError && !userProfileQuery.isPending && (
+            <Certificates
+              isLoading={userProfileQuery.isPending}
+              certificates={
+                userProfileQuery.data?.profile?.education?.certificates
+              }
+            />
+          )}
+          <AddCertificateDialog
+            open={certificateDialogOpen}
+            className="w-max"
+            isLoading={isLoading}
+            onOpenChange={setCertificateDialogOpen}
+            onAddCertificate={handleAddCertificate}
+          />
+        </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onEducationFormSubmit)}></form>
-          <p className="font-semibold ml-2 mb-1">Add degrees</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-            <Card className="bg-[#F8F8F8] w-44">
-              <CardHeader className="">
-                <CardTitle className="text-md">Title</CardTitle>
-              </CardHeader>
-              <CardContent
-                className="text-card-foreground/60 text-sm"
-                style={{ overflowY: "hidden" }}
-              >
-                This is container
-              </CardContent>
-              <CardFooter className="text-sm">Year of Completion</CardFooter>
-            </Card>
+          <form
+            onSubmit={form.handleSubmit(onEducationFormSubmit)}
+            className="flex flex-col space-y-4"
+          >
+            <h6 className="p-2 mt-4">Residency and/or fellowship trained?</h6>
 
-            <Card className="bg-[#F8F8F8] w-44">
-              <CardHeader className="">
-                <CardTitle className="text-md">Title</CardTitle>
-              </CardHeader>
-              <CardContent
-                className="text-card-foreground/60 text-sm"
-                style={{ overflowY: "hidden" }}
-              >
-                This is container
-              </CardContent>
-              <CardFooter className="text-sm">Year of Completion</CardFooter>
-            </Card>
+            <div className="flex items-center mt-2 mb-3">
+              <Switch onCheckedChange={handleClick} />
+              <p className="ml-2 font-bold text-sm ">Residency</p>
+            </div>
 
-            <Card className="bg-[#F8F8F8] w-44">
-              <CardHeader className="">
-                <CardTitle className="text-md">Title</CardTitle>
-              </CardHeader>
-              <CardContent
-                className="text-card-foreground/60 text-sm"
-                style={{ overflowY: "hidden" }}
-              >
-                This is container
-              </CardContent>
-              <CardFooter className="text-sm">Year of Completion</CardFooter>
-            </Card>
-          </div>
+            <FormField
+              control={form.control}
+              name="degree"
+              defaultValue={[]}
+              render={({ field: { value, onChange, ...props } }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-normal">
+                    Primary area(s) of interest
+                  </FormLabel>
+                  <FormControl>
+                    <SearchAndSelect
+                      placeholder="eg. Physical Therapy, Education, Administration, Researcher"
+                      value={primaryAreasSearchTerm}
+                      // isLoading={isPrimaryInterestDataPending}
+                      // suggestions={primaryInterestData?.docs.map((doc) => doc.title) || []}
+                      selectedSuggestions={value}
+                      onSelectedSuggestionsChange={onChange}
+                      onValueChange={setPrimaryAreasSearchTerm}
+                      {...props}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <AddCertificateDialogBox
-            handleAddCertificate={handleAddCertificate}
-          />
-
-          <p className="font-semibold ml-2 mb-1 mt-10">Add degrees</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-            <Card className="bg-[#F8F8F8] w-44">
-              <CardHeader className="">
-                <CardTitle className="text-md">Title</CardTitle>
-              </CardHeader>
-              <CardContent
-                className="text-card-foreground/60 text-sm"
-                style={{ overflowY: "hidden" }}
-              >
-                This is container
-              </CardContent>
-              <CardFooter className="text-sm">Year of Completion</CardFooter>
-            </Card>
-
-            <Card className="bg-[#F8F8F8] w-44">
-              <CardHeader className="">
-                <CardTitle className="text-md">Title</CardTitle>
-              </CardHeader>
-              <CardContent
-                className="text-card-foreground/60 text-sm"
-                style={{ overflowY: "hidden" }}
-              >
-                This is container
-              </CardContent>
-              <CardFooter className="text-sm">Year of Completion</CardFooter>
-            </Card>
-          </div>
-
-          <AddDegreeDialogBox handelAddDegree={handelAddDegree} />
-
-          <h6 className="p-2 mt-4">Residency and/or fellowship trained?</h6>
-
-          <div className="flex items-center mt-2 mb-3">
-            <Switch onCheckedChange={handleClick} />
-            <p className="ml-2 font-bold text-sm ">Residency</p>
-          </div>
-
-          <FormField
-            control={form.control}
-            name="degree"
-            defaultValue={[]}
-            render={({ field: { value, onChange, ...props } }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-normal">
-                  Primary area(s) of interest
-                </FormLabel>
-                <FormControl>
-                  <SearchAndSelect
-                    placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                    value={primaryAreasSearchTerm}
-                    // isLoading={isPrimaryInterestDataPending}
-                    // suggestions={primaryInterestData?.docs.map((doc) => doc.title) || []}
-                    selectedSuggestions={value}
-                    onSelectedSuggestionsChange={onChange}
-                    onValueChange={setPrimaryAreasSearchTerm}
-                    {...props}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="flex items-center mt-2 mb-3">
-            <Switch onCheckedChange={handleClick} />
-            <p className="ml-2 font-bold text-sm ">Fellowship</p>
-          </div>
+            <div className="flex items-center mt-2 mb-3">
+              <Switch onCheckedChange={handleClick} />
+              <p className="ml-2 font-bold text-sm ">Fellowship</p>
+            </div>
+          </form>
         </Form>
       </div>
     </>

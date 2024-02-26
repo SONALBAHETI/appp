@@ -1,10 +1,18 @@
-import { IdentityInfoFormSchema } from "@/validation/settingsValidations/identityInfo.validation";
+import { IProfile } from "./profile";
 
 export interface ISubmitIdentityInfoFormResponse {
   success: boolean;
 }
 
 export interface IGetUserProfileResponse {
-  profile: Partial<IdentityInfoFormSchema>;
+  profile: IProfile;
   email: string;
+}
+
+export interface IAddDegreeResponse {
+  success: boolean;
+}
+
+export interface IAddCertificateResponse {
+  success: boolean;
 }

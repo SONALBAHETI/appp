@@ -1,6 +1,10 @@
+"use client";
+
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { DatePicker, Textarea } from "../../FormFields";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DatePicker, Input } from "@/components/ui/FormFields";
 import {
   Dialog,
   DialogContent,
@@ -17,77 +21,56 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { CertificateFormSchema, CertificateSchemaObj } from "./validation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { CertificateFormSchema } from "./validation";
+import Icon, { IconType } from "@/components/ui/Icon";
+import Loader from "@/components/ui/Loader";
 
-type onAddCertificate = (data: CertificateFormSchema) => void;
+export interface AddCertificateDialogProps {
+  onAddCertificate: (data: CertificateFormSchema) => void;
+  className?: string;
+  isLoading?: boolean;
+}
 
-export function AddCertificateDialogBox({
-  handleAddCertificate,
-}: {
-  handleAddCertificate: onAddCertificate;
-}) {
+export const AddCertificateDialog = React.forwardRef<
+  React.ElementRef<typeof Dialog>,
+  React.ComponentPropsWithoutRef<typeof Dialog> & AddCertificateDialogProps
+>(({ className, onAddCertificate, isLoading, ...props }, ref) => {
   const form = useForm<CertificateFormSchema>({
-    resolver: zodResolver(CertificateSchemaObj),
+    resolver: zodResolver(CertificateFormSchema),
     mode: "onSubmit",
   });
 
-  async function onCertificateFormSubmit(data: CertificateFormSchema) {
-    console.log(data);
-    handleAddCertificate(data);
+  async function onSubmit(data: CertificateFormSchema) {
+    onAddCertificate(data);
   }
 
   return (
-    <Dialog>
+    <Dialog {...props}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="bg-[#349997] p-2 text-sm text-white mt-3 ml-2 w-1/6"
-        >
-          + Add certificate
+        <Button className={className} variant="accent">
+          <Icon type={IconType.PLUS} size={18} className="mr-1" /> Add
+          certificate
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Add a certificate</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onCertificateFormSubmit)}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col space-y-4"
           >
             <div className="grid gap-4 py-4">
               <FormField
                 control={form.control}
-                name="certificateName"
+                name="name"
                 defaultValue=""
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name of the certificate</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Name"
-                        autoCapitalize="words"
-                        autoComplete="given-certificateName"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="issueDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Issue date</FormLabel>
-                    <FormControl>
-                      <DatePicker
-                        selectedDate={field.value}
-                        onDateChange={field.onChange}
-                      />
+                      <Input placeholder="Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -96,17 +79,32 @@ export function AddCertificateDialogBox({
 
               <FormField
                 control={form.control}
-                name="description"
-                defaultValue=""
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Description</FormLabel>
+                name="dateOfIssue"
+                render={({ field: { value, onChange, ...props } }) => (
+                  <FormItem>
+                    <FormLabel>Date of issue</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Type your message here"
-                        autoCapitalize="words"
-                        autoComplete="given-description"
-                        {...field}
+                      <DatePicker
+                        selected={value}
+                        onSelect={onChange}
+                        {...props}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="expirationDate"
+                render={({ field: { value, onChange, ...props } }) => (
+                  <FormItem>
+                    <FormLabel>Expiration date (optional)</FormLabel>
+                    <FormControl>
+                      <DatePicker
+                        selected={value}
+                        onSelect={onChange}
+                        {...props}
                       />
                     </FormControl>
                     <FormMessage />
@@ -117,7 +115,7 @@ export function AddCertificateDialogBox({
 
             <DialogFooter>
               <Button type="submit" className="w-full">
-                Save changes
+                {isLoading && <Loader className="mr-2" />} Save
               </Button>
             </DialogFooter>
           </form>
@@ -125,4 +123,4 @@ export function AddCertificateDialogBox({
       </DialogContent>
     </Dialog>
   );
-}
+});

@@ -12,10 +12,14 @@ export function getRelativeTimeString(
   return timeString;
 }
 
-export function getFormattedDate(date: Date): string {
+export function getFormattedDate(
+  date: Date,
+  options: Intl.DateTimeFormatOptions = {}
+): string {
   return date.toLocaleString("en-US", {
     day: "numeric",
     month: "short",
+    ...options,
   });
 }
 

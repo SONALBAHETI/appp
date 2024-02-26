@@ -57,19 +57,29 @@ const onboarding = {
 const profileSettings = {
   getCommonlyTreatedDiagnoses: (searchTerm: string) =>
     `${baseUrls.settings}/profile/suggestions/commonly-treated-diagnoses?q=${searchTerm}`,
-  
+
   getBoardSpecialties: (searchTerm: string) =>
     `${baseUrls.settings}/profile/suggestions/board-specialties?q=${searchTerm}`,
-  
-  submitIdentityInfoForm: `${baseUrls.settings}/profile/form/identity-info/submit`,
+
+  submitIdentityInfoForm: `${baseUrls.settings}/profile/identity-info/`,
+
+  degrees: `${baseUrls.settings}/profile/education/degrees`,
+
+  certificates: `${baseUrls.settings}/profile/education/certificates`,
 
   getPersonalInterests: (searchTerm: string) =>
     `${baseUrls.settings}/profile/suggestions/personal-interests?q=${searchTerm}`,
-  
+
   getUserProfile: `${baseUrls.settings}/profile/user-profile`,
-  
+
   getReligiousAffiliations: (searchTerm: string) =>
     `${baseUrls.settings}/profile/suggestions/religious-affiliations?q=${searchTerm}`,
+
+  getDegreeSuggestions: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/degrees?q=${searchTerm}`,
+
+  getUniversitySuggestions: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/universities?q=${searchTerm}`,
 };
 
 const settings = {

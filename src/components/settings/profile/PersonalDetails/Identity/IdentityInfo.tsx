@@ -31,6 +31,7 @@ import {
   useUserProfileQuery,
 } from "@/api/profileSettings";
 import { toast } from "react-toastify";
+import ResumeAutoFill from "../ResumeAutoFill/ResumeAutoFill";
 
 const genders = [
   "male",
@@ -149,7 +150,7 @@ export default function IdentityInfo({ onSubmitting }: IIdentityInfo) {
   return (
     <>
       <div className="py-5 px-6 rounded-xl border">
-        <h6 className="p-2 mb-4">Personal Details</h6>
+        <h4 className="mb-4">Personal details</h4>
         <Form {...form}>
           <form
             ref={formRef}
@@ -174,6 +175,8 @@ export default function IdentityInfo({ onSubmitting }: IIdentityInfo) {
                 </label>
               </div>
             </div>
+
+            <ResumeAutoFill />
 
             <div className="flex space-x-4">
               <div className="flex-grow">

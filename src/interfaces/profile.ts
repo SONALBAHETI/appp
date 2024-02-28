@@ -2,31 +2,31 @@ export interface IDegree {
   _id: string;
   name: string;
   institution: string;
-  dateOfCompletion: Date;
+  dateOfCompletion: string;
 }
 
 export interface ICertificate {
   _id: string;
   name: string;
-  dateOfIssue: Date;
-  expirationDate?: Date;
+  dateOfIssue: string;
+  expirationDate?: string;
 }
 
 export interface IEducation {
-  degrees: IDegree[];
-  certificates: ICertificate[];
+  degrees?: IDegree[];
+  certificates?: ICertificate[];
   isResidencyTrained?: boolean;
   isFellowshipTrained?: boolean;
-  residencyPrograms: string[];
-  fellowshipPrograms: string[];
+  residencyPrograms?: string[];
+  fellowshipPrograms?: string[];
 }
 
 export interface IExpertise {
-  yearsInClinicalPractice: number;
-  expertiseAreas: string[];
-  commonlyTreatedDiagnoses: string[];
-  boardSpecialties: string[];
-  practiceAreas: string[];
+  yearsInClinicalPractice?: number;
+  expertiseAreas?: string[];
+  commonlyTreatedDiagnoses?: string[];
+  boardSpecialties?: string[];
+  practiceAreas?: string[];
 }
 
 export interface IProfile {
@@ -37,7 +37,7 @@ export interface IProfile {
   primaryRole?: string;
   pronouns?: string;
   gender?: string;
-  dateOfBirth?: Date;
+  dateOfBirth?: string;
   state?: string;
   postalCode?: string;
   funFact?: string;
@@ -45,7 +45,7 @@ export interface IProfile {
   ethnicity?: string;
   personalInterests?: string[];
   religiousAffiliations?: string[];
-  education: IEducation;
-  expertise: IExpertise;
-  tags: string[];
+  education?: IEducation;
+  expertise?: IExpertise;
+  tags?: string[];
 }

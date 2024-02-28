@@ -117,7 +117,7 @@ const FileInput = React.forwardRef<HTMLInputElement, IFileInputProps>(
               onDragLeave={() => setIsHoveredOnDropzone(false)}
               onDrop={onDrop}
               className={cn(
-                "cursor-pointer bg-accent-2-lite/80 hover:bg-accent-2-lite text-md",
+                "cursor-pointer bg-accent-2-light/80 hover:bg-accent-2-light text-md",
                 containerClass,
                 isHoveredOnDropzone ? "border-primary/50" : ""
               )}

@@ -15,12 +15,14 @@ interface SelectDropdownProps {
     value: string;
     onChange: (newValue: string) => void;
   };
+  label: string;
   options: string[];
   placeholder: string;
 }
 
-const SelectDropdown: React.FC<SelectDropdownProps> = ({
+const SelectFormField: React.FC<SelectDropdownProps> = ({
   field,
+  label,
   options,
   placeholder,
 }) => {
@@ -40,7 +42,7 @@ const SelectDropdown: React.FC<SelectDropdownProps> = ({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
+          <SelectLabel>{label}</SelectLabel>
           {options.map((value, index) => (
             <SelectItem key={index} value={value}>
               {value}
@@ -52,6 +54,6 @@ const SelectDropdown: React.FC<SelectDropdownProps> = ({
   );
 };
 
-SelectDropdown.displayName = "select";
+SelectFormField.displayName = "select";
 
-export { SelectDropdown };
+export { SelectFormField };

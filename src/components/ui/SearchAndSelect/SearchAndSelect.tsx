@@ -126,13 +126,20 @@ const SearchAndSelect = React.forwardRef<
         {multiple && (
           <div className="mt-1 flex gap-1 flex-wrap">
             {selectedSuggestions.map((selectedSuggestion) => (
-              <Badge key={selectedSuggestion} variant="outline">
+              <Badge
+                key={selectedSuggestion}
+                className={`bg-accent-2-light font-medium ${
+                  props.disabled ? "text-muted-foreground bg-muted" : ""
+                }`}
+                variant="outline"
+              >
                 {selectedSuggestion}{" "}
                 <Icon
                   type={IconType.X}
                   size={14}
-                  className="ml-1 cursor-pointer"
+                  className={`ml-1 ${!props.disabled ? "cursor-pointer" : ""}`}
                   onClick={() =>
+                    !props.disabled &&
                     onSelectedSuggestionsChange?.(
                       selectedSuggestions.filter(
                         (s) => s !== selectedSuggestion

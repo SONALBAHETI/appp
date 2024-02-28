@@ -15,15 +15,36 @@ import StepsContainer, {
 import { Button } from "@/components/ui/button";
 import { createCustomEvent } from "@/lib/events";
 import Loader from "@/components/ui/Loader";
+import { useQueryState } from "nuqs";
+import { useCurrentVerificationStepQuery } from "@/api/mentorVerification";
 
 export default function PersonalDetails() {
+  const [stepQueryParam, setStepQueryParam] = useQueryState("step");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [activeStep, setActiveStep] = useState<number>(0);
+  const [activeStep, setActiveStep] = useState<number>(
+    stepQueryParam ? +stepQueryParam - 1 : 0
+  );
+  const currentVerificationStepQuery = useCurrentVerificationStepQuery();
+
+  const onStepChange = (step: number) => {
+    setStepQueryParam((step + 1).toString());
+    setActiveStep(step);
+  };
+
+  const handleStepComplete = () => {
+    onStepChange(activeStep + 1);
+  };
 
   const submit = () => {
     // to be handled in child components
     document.dispatchEvent(createCustomEvent("saveAndNextEvent"));
   };
+
+  // hide action buttons when license verification is successful
+  const showActionButtons =
+    activeStep === 3 && currentVerificationStepQuery.data
+      ? currentVerificationStepQuery.data.currentStep !== "success"
+      : true;
 
   return (
     <Card className="shadow-md h-full">
@@ -32,7 +53,7 @@ export default function PersonalDetails() {
           <StepsContainer
             className="w-full"
             activeStep={activeStep}
-            onStepChange={setActiveStep}
+            onStepChange={onStepChange}
           >
             <StepsList className="mb-6">
               <Step>Identity Info</Step>
@@ -40,35 +61,46 @@ export default function PersonalDetails() {
               <Step>Expertise</Step>
               <Step>License</Step>
 
-              <div className="ml-auto flex items-center gap-6">
-                <Link
-                  href="/"
-                  className="underline underline-offset-4 text-foreground"
-                >
-                  View Profile
-                </Link>
-                <Button onClick={submit}>
-                  {isSubmitting && <Loader />}
-                  {isSubmitting
-                    ? "Saving..."
-                    : activeStep === 3
-                    ? "Submit"
-                    : "Save & Next"}
-                </Button>
-              </div>
+              {showActionButtons && (
+                <div className="ml-auto flex items-center gap-6">
+                  <Link
+                    href="/"
+                    className="underline underline-offset-4 text-foreground"
+                  >
+                    View Profile
+                  </Link>
+                  <Button onClick={submit}>
+                    {isSubmitting && <Loader className="mr-1" />}
+                    {isSubmitting
+                      ? "Saving..."
+                      : activeStep === 3
+                      ? "Submit"
+                      : "Save & Next"}
+                  </Button>
+                </div>
+              )}
             </StepsList>
 
             <StepContent stepNumber={0}>
-              <IdentityInfo onSubmitting={setIsSubmitting} />
+              <IdentityInfo
+                onSubmitting={setIsSubmitting}
+                onComplete={handleStepComplete}
+              />
             </StepContent>
             <StepContent stepNumber={1}>
-              <Education />
+              <Education
+                onSubmitting={setIsSubmitting}
+                onComplete={handleStepComplete}
+              />
             </StepContent>
             <StepContent stepNumber={2}>
-              <Expertise />
+              <Expertise
+                onSubmitting={setIsSubmitting}
+                onComplete={handleStepComplete}
+              />
             </StepContent>
             <StepContent stepNumber={3}>
-              <LicenseVerification />
+              <LicenseVerification onSubmitting={setIsSubmitting} />
             </StepContent>
           </StepsContainer>
         </div>

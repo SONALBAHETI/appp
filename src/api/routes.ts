@@ -47,10 +47,13 @@ const notifications = {
 const onboarding = {
   getPrimaryInterestSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/primaryinterests?q=${searchTerm}`,
+  
   getExpertiseAreaSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/expertiseareas?q=${searchTerm}`,
+  
   getPracticeAreaSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/practiceareas?q=${searchTerm}`,
+  
   submitOnboardingForm: `${baseUrls.onboarding}/form/submit`,
 };
 
@@ -62,6 +65,10 @@ const profileSettings = {
     `${baseUrls.settings}/profile/suggestions/board-specialties?q=${searchTerm}`,
 
   submitIdentityInfoForm: `${baseUrls.settings}/profile/identity-info/`,
+
+  submitEducationForm: `${baseUrls.settings}/profile/education`,
+  
+  submitExpertiseForm: `${baseUrls.settings}/profile/expertise`,
 
   degrees: `${baseUrls.settings}/profile/education/degrees`,
 
@@ -80,6 +87,12 @@ const profileSettings = {
 
   getUniversitySuggestions: (searchTerm: string) =>
     `${baseUrls.settings}/profile/suggestions/universities?q=${searchTerm}`,
+
+  getResidencyProgramSuggestions: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/residency-programs?q=${searchTerm}`,
+
+  getFellowshipProgramSuggestions: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/fellowship-programs?q=${searchTerm}`,
 };
 
 const settings = {

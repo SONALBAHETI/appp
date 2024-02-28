@@ -25,7 +25,7 @@ export default function ProfileSettingsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex gap-4 items-stretch">
+    <div className="flex gap-4 items-stretch flex-grow">
       <div className="w-[22%] flex-shrink-0">
         <SideNavbar links={sideNavField} />
       </div>

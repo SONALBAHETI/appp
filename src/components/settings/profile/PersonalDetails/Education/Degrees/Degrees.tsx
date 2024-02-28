@@ -7,10 +7,7 @@ interface IDegreesListProps {
   isLoading?: boolean;
 }
 
-export default function Degrees({
-  degrees,
-  isLoading,
-}: IDegreesListProps) {
+export default function Degrees({ degrees, isLoading }: IDegreesListProps) {
   const hasDegrees = degrees && degrees.length > 0;
   return (
     <div>

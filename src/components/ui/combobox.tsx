@@ -38,6 +38,18 @@ export default function Combobox({
   onChange,
 }: IComboboxProps) {
   const [open, setOpen] = React.useState(false);
+
+  // on enter press, select the top most option
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      const topOption = options?.find((option) => option.value === value);
+      if (topOption) {
+        onChange?.(topOption.value);
+        setOpen(false);
+      }
+    }
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -58,7 +70,10 @@ export default function Combobox({
       </PopoverTrigger>
       <PopoverContent align="start" className="p-0">
         <Command>
-          <CommandInput placeholder={searchPlaceholder} />
+          <CommandInput
+            onKeyDown={handleKeyDown}
+            placeholder={searchPlaceholder}
+          />
           <CommandEmpty>{emptyPlaceholder}</CommandEmpty>
           <CommandGroup>
             {options &&

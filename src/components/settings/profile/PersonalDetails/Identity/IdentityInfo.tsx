@@ -7,7 +7,7 @@ import { IdentityInfoFormSchema } from "@/validation/settingsValidations/identit
 
 import {
   Input,
-  SelectDropdown,
+  SelectFormField,
   Textarea,
   DatePicker,
 } from "@/components/ui/FormFields";
@@ -32,28 +32,14 @@ import {
 } from "@/api/profileSettings";
 import { toast } from "react-toastify";
 import ResumeAutoFill from "../ResumeAutoFill/ResumeAutoFill";
+import { genders, pronouns } from "@/constants/profile"; 
 
-const genders = [
-  "male",
-  "female",
-  "non-binary",
-  "agender",
-  "bigender",
-  "genderqueer",
-  "genderfluid",
-  "gender nonconforming",
-  "two-spirit",
-  "transgender",
-  "cisgender",
-];
-
-const pronouns: string[] = ["he/him", "she/her", "they/them"];
-
-interface IIdentityInfo {
+interface IIdentityInfoProps {
   onSubmitting: (isSubmitting: boolean) => void;
+  onComplete?: () => void;
 }
 
-export default function IdentityInfo({ onSubmitting }: IIdentityInfo) {
+export default function IdentityInfo({ onSubmitting, onComplete }: IIdentityInfoProps) {
   const { resume } = useContext(ResumeContext);
 
   const [
@@ -136,6 +122,7 @@ export default function IdentityInfo({ onSubmitting }: IIdentityInfo) {
       onSubmitting(true);
       await identityInfoFormMutation.mutateAsync(data);
       toast.success("Identity details successfully updated!");
+      onComplete?.();
     } catch (error) {
       console.error(error);
       toast.error("Couldn't update identity details.");
@@ -256,11 +243,12 @@ export default function IdentityInfo({ onSubmitting }: IIdentityInfo) {
                       <FormItem className="flex-1">
                         <FormLabel>Pronouns</FormLabel>
                         <FormControl>
-                          <SelectDropdown
+                          <SelectFormField
+                            label="Pronouns"
                             placeholder="Select an option"
                             options={pronouns}
                             field={field}
-                          ></SelectDropdown>
+                          ></SelectFormField>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -278,11 +266,12 @@ export default function IdentityInfo({ onSubmitting }: IIdentityInfo) {
                       <FormItem className="flex-1">
                         <FormLabel>Gender</FormLabel>
                         <FormControl>
-                          <SelectDropdown
+                          <SelectFormField
+                            label="Gender"
                             placeholder="Select an option"
                             options={genders}
                             field={field}
-                          ></SelectDropdown>
+                          ></SelectFormField>
                         </FormControl>
                         <FormMessage />
                       </FormItem>

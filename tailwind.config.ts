@@ -53,7 +53,7 @@ module.exports = {
           DEFAULT: "hsl(var(--accent-2))",
           foreground: "hsl(var(--accent-2-foreground))",
         },
-        "accent-2-lite": {
+        "accent-2-light": {
           DEFAULT: "hsl(var(--accent-2-light))",
           foreground: "hsl(var(--accent-2-foreground))",
         },

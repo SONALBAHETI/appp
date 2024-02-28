@@ -7,7 +7,7 @@ import {
 import { useFetch, usePost } from "@/lib/react-query";
 import { createQueryKey } from "@/lib/react-query/utils";
 import { apiRoutes } from "./routes";
-import { LicenseSchema } from "@/components/settings/validation";
+import { LicenseFormSchema } from "@/validation/settingsValidations/license.validation";
 
 // get query key for getCurrentStep
 export const getCurrentVerificationStepQueryKey = () =>
@@ -56,6 +56,7 @@ export const useOrganizationsQuery = (
   );
 
 export const useSubmitMentorVerificationDataMutation = () =>
-  usePost<LicenseSchema, ISubmitMentorVerificationDataResponse>({
+  usePost<LicenseFormSchema, ISubmitMentorVerificationDataResponse>({
     queryKey: getSubmitMentorVerificationDataMutationKey(),
+    dependentQueryKeys: [getCurrentVerificationStepQueryKey()],
   });

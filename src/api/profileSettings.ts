@@ -6,11 +6,15 @@ import {
   IAddCertificateResponse,
   IAddDegreeResponse,
   IGetUserProfileResponse,
+  ISubmitEducationFormResponse,
+  ISubmitExpertiseFormResponse,
   ISubmitIdentityInfoFormResponse,
 } from "@/interfaces/settings";
 import { IdentityInfoFormSchema } from "@/validation/settingsValidations/identityInfo.validation";
 import { DegreeFormSchema } from "@/components/settings/profile/PersonalDetails/Education/Degrees/validation";
 import { CertificateFormSchema } from "@/components/settings/profile/PersonalDetails/Education/Certificates/validation";
+import { EducationFormSchema } from "@/validation/settingsValidations/education.validation";
+import { ExpertiseFormSchema } from "@/validation/settingsValidations/expertise.validation";
 
 const useFetchOptions = (searchTerm: string) => ({
   staleTime: Infinity,
@@ -45,6 +49,28 @@ export const getPersonalInterestSuggestionsQueryKey = (searchTerm: string) =>
 export const getUniversitySuggestionsQueryKey = (searchTerm: string) =>
   createQueryKey(
     apiRoutes.settings.profile.getUniversitySuggestions(searchTerm)
+  );
+
+/**
+ * Generates the query key for residency program suggestions based on the search term.
+ *
+ * @param searchTerm - The search term.
+ * @returns The query key for practice area suggestions.
+ */
+export const getResidencyProgramSuggestionsQueryKey = (searchTerm: string) =>
+  createQueryKey(
+    apiRoutes.settings.profile.getResidencyProgramSuggestions(searchTerm)
+  );
+
+/**
+ * Generates the query key for fellowship program suggestions based on the search term.
+ *
+ * @param searchTerm - The search term.
+ * @returns The query key for practice area suggestions.
+ */
+export const getFellowshipProgramSuggestionsQueryKey = (searchTerm: string) =>
+  createQueryKey(
+    apiRoutes.settings.profile.getFellowshipProgramSuggestions(searchTerm)
   );
 
 /**
@@ -86,6 +112,20 @@ export const getDegreeSuggestionsQueryKey = (searchTerm: string) =>
  */
 export const getSubmitIdentityInfoFormMutationQueryKey = () =>
   createQueryKey(apiRoutes.settings.profile.submitIdentityInfoForm);
+
+/**
+ * Generates the query key for useEducationFormMutation.
+ * @returns The query key.
+ */
+export const getSubmitEducationFormMutationQueryKey = () =>
+  createQueryKey(apiRoutes.settings.profile.submitEducationForm);
+
+/**
+ * Generates the query key for useExpertiseFormMutation.
+ * @returns The query key.
+ */
+export const getSubmitExpertiseFormMutationQueryKey = () =>
+  createQueryKey(apiRoutes.settings.profile.submitExpertiseForm);
 
 /**
  * Generates the query key for useAddDegreeMutation.
@@ -165,6 +205,34 @@ export const useUniversitySuggestionsQuery = (searchTerm: string) =>
   );
 
 /**
+ * Custom hook for getting suggestions for Residency Programs
+ * always use this hook with a debounced search term to
+ * avoid hitting the server too many times
+ *
+ * @param searchTerm - The search term.
+ * @returns The query result.
+ */
+export const useResidencyProgramSuggestionsQuery = (searchTerm: string) =>
+  useFetch<IGetSuggestionsResponse>(
+    getResidencyProgramSuggestionsQueryKey(searchTerm),
+    useFetchOptions(searchTerm)
+  );
+
+/**
+ * Custom hook for getting suggestions for Fellowship Program
+ * always use this hook with a debounced search term to
+ * avoid hitting the server too many times
+ *
+ * @param searchTerm - The search term.
+ * @returns The query result.
+ */
+export const useFellowshipProgramSuggestionsQuery = (searchTerm: string) =>
+  useFetch<IGetSuggestionsResponse>(
+    getFellowshipProgramSuggestionsQueryKey(searchTerm),
+    useFetchOptions(searchTerm)
+  );
+
+/**
  * Custom hook for getting suggestions for Religious Affiliations
  * always use this hook with a debounced search term to
  * avoid hitting the server too many times
@@ -205,15 +273,43 @@ export const useCommonlyTreatedDiagnosesQuery = (searchTerm: string) =>
   );
 
 /**
- * Custom hook for submitting the Profile settings form.
+ * Custom hook for submitting the Identity form.
  *
- * This hook is used to submit the Profile settings form and returns the query result.
+ * This hook is used to submit the Identity form and returns the query result.
  *
- * @returns The query result for the Profile settings form mutation.
+ * @returns The query result for the Identity form mutation.
  */
 export const useIdentityInfoFormMutation = () =>
   usePost<IdentityInfoFormSchema, ISubmitIdentityInfoFormResponse>({
     queryKey: getSubmitIdentityInfoFormMutationQueryKey(),
+    dependentQueryKeys: [getUserProfileQueryKey()],
+  });
+
+/**
+ * Custom hook for submitting the Education form.
+ *
+ * This hook is used to submit the Education form and returns the query result.
+ *
+ * @returns The query result for the Education form mutation.
+ */
+export const useEducationFormMutation = () =>
+  usePost<
+    Omit<EducationFormSchema, "degrees" | "certificates">,
+    ISubmitEducationFormResponse
+  >({
+    queryKey: getSubmitEducationFormMutationQueryKey(),
+  });
+
+/**
+ * Custom hook for submitting the Expertise form.
+ *
+ * This hook is used to submit the Expertise form and returns the query result.
+ *
+ * @returns The query result for the Expertise form mutation.
+ */
+export const useExpertiseFormMutation = () =>
+  usePost<ExpertiseFormSchema, ISubmitExpertiseFormResponse>({
+    queryKey: getSubmitExpertiseFormMutationQueryKey(),
   });
 
 /**

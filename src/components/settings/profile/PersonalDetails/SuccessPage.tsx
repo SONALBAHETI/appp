@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import Profile_under_review_img from "../../../../public/images/Profile/Profile_under_review.svg";
 
 export default function SuccessPage() {
   return (
@@ -8,8 +7,8 @@ export default function SuccessPage() {
       <h2 className="mt-8 mb-4 text-2xl">Your Profile is under review!</h2>
       <div className="flex justify-center">
         <Image
-          src={Profile_under_review_img}
-          alt="Profile under review image"
+          src="/assets/svg/profile-under-review.svg"
+          alt="Profile under review illustration"
           width={200}
           height={200}
         />

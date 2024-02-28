@@ -1,22 +1,27 @@
 import { z } from "zod";
 
-const yearsOfExperience = z.string();
+export const ExpertiseFormSchema = z.object({
+  expertiseAreas: z
+    .array(z.string())
+    .min(1, "Please add at least one expertise area")
+    .max(7, "You can only add up to 7 expertise areas"),
+  commonlyTreatedDiagnoses: z
+    .array(z.string())
+    .min(1, "Please add at least one diagnosis")
+    .max(7, "You can only add up to 7 diagnoses"),
+  practiceAreas: z
+    .array(z.string())
+    .min(1, "Please add at least one area")
+    .max(7, "You can only add up to 7 areas"),
+  boardSpecialties: z
+    .array(z.string())
+    .min(1, "Please add at least one specialty")
+    .max(7, "You can only add up to 7 specialties"),
+  yearsInClinicalPractice: z
+    .number()
+    .min(0, "Experience can't be negative")
+    .max(75, "Experience can't be more than 75 years")
+    .default(0),
+});
 
-const aresOfExpertise = z.array(z.string()).min(1);
-
-const targetedDiagnoses = z.array(z.string()).min(1);
-
-const aresOfPractice = z.array(z.string()).min(1);
-
-const boardSpecialties = z.array(z.string()).min(1);
-
-export const expertiseFormSchemaObj = z.object({
-    aresOfExpertise: aresOfExpertise,
-    commonlyTreatedDiagnoses: targetedDiagnoses,
-    areasOfPractice: aresOfPractice,
-    boardSpecialties: boardSpecialties,
-    yearsOfExperience : yearsOfExperience
-})
-
-
-export type ExpertiseSchema = z.infer<typeof expertiseFormSchemaObj>;
+export type ExpertiseFormSchema = z.infer<typeof ExpertiseFormSchema>;

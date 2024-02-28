@@ -1,9 +1,8 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import {
-  ExpertiseSchema,
-  expertiseFormSchemaObj,
-} from "@/validation/settingsValidations/expertise.validation";
+import { ExpertiseFormSchema } from "@/validation/settingsValidations/expertise.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
 import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
@@ -15,7 +14,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Card } from "@/components/ui/card";
 import {
   useExpertiseAreaSuggestionsQuery,
   usePracticeAreaSuggestionsQuery,
@@ -23,14 +21,24 @@ import {
 import {
   useBoardSpecialtiesQuery,
   useCommonlyTreatedDiagnosesQuery,
+  useExpertiseFormMutation,
+  useUserProfileQuery,
 } from "@/api/profileSettings";
+import { Input } from "@/components/ui/FormFields";
+import { toast } from "react-toastify";
 
-export default function Expertise() {
-  const form = useForm<ExpertiseSchema>({
-    resolver: zodResolver(expertiseFormSchemaObj),
-    mode: "onSubmit",
-  });
+interface IExpertiseProps {
+  onSubmitting: (isSubmitting: boolean) => void;
+  onComplete?: () => void;
+}
 
+export default function Expertise({
+  onSubmitting,
+  onComplete,
+}: IExpertiseProps) {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  /* Debounced search terms */
   const [
     practiceAreasSearchTerm,
     setPracticeAreasSearchTerm,
@@ -38,9 +46,9 @@ export default function Expertise() {
   ] = useDebouncedSearchTerm();
 
   const [
-    boardSpecialtiesTerm,
-    setBoardSpecialtiesTerm,
-    debouncedBoardSpecialtiesTerm,
+    boardSpecialtiesSearchTerm,
+    setBoardSpecialtiesSearchTerm,
+    debouncedBoardSpecialtiesSearchTerm,
   ] = useDebouncedSearchTerm();
 
   const [
@@ -55,84 +63,98 @@ export default function Expertise() {
     debouncedCommonlyTreatedDiagnosesSearchTerm,
   ] = useDebouncedSearchTerm();
 
-  const { data: expertiseAreasData, isPending: isExpertiseAreasDataPending } =
-    useExpertiseAreaSuggestionsQuery(debouncedExpertiseAreasSearchTerm);
+  /* server states */
+  const userProfileQuery = useUserProfileQuery();
+  const expertiseAreaSuggestionsQuery = useExpertiseAreaSuggestionsQuery(
+    debouncedExpertiseAreasSearchTerm
+  );
+  const practiceAreaSuggestionsQuery = usePracticeAreaSuggestionsQuery(
+    debouncedPracticeAreasSearchTerm
+  );
+  const boardSpecialtiesSuggestionsQuery = useBoardSpecialtiesQuery(
+    debouncedBoardSpecialtiesSearchTerm
+  );
+  const commonlyTreatedDiagnosesSuggestionsQuery =
+    useCommonlyTreatedDiagnosesQuery(
+      debouncedCommonlyTreatedDiagnosesSearchTerm
+    );
 
-  const { data: practiceAreasData, isPending: isPracticeAreasDataPending } =
-    usePracticeAreaSuggestionsQuery(debouncedPracticeAreasSearchTerm);
+  /* server mutations */
+  const expertiseFormMutation = useExpertiseFormMutation();
 
-  const {
-    data: boardSpecialtiesData,
-    isPending: isBoardSpecialtiesDatPending,
-  } = useBoardSpecialtiesQuery(debouncedBoardSpecialtiesTerm);
+  /* hooks */
+  const form = useForm<ExpertiseFormSchema>({
+    resolver: zodResolver(ExpertiseFormSchema),
+    mode: "onSubmit",
+  });
 
-  const {
-    data: commonlyTreatedDiagnosesData,
-    isPending: isCommonlyTreatedDiagnosesData,
-  } = useCommonlyTreatedDiagnosesQuery(debouncedBoardSpecialtiesTerm);
+  useEffect(() => {
+    const handleSaveAndNextEvent = () => {
+      if (formRef.current) {
+        formRef.current.dispatchEvent(
+          new Event("submit", { cancelable: true, bubbles: true })
+        );
+      }
+    };
+    document.addEventListener("saveAndNextEvent", handleSaveAndNextEvent);
+    return () => {
+      document.removeEventListener("saveAndNextEvent", handleSaveAndNextEvent);
+    };
+  }, []);
 
-  const experienceRange: string[] = ["0-1", "2-5", "6-10", "11-19", "20+"];
+  useEffect(() => {
+    if (userProfileQuery.data) {
+      const { expertise } = userProfileQuery.data.profile;
+      if (expertise) {
+        form.setValue(
+          "yearsInClinicalPractice",
+          expertise.yearsInClinicalPractice || 0
+        );
+        form.setValue("expertiseAreas", expertise.expertiseAreas || []);
+        form.setValue("boardSpecialties", expertise.boardSpecialties || []);
+        form.setValue(
+          "commonlyTreatedDiagnoses",
+          expertise.commonlyTreatedDiagnoses || []
+        );
+        form.setValue("practiceAreas", expertise.practiceAreas || []);
+      }
+    }
+  }, [userProfileQuery.data]);
 
-  async function onExpertiseFormSubmit(data: ExpertiseSchema): Promise<void> {}
+  async function onExpertiseFormSubmit(data: ExpertiseFormSchema) {
+    try {
+      onSubmitting(true);
+      await expertiseFormMutation.mutateAsync(data);
+      toast.success("Expertise details successfully saved!");
+      onComplete?.();
+    } catch (error) {
+      toast.error("Something went wrong. Please try again later.");
+    } finally {
+      onSubmitting(false);
+    }
+  }
 
   return (
-    <>
-      <div className="py-5 px-6 rounded-xl border">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onExpertiseFormSubmit)}>
-            <div className="flex flex-col space-y-4">
-              <div className="mt-2">
-                <FormField
-                  control={form.control}
-                  name="yearsOfExperience"
-                  defaultValue={experienceRange[0]}
-                  render={({ field: { value, onChange, ...props } }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-bold">
-                        How many years of clinical experience do you have?
-                      </FormLabel>
-                      <FormControl>
-                        <div className="w-1/2 flex hover:cursor-pointer">
-                          {experienceRange.map((range) => (
-                            <Card
-                              key={range}
-                              className={`mr-2 px-4 py-2 text-sm  font-medium rounded-full border-2 ${
-                                value === range
-                                  ? "border-[#349997] bg-[#349997] text-white"
-                                  : ""
-                              }`}
-                              onClick={() => onChange(range)}
-                            >
-                              {range}
-                            </Card>
-                          ))}
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-            <div className="mt-5">
+    <div className="py-5 px-6 rounded-xl border">
+      <Form {...form}>
+        <form ref={formRef} onSubmit={form.handleSubmit(onExpertiseFormSubmit)}>
+          <div className="flex flex-col space-y-4">
+            <div className="mt-2">
               <FormField
                 control={form.control}
-                name="aresOfExpertise"
-                defaultValue={[]}
+                name="yearsInClinicalPractice"
+                defaultValue={0}
                 render={({ field: { value, onChange, ...props } }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-bold">
-                      Areas of Expertise
+                    <FormLabel>
+                      How many years of clinical experience do you have?
                     </FormLabel>
                     <FormControl>
-                      <SearchAndSelect
-                        placeholder="eg. Cardiovascular system, pulmonary system, geriatrics, aging"
-                        value={expertiseAreasSearchTerm}
-                        isLoading={isExpertiseAreasDataPending}
-                        suggestions={expertiseAreasData?.suggestions || []}
-                        selectedSuggestions={value}
-                        onSelectedSuggestionsChange={onChange}
-                        onValueChange={setExpertiseAreasSearchTerm}
+                      <Input
+                        type="number"
+                        className="max-w-max"
+                        value={value}
+                        onChange={(e) => onChange(Number(e.target.value))}
                         {...props}
                       />
                     </FormControl>
@@ -141,92 +163,120 @@ export default function Expertise() {
                 )}
               />
             </div>
-            <div className="mt-5">
-              <FormField
-                control={form.control}
-                name="commonlyTreatedDiagnoses"
-                defaultValue={[]}
-                render={({ field: { value, onChange, ...props } }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-bold">
-                      Commonly treated diagnoses
-                    </FormLabel>
-                    <FormControl>
-                      <SearchAndSelect
-                        placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                        value={commonlyTreatedDiagnosesSearchTerm}
-                        isLoading={isCommonlyTreatedDiagnosesData}
-                        suggestions={
-                          commonlyTreatedDiagnosesData?.suggestions || []
-                        }
-                        selectedSuggestions={value}
-                        onSelectedSuggestionsChange={onChange}
-                        onValueChange={setCommonlyTreatedDiagnosesSearchTerm}
-                        {...props}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="mt-5">
-              <FormField
-                control={form.control}
-                name="areasOfPractice"
-                defaultValue={[]}
-                render={({ field: { value, onChange, ...props } }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-bold">
-                      Primary area(s) of practice
-                    </FormLabel>
-                    <FormControl>
-                      <SearchAndSelect
-                        placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                        value={practiceAreasSearchTerm}
-                        isLoading={isPracticeAreasDataPending}
-                        suggestions={practiceAreasData?.suggestions || []}
-                        selectedSuggestions={value}
-                        onSelectedSuggestionsChange={onChange}
-                        onValueChange={setPracticeAreasSearchTerm}
-                        {...props}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="mt-5">
-              <FormField
-                control={form.control}
-                name="boardSpecialties"
-                defaultValue={[]}
-                render={({ field: { value, onChange, ...props } }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-bold">
-                      Board specialties
-                    </FormLabel>
-                    <FormControl>
-                      <SearchAndSelect
-                        placeholder="eg. Physical Therapy, Education, Administration, Researcher"
-                        value={boardSpecialtiesTerm}
-                        isLoading={isBoardSpecialtiesDatPending}
-                        suggestions={boardSpecialtiesData?.suggestions || []}
-                        selectedSuggestions={value}
-                        onSelectedSuggestionsChange={onChange}
-                        onValueChange={setBoardSpecialtiesTerm}
-                        {...props}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </form>
-        </Form>
-      </div>
-    </>
+          </div>
+          <div className="mt-5">
+            <FormField
+              control={form.control}
+              name="expertiseAreas"
+              defaultValue={[]}
+              render={({ field: { value, onChange, ...props } }) => (
+                <FormItem>
+                  <FormLabel>Areas of Expertise</FormLabel>
+                  <FormControl>
+                    <SearchAndSelect
+                      placeholder="eg. Cardiovascular system, pulmonary system, geriatrics, aging"
+                      value={expertiseAreasSearchTerm}
+                      isLoading={expertiseAreaSuggestionsQuery.isPending}
+                      suggestions={
+                        expertiseAreaSuggestionsQuery.data?.suggestions || []
+                      }
+                      selectedSuggestions={value}
+                      onSelectedSuggestionsChange={onChange}
+                      onValueChange={setExpertiseAreasSearchTerm}
+                      {...props}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="mt-5">
+            <FormField
+              control={form.control}
+              name="commonlyTreatedDiagnoses"
+              defaultValue={[]}
+              render={({ field: { value, onChange, ...props } }) => (
+                <FormItem>
+                  <FormLabel>Commonly treated diagnoses</FormLabel>
+                  <FormControl>
+                    <SearchAndSelect
+                      placeholder="eg. Physical Therapy, Education, Administration, Researcher"
+                      value={commonlyTreatedDiagnosesSearchTerm}
+                      isLoading={
+                        commonlyTreatedDiagnosesSuggestionsQuery.isPending
+                      }
+                      suggestions={
+                        commonlyTreatedDiagnosesSuggestionsQuery.data
+                          ?.suggestions || []
+                      }
+                      selectedSuggestions={value}
+                      onSelectedSuggestionsChange={onChange}
+                      onValueChange={setCommonlyTreatedDiagnosesSearchTerm}
+                      {...props}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="mt-5">
+            <FormField
+              control={form.control}
+              name="practiceAreas"
+              defaultValue={[]}
+              render={({ field: { value, onChange, ...props } }) => (
+                <FormItem>
+                  <FormLabel>Primary area(s) of practice</FormLabel>
+                  <FormControl>
+                    <SearchAndSelect
+                      placeholder="eg. Physical Therapy, Education, Administration, Researcher"
+                      value={practiceAreasSearchTerm}
+                      isLoading={practiceAreaSuggestionsQuery.isPending}
+                      suggestions={
+                        practiceAreaSuggestionsQuery.data?.suggestions || []
+                      }
+                      selectedSuggestions={value}
+                      onSelectedSuggestionsChange={onChange}
+                      onValueChange={setPracticeAreasSearchTerm}
+                      {...props}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="mt-5">
+            <FormField
+              control={form.control}
+              name="boardSpecialties"
+              defaultValue={[]}
+              render={({ field: { value, onChange, ...props } }) => (
+                <FormItem>
+                  <FormLabel>Board specialties</FormLabel>
+                  <FormControl>
+                    <SearchAndSelect
+                      placeholder="eg. Physical Therapy, Education, Administration, Researcher"
+                      value={boardSpecialtiesSearchTerm}
+                      isLoading={boardSpecialtiesSuggestionsQuery.isPending}
+                      suggestions={
+                        boardSpecialtiesSuggestionsQuery.data?.suggestions || []
+                      }
+                      selectedSuggestions={value}
+                      onSelectedSuggestionsChange={onChange}
+                      onValueChange={setBoardSpecialtiesSearchTerm}
+                      {...props}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 }

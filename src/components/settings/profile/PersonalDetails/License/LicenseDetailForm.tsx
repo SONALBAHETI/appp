@@ -12,7 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import Combobox from "@/components/ui/combobox";
 import { HEALTHCARE_PROFESSIONAL_STATUSES } from "@/constants/sheerID";
 import {
@@ -23,8 +22,17 @@ import {
 import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
 import { toast } from "react-toastify";
+import { useEffect, useRef } from "react";
 
-export default function LicenseDetailForm() {
+interface ILicenseDetailFormProps {
+  onSubmitting: (isSubmitting: boolean) => void;
+  onComplete?: () => void;
+}
+
+export default function LicenseDetailForm({
+  onSubmitting,
+}: ILicenseDetailFormProps) {
+  const formRef = useRef<HTMLFormElement>(null);
   const form = useForm<LicenseFormSchema>({
     resolver: zodResolver(LicenseFormSchema),
     mode: "onSubmit",
@@ -40,16 +48,32 @@ export default function LicenseDetailForm() {
   const submitMentorVerificationDataMutation =
     useSubmitMentorVerificationDataMutation();
 
+  useEffect(() => {
+    const handleSaveAndNextEvent = () => {
+      if (formRef.current) {
+        formRef.current.dispatchEvent(
+          new Event("submit", { cancelable: true, bubbles: true })
+        );
+      }
+    };
+    document.addEventListener("saveAndNextEvent", handleSaveAndNextEvent);
+    return () => {
+      document.removeEventListener("saveAndNextEvent", handleSaveAndNextEvent);
+    };
+  }, []);
+
   const onSubmit = async (data: LicenseFormSchema) => {
     try {
+      onSubmitting(true);
       await submitMentorVerificationDataMutation.mutateAsync({
         ...data,
       });
     } catch (error: any) {
-      console.error(error);
       toast.error(
-        error.response?.data.message || "Couldn't submit license details"
+        error.response?.data?.message || "Couldn't submit license details"
       );
+    } finally {
+      onSubmitting(false);
     }
   };
 
@@ -58,6 +82,7 @@ export default function LicenseDetailForm() {
       <h3 className="mb-7 mt-3">License Details</h3>
       <Form {...form}>
         <form
+          ref={formRef}
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid gap-x-3 gap-y-4 grid-cols-2"
         >
@@ -198,9 +223,6 @@ export default function LicenseDetailForm() {
               </FormItem>
             )}
           />
-          <Button className="mt-8" type="submit">
-            Submit
-          </Button>
         </form>
       </Form>
     </div>

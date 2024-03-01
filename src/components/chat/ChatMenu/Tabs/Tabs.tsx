@@ -12,7 +12,7 @@ export default function Tabs({
   onTabChange,
 }: ITabsProps) {
   return (
-    <nav className="bg-gray-100 rounded-lg flex w-full">
+    <nav className="bg-muted rounded-lg flex w-full">
       <ul role="tablist" className="flex w-full">
         {items.map((item, index) => (
           <TabItem

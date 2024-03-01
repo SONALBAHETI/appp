@@ -19,6 +19,13 @@ export interface ISubmitMentorVerificationDataResponse {
   currentStep: string;
 }
 
+export interface IDocUploadResponse {
+  currentStep: string;
+}
+
 export interface IGetCurrentVerificationStepResponse {
   currentStep: string;
+  maxReviewTime?: string;
+  estimatedReviewTime?: string;
+  rejectionReasons?: string[];
 }

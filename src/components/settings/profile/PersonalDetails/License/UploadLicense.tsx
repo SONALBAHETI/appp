@@ -1,12 +1,57 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FileInput from "@/components/ui/FileInput";
+import { useDocUploadMutation } from "@/api/mentorVerification";
+import { toast } from "react-toastify";
+import { IGetCurrentVerificationStepResponse } from "@/interfaces/verification";
 
-export default function UploadLicense() {
+interface IUploadLicenseProps {
+  onSubmitting: (isSubmitting: boolean) => void;
+  verificationStatus: IGetCurrentVerificationStepResponse;
+  onComplete?: () => void;
+}
+
+export default function UploadLicense({
+  onSubmitting,
+  verificationStatus,
+  onComplete,
+}: IUploadLicenseProps) {
+  /* component states */
+  const selectedFileRef = useRef<File | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const handleFileChange = () => {
-    // TODO
+  /* mutations */
+  const docUploadMutation = useDocUploadMutation();
+
+  useEffect(() => {
+    const handleSaveAndNextEvent = async () => {
+      try {
+        onSubmitting(true);
+        if (!selectedFileRef.current) {
+          toast.error("Please select a file.");
+          return;
+        }
+        const formData = new FormData();
+        formData.append("file", selectedFileRef.current);
+        await docUploadMutation.mutateAsync(formData);
+        toast.success("Identity details successfully updated!");
+        onComplete?.();
+      } catch (error) {
+        console.error(error);
+        toast.error("Something went wrong while uploading the document.");
+      } finally {
+        onSubmitting(false);
+      }
+    };
+    document.addEventListener("saveAndNextEvent", handleSaveAndNextEvent);
+    return () => {
+      document.removeEventListener("saveAndNextEvent", handleSaveAndNextEvent);
+    };
+  }, []);
+
+  const setSelectedFileRef = (file: File | null) => {
+    setSelectedFile(file);
+    selectedFileRef.current = file;
   };
 
   return (
@@ -22,8 +67,30 @@ export default function UploadLicense() {
         className="py-10"
         accept=".jpg, .jpeg, .png, .pdf"
         selected={selectedFile}
-        onFileChange={setSelectedFile}
+        onFileChange={setSelectedFileRef}
       />
+
+      {/* Document rejection reasons */}
+      {verificationStatus?.rejectionReasons?.length ? (
+        <div className="bg-destructive/5 rounded-lg p-4 flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
+            <h6 className="text-faded">
+              Your document was rejected for the following reasons:
+            </h6>
+            <ul className="list-disc ml-5 text-faded text-sm">
+              {verificationStatus?.rejectionReasons?.map((reason) => (
+                <li className="capitalize" key={reason}>
+                  {reason.replaceAll("_", " ").toLowerCase()}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {/* Document upload instructions */}
       <div className="bg-secondary rounded-lg p-4 flex flex-col gap-2">
         <div className="flex flex-col gap-1">
           <h6 className="text-faded">

@@ -5,12 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { IdentityInfoFormSchema } from "@/validation/settingsValidations/identityInfo.validation";
 
-import {
-  Input,
-  SelectFormField,
-  Textarea,
-  DatePicker,
-} from "@/components/ui/FormFields";
+import { Input, Textarea, DatePicker } from "@/components/ui/FormFields";
 
 import {
   Form,
@@ -20,6 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import Combobox from "@/components/ui/combobox";
 
 import { Switch } from "@/components/ui/switch";
 import { ResumeContext } from "@/context/ResumeContext";
@@ -32,14 +28,17 @@ import {
 } from "@/api/profileSettings";
 import { toast } from "react-toastify";
 import ResumeAutoFill from "../ResumeAutoFill/ResumeAutoFill";
-import { genders, pronouns } from "@/constants/profile"; 
+import { genders, pronouns } from "@/constants/profile";
 
 interface IIdentityInfoProps {
   onSubmitting: (isSubmitting: boolean) => void;
   onComplete?: () => void;
 }
 
-export default function IdentityInfo({ onSubmitting, onComplete }: IIdentityInfoProps) {
+export default function IdentityInfo({
+  onSubmitting,
+  onComplete,
+}: IIdentityInfoProps) {
   const { resume } = useContext(ResumeContext);
 
   const [
@@ -239,16 +238,16 @@ export default function IdentityInfo({ onSubmitting, onComplete }: IIdentityInfo
                     control={form.control}
                     name="pronouns"
                     defaultValue=""
-                    render={({ field }) => (
+                    render={({ field: { value, onChange } }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Pronouns</FormLabel>
                         <FormControl>
-                          <SelectFormField
-                            label="Pronouns"
-                            placeholder="Select an option"
+                          <Combobox
+                            value={value}
+                            onChange={onChange}
+                            className="w-full"
                             options={pronouns}
-                            field={field}
-                          ></SelectFormField>
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -262,16 +261,16 @@ export default function IdentityInfo({ onSubmitting, onComplete }: IIdentityInfo
                     control={form.control}
                     name="gender"
                     defaultValue=""
-                    render={({ field }) => (
+                    render={({ field: { value, onChange } }) => (
                       <FormItem className="flex-1">
                         <FormLabel>Gender</FormLabel>
                         <FormControl>
-                          <SelectFormField
-                            label="Gender"
-                            placeholder="Select an option"
+                          <Combobox
+                            value={value}
+                            onChange={onChange}
+                            className="w-full"
                             options={genders}
-                            field={field}
-                          ></SelectFormField>
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

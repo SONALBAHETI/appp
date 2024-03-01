@@ -69,7 +69,7 @@ export default function PersonalDetails() {
                   >
                     View Profile
                   </Link>
-                  <Button onClick={submit}>
+                  <Button disabled={isSubmitting} onClick={submit}>
                     {isSubmitting && <Loader className="mr-1" />}
                     {isSubmitting
                       ? "Saving..."

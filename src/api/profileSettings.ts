@@ -298,6 +298,7 @@ export const useEducationFormMutation = () =>
     ISubmitEducationFormResponse
   >({
     queryKey: getSubmitEducationFormMutationQueryKey(),
+    dependentQueryKeys: [getUserProfileQueryKey()],
   });
 
 /**
@@ -310,6 +311,7 @@ export const useEducationFormMutation = () =>
 export const useExpertiseFormMutation = () =>
   usePost<ExpertiseFormSchema, ISubmitExpertiseFormResponse>({
     queryKey: getSubmitExpertiseFormMutationQueryKey(),
+    dependentQueryKeys: [getUserProfileQueryKey()],
   });
 
 /**

@@ -155,6 +155,7 @@ export default function LicenseDetailForm({
           <FormField
             control={form.control}
             name="postalCode"
+            defaultValue=""
             render={({ field }) => (
               <FormItem className="flex-1">
                 <FormLabel>Postal Code</FormLabel>

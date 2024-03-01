@@ -32,6 +32,7 @@ const userMatch = {
 const mentorVerification = {
   getCurrentStep: `${baseUrls.mentorVerification}/current-step`,
   submitVerificationData: `${baseUrls.mentorVerification}/submit-data`,
+  docUpload: `${baseUrls.mentorVerification}/doc-upload`,
   getOrgSearchUrl: `${baseUrls.mentorVerification}/organizations/search-url`,
   getOrganizations: (orgSearchUrl?: string, searchTerm?: string) =>
     `${baseUrls.mentorVerification}/organizations/search?orgSearchUrl=${

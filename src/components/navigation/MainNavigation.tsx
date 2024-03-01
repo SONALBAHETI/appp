@@ -7,9 +7,9 @@ import { usePathname, useRouter } from "next/navigation";
 export default function MainNavigation() {
   const pathname = usePathname();
   const router = useRouter();
-  const activeRouteClassName = "bg-secondary text-primary rounded-r-full";
+  const activeRouteClassName = "bg-nav-foreground text-nav rounded-r-full";
   return (
-    <div className="fixed py-6 top-0 left-0 bottom-0 bg-primary text-primary-foreground">
+    <div className="fixed py-6 top-0 left-0 bottom-0 bg-nav text-nav-foreground">
       <div className="flex flex-col items-center pr-1">
         {Object.keys(NAV_ROUTES).map((key) => {
           const route = NAV_ROUTES[key];

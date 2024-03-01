@@ -10,4 +10,6 @@ export enum IconType {
   NOTE = "Note",
   LOADING = "Loading",
   VIDEO = "Video",
+  SETTINGS = "Settings",
+  BACK="ArrowLeft"
 }

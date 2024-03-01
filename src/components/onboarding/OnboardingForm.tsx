@@ -170,7 +170,6 @@ export default function OnboardingForm() {
                         value={primaryInterestsSearchTerm}
                         isLoading={isPrimaryInterestDataPending}
                         suggestions={primaryInterestData?.suggestions || []}
-                        onClear={() => setPrimaryInterestsSearchTerm("")}
                         selectedSuggestions={value}
                         onSelectedSuggestionsChange={onChange}
                         onValueChange={setPrimaryInterestsSearchTerm}
@@ -204,7 +203,6 @@ export default function OnboardingForm() {
                           value={practiceAreasSearchTerm}
                           isLoading={isPracticeAreasDataPending}
                           suggestions={practiceAreasData?.suggestions || []}
-                          onClear={() => setPracticeAreasSearchTerm("")}
                           selectedSuggestions={value}
                           onSelectedSuggestionsChange={onChange}
                           onValueChange={setPracticeAreasSearchTerm}
@@ -231,7 +229,6 @@ export default function OnboardingForm() {
                           value={expertiseAreasSearchTerm}
                           isLoading={isExpertiseAreasDataPending}
                           suggestions={expertiseAreasData?.suggestions || []}
-                          onClear={() => setExpertiseAreasSearchTerm("")}
                           selectedSuggestions={value}
                           onSelectedSuggestionsChange={onChange}
                           onValueChange={setExpertiseAreasSearchTerm}

@@ -8,6 +8,7 @@ const baseUrls = {
   onboarding: "/api/v1/onboarding",
   userMatch: "/api/v1/usermatch",
   mentorVerification: "/api/v1/verification/mentor",
+  settings: "/api/v1/settings",
 };
 
 const notes = {
@@ -31,6 +32,7 @@ const userMatch = {
 const mentorVerification = {
   getCurrentStep: `${baseUrls.mentorVerification}/current-step`,
   submitVerificationData: `${baseUrls.mentorVerification}/submit-data`,
+  docUpload: `${baseUrls.mentorVerification}/doc-upload`,
   getOrgSearchUrl: `${baseUrls.mentorVerification}/organizations/search-url`,
   getOrganizations: (orgSearchUrl?: string, searchTerm?: string) =>
     `${baseUrls.mentorVerification}/organizations/search?orgSearchUrl=${
@@ -46,11 +48,56 @@ const notifications = {
 const onboarding = {
   getPrimaryInterestSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/primaryinterests?q=${searchTerm}`,
+  
   getExpertiseAreaSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/expertiseareas?q=${searchTerm}`,
+  
   getPracticeAreaSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/practiceareas?q=${searchTerm}`,
+  
   submitOnboardingForm: `${baseUrls.onboarding}/form/submit`,
+};
+
+const profileSettings = {
+  getCommonlyTreatedDiagnoses: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/commonly-treated-diagnoses?q=${searchTerm}`,
+
+  getBoardSpecialties: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/board-specialties?q=${searchTerm}`,
+
+  submitIdentityInfoForm: `${baseUrls.settings}/profile/identity-info/`,
+
+  submitEducationForm: `${baseUrls.settings}/profile/education`,
+  
+  submitExpertiseForm: `${baseUrls.settings}/profile/expertise`,
+
+  degrees: `${baseUrls.settings}/profile/education/degrees`,
+
+  certificates: `${baseUrls.settings}/profile/education/certificates`,
+
+  getPersonalInterests: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/personal-interests?q=${searchTerm}`,
+
+  getUserProfile: `${baseUrls.settings}/profile/user-profile`,
+
+  getReligiousAffiliations: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/religious-affiliations?q=${searchTerm}`,
+
+  getDegreeSuggestions: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/degrees?q=${searchTerm}`,
+
+  getUniversitySuggestions: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/universities?q=${searchTerm}`,
+
+  getResidencyProgramSuggestions: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/residency-programs?q=${searchTerm}`,
+
+  getFellowshipProgramSuggestions: (searchTerm: string) =>
+    `${baseUrls.settings}/profile/suggestions/fellowship-programs?q=${searchTerm}`,
+};
+
+const settings = {
+  profile: profileSettings,
 };
 
 const auth = {
@@ -69,6 +116,7 @@ export const apiRoutes = {
   auth,
   notifications,
   onboarding,
+  settings,
   logout: `${baseUrls.api}/auth/logout`,
   signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
 };

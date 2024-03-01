@@ -11,6 +11,7 @@ axiosInstance.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
+        // Make a request to refresh tokens
         const res = await axios.post(
           `${baseURL}/api/v1/auth/refresh-tokens`,
           null,
@@ -19,12 +20,12 @@ axiosInstance.interceptors.response.use(
           }
         );
         if (res.status === 200) {
-          // Retry the original request with the new access token
+          // If refresh token succeeds, retry the original request with the new access token
           return axios(originalRequest);
         }
       } catch (error) {
-        // Handle error if API request fails
-        console.log(error);
+        // Handle error if refresh token request fails
+        console.log("Error refreshing tokens:", error);
         throw error;
       }
     }
@@ -33,6 +34,7 @@ axiosInstance.interceptors.response.use(
 );
 
 export const api = {
+  // Include withCredentials for all requests
   get: <T>(url: string, params?: object) =>
     axiosInstance.get<T>(url, {
       ...params,

@@ -8,7 +8,7 @@ import { useFetch, usePost } from "@/lib/react-query";
 import { TOnboardingForm } from "@/validation/onboardingForm.validation";
 
 const useFetchOptions = (searchTerm: string) => ({
-  staleTime: 1000 * 30, // 30 seconds
+  staleTime: Infinity,
   refetchOnWindowFocus: false,
   enabled: !!searchTerm,
 });

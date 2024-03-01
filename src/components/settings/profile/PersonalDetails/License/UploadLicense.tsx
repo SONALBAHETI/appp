@@ -34,7 +34,6 @@ export default function UploadLicense({
         const formData = new FormData();
         formData.append("file", selectedFileRef.current);
         await docUploadMutation.mutateAsync(formData);
-        toast.success("Identity details successfully updated!");
         onComplete?.();
       } catch (error) {
         console.error(error);

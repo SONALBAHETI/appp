@@ -447,18 +447,12 @@ export default function IdentityInfo({
                       <FormItem className="flex-1">
                         <FormLabel>Identity</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="Identity"
-                            autoCapitalize="words"
-                            autoComplete="given-Identity"
-                            {...field}
-                          />
+                          <Input placeholder="Enter your identity" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"></div>
                 </div>
               </div>
               <div className="flex-grow w-1/3">
@@ -473,9 +467,7 @@ export default function IdentityInfo({
                         <FormLabel>Ethnicity</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="First Name"
-                            autoCapitalize="words"
-                            autoComplete="given-name"
+                            placeholder="Enter your ethnicity"
                             {...field}
                           />
                         </FormControl>

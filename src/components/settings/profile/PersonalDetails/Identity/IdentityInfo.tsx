@@ -129,7 +129,7 @@ export default function IdentityInfo({
       onSubmitting(false);
     }
   }
-  function handleClick(checked: boolean) {
+  function handleShareMoreDetailsToggle(checked: boolean) {
     setShareMoreDetailsEnabled(checked);
   }
 
@@ -427,7 +427,7 @@ export default function IdentityInfo({
             {/* Identity, Ethnicity, ReligiousAffiliation */}
             <div className="pt-4">
               <div className="flex items-center space-x-2">
-                <Switch onCheckedChange={handleClick} />
+                <Switch onCheckedChange={handleShareMoreDetailsToggle} />
                 <h6>Share more details for better matches</h6>
               </div>
               <p className="text-muted-foreground mt-1">

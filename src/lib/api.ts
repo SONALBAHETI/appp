@@ -21,7 +21,6 @@ axiosInstance.interceptors.response.use(
         );
         if (res.status === 200) {
           // If refresh token succeeds, retry the original request with the new access token
-          originalRequest.headers.Authorization = `Bearer ${res.data.access_token}`;
           return axios(originalRequest);
         }
       } catch (error) {

@@ -1,6 +1,6 @@
 import type { ResumeSkills } from "@/lib/parse-resume-from-pdf/types";
 import type { FeaturedSkill, ResumeSectionToLines } from "@/lib/parse-resume-from-pdf/types";
-import { deepClone } from "@/lib/deep-clone";
+import { deepClone } from "@/lib/utils";
 import { getSectionLinesByKeywords } from "@/lib/parse-resume-from-pdf/extract-resume-from-sections/lib/get-section-lines";
 import {
   getBulletPointsFromLines,

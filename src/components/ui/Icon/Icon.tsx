@@ -17,6 +17,7 @@ import {
   Video,
   Settings,
   ArrowLeft,
+  User,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -47,6 +48,8 @@ function changeTypeToIconComponent(type: IconType) {
       return Settings;
     case IconType.BACK:
       return ArrowLeft;
+    case IconType.USER:
+      return User;
     default:
       return Plus; // TODO: Choose default icon?
   }

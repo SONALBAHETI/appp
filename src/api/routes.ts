@@ -67,6 +67,8 @@ const profileSettings = {
 
   submitIdentityInfoForm: `${baseUrls.settings}/profile/identity-info/`,
 
+  uploadProfilePicture: `${baseUrls.settings}/profile/profile-picture`,
+
   submitEducationForm: `${baseUrls.settings}/profile/education`,
   
   submitExpertiseForm: `${baseUrls.settings}/profile/expertise`,

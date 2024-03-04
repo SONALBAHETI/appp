@@ -11,5 +11,6 @@ export enum IconType {
   LOADING = "Loading",
   VIDEO = "Video",
   SETTINGS = "Settings",
-  BACK="ArrowLeft"
+  BACK = "ArrowLeft",
+  USER = "User",
 }

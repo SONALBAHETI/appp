@@ -9,6 +9,7 @@ import {
   ISubmitEducationFormResponse,
   ISubmitExpertiseFormResponse,
   ISubmitIdentityInfoFormResponse,
+  IUploadProfilePictureResponse,
 } from "@/interfaces/settings";
 import { IdentityInfoFormSchema } from "@/validation/settingsValidations/identityInfo.validation";
 import { DegreeFormSchema } from "@/components/settings/profile/PersonalDetails/Education/Degrees/validation";
@@ -283,6 +284,25 @@ export const useIdentityInfoFormMutation = () =>
   usePost<IdentityInfoFormSchema, ISubmitIdentityInfoFormResponse>({
     queryKey: getSubmitIdentityInfoFormMutationQueryKey(),
     dependentQueryKeys: [getUserProfileQueryKey()],
+  });
+
+/**
+ * Generates the query key for useIdentityInfoFormMutation.
+ * @returns The query key.
+ */
+export const getProfilePictureMutationQueryKey = () =>
+  createQueryKey(apiRoutes.settings.profile.uploadProfilePicture);
+
+/**
+ * Custom hook for uploading the profile picture.
+ *
+ * This hook is used to upload the user's profile picture and returns the query result.
+ *
+ * @returns The query result for profile picture upload.
+ */
+export const useProfilePictureMutation = () =>
+  usePost<FormData, IUploadProfilePictureResponse>({
+    queryKey: getProfilePictureMutationQueryKey(),
   });
 
 /**

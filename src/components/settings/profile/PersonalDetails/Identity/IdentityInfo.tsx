@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,12 +23,19 @@ import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
 import {
   useIdentityInfoFormMutation,
   usePersonalInterestSuggestionsQuery,
+  useProfilePictureMutation,
   useReligiousAffiliationsSuggestionsQuery,
   useUserProfileQuery,
 } from "@/api/profileSettings";
 import { toast } from "react-toastify";
 import ResumeAutoFill from "../ResumeAutoFill/ResumeAutoFill";
 import { genders, pronouns } from "@/constants/profile";
+import { AvatarFallback } from "@/components/ui/avatar";
+import { Label } from "@/components/ui/label";
+import FileInput from "@/components/ui/FileInput";
+import Icon, { IconType } from "@/components/ui/Icon";
+import { IUploadProfilePictureResponse } from "@/interfaces/settings";
+import Loader from "@/components/ui/Loader";
 
 interface IIdentityInfoProps {
   onSubmitting: (isSubmitting: boolean) => void;
@@ -53,6 +60,16 @@ export default function IdentityInfo({
     debouncedReligiousAffiliationsSearchTerm,
   ] = useDebouncedSearchTerm();
 
+  /* component states */
+  const [profilePicUrl, setProfilePicUrl] = useState<string | undefined>();
+  const [isProfilePictureUploading, setIsProfilePictureUploading] =
+    useState<boolean>(false);
+
+  /* Refs */
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  /* Server states */
+  const userProfileQuery = useUserProfileQuery();
   const personalInterestSuggestionsQuery = usePersonalInterestSuggestionsQuery(
     debouncedPersonalInterestsSearchTerm
   );
@@ -61,9 +78,9 @@ export default function IdentityInfo({
       debouncedReligiousAffiliationsSearchTerm
     );
 
-  const userProfileQuery = useUserProfileQuery();
-
+  /* Server mutations */
   const identityInfoFormMutation = useIdentityInfoFormMutation();
+  const profilePictureMutation = useProfilePictureMutation();
 
   const form = useForm<IdentityInfoFormSchema>({
     resolver: zodResolver(IdentityInfoFormSchema),
@@ -94,6 +111,9 @@ export default function IdentityInfo({
 
   useEffect(() => {
     if (userProfileQuery.data) {
+      // set profile picture url
+      setProfilePicUrl(userProfileQuery.data.profile.picture);
+      // set email
       form.setValue("email", userProfileQuery.data.email);
       // set form values from profile data
       Object.keys(userProfileQuery.data.profile).forEach((key) => {
@@ -129,8 +149,33 @@ export default function IdentityInfo({
       onSubmitting(false);
     }
   }
-  function handleClick(checked: boolean) {
+  function handleShareMoreDetailsToggle(checked: boolean) {
     setShareMoreDetailsEnabled(checked);
+  }
+
+  /**
+   * Handle profile picture file change
+   * @param image profile picture
+   */
+  async function onProfilePictureChange(image: File | null) {
+    if (image) {
+      try {
+        setIsProfilePictureUploading(true);
+        setProfilePicUrl(undefined);
+        const formData = new FormData();
+        formData.append("image", image);
+        const res = (await profilePictureMutation.mutateAsync(
+          formData
+        )) as IUploadProfilePictureResponse;
+        setProfilePicUrl(res.url);
+      } catch (error) {
+        toast.error(
+          "Something went wrong while uploading the profile picture."
+        );
+      } finally {
+        setIsProfilePictureUploading(false);
+      }
+    }
   }
 
   return (
@@ -144,25 +189,35 @@ export default function IdentityInfo({
             className="flex flex-col space-y-4"
           >
             <div className="flex">
-              <div className="ml-6 pr-10 flex">
-                <div className="rounded-full w-12 overflow-hidden">
-                  <Avatar className="w-24 h-24 flex-shrink-0 mr-4">
-                    <AvatarImage
-                      src={"/assets/svg/user.svg"}
-                      alt="User Profile Picture"
+              <div className="flex items-center gap-x-3">
+                <Avatar>
+                  <AvatarImage
+                    className="w-16 h-16 rounded-full object-cover"
+                    src={profilePicUrl}
+                    alt="User Profile Picture"
+                  />
+                  <AvatarFallback className="w-16 h-16">
+                    {isProfilePictureUploading ? (
+                      <Loader />
+                    ) : (
+                      <Icon name="user" type={IconType.USER} />
+                    )}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col gap-y-1 items-center">
+                  <Label className="p-2 text-sm border-2 rounded-md cursor-pointer">
+                    <FileInput
+                      className="hidden"
+                      ref={fileInputRef}
+                      accept="image/*"
+                      onFileChange={onProfilePictureChange}
                     />
-                  </Avatar>
+                    <span>Upload Photo</span>
+                  </Label>
+                  <span className="text-xs text-faded">JPG, JPEG, PNG</span>
                 </div>
-                <label className="relative cursor-pointer mt-3">
-                  <input type="file" className="hidden" accept="image/*" />
-                  <span className="px-2 py-1 text-black text-sm border-2 rounded-md ">
-                    Upload Photo
-                  </span>
-                </label>
               </div>
             </div>
-
-            <ResumeAutoFill />
 
             <div className="flex space-x-4">
               <div className="flex-grow">
@@ -427,7 +482,7 @@ export default function IdentityInfo({
             {/* Identity, Ethnicity, ReligiousAffiliation */}
             <div className="pt-4">
               <div className="flex items-center space-x-2">
-                <Switch onCheckedChange={handleClick} />
+                <Switch onCheckedChange={handleShareMoreDetailsToggle} />
                 <h6>Share more details for better matches</h6>
               </div>
               <p className="text-muted-foreground mt-1">

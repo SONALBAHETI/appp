@@ -153,10 +153,7 @@ export default function IdentityInfo({
     setShareMoreDetailsEnabled(checked);
   }
 
-  /**
-   * Handle profile picture file change
-   * @param image profile picture
-   */
+  // handle profile picture upload
   async function onProfilePictureChange(image: File | null) {
     if (image) {
       try {

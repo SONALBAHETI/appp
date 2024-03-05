@@ -4,6 +4,10 @@ export interface ISubmitIdentityInfoFormResponse {
   success: boolean;
 }
 
+export interface IUploadProfilePictureResponse {
+  url: string;
+}
+
 export interface ISubmitEducationFormResponse {
   success: boolean;
 }

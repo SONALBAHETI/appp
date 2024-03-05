@@ -198,7 +198,7 @@ export default function LicenseDetailForm({
                 <FormLabel>Organization</FormLabel>
                 <FormControl>
                   <SearchAndSelect
-                    placeholder="eg. Physical Therapy, Education, Administration, Researcher"
+                    placeholder="eg. North Carolina Board of Nursing"
                     value={orgSearchTerm}
                     isLoading={organizationsQuery.isPending}
                     suggestions={

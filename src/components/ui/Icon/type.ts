@@ -13,4 +13,5 @@ export enum IconType {
   SETTINGS = "Settings",
   BACK = "ArrowLeft",
   USER = "User",
+  SHARE = "Share",
 }

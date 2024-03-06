@@ -1,4 +1,5 @@
 import { SideNavbar } from "@/components/ui/SideNavbar";
+import { Card, CardContent } from "@/components/ui/card";
 
 const sideNavField: INavLink[] = [
   {
@@ -29,7 +30,11 @@ export default function ProfileSettingsLayout({
       <div className="w-[22%] flex-shrink-0">
         <SideNavbar links={sideNavField} />
       </div>
-      <div className="flex-grow">{children}</div>
+      <div className="flex-grow">
+        <Card className="shadow-md h-full">
+          <CardContent className="mt-6">{children}</CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -55,7 +55,7 @@ export default function UserPopup() {
             src={userProfileQuery.data?.profile.picture}
             alt="user profile picture"
           />
-          <AvatarFallback className="w-16 h-16">
+          <AvatarFallback className="w-12 h-12">
             {userProfileQuery.isPending ? (
               <Loader />
             ) : (

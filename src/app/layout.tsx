@@ -27,9 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(dmSans.className, "bg-secondary")}>
         <ReactQueryProvider>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
         </ReactQueryProvider>
         {/* This is a global container for toast, which is used in all pages */}
         <ToastContainer progressStyle={{ top: 0, bottom: "unset" }} />

@@ -12,7 +12,7 @@ export default function ChatView() {
   return (
     <div className="flex flex-col flex-grow w-full bg-transparent overflow-y-auto">
       <div className="flex flex-col flex-grow md:flex-row gap-3 overflow-y-auto">
-        <div className="flex flex-col gap-4 flex-shrink-0 md:w-1/2 lg:w-1/3 2xl:w-1/5 bg-white p-4 rounded-xl">
+        <div className="flex flex-col gap-4 flex-shrink-0 md:w-1/2 lg:w-1/3 2xl:w-1/4 bg-white p-4 rounded-xl">
           <ChatMenu />
         </div>
 

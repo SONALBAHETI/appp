@@ -6,7 +6,7 @@ import { SbCallsProvider } from "@/lib/sendbird-calls";
 export default function page() {
   return (
     <div>
-      <SbCallsProvider appId="88D50577-7CD1-4BC0-BF38-5AD91CE32645">
+      <SbCallsProvider appId={process.env.NEXT_PUBLIC_SENDBIRD_APP_ID || ""}>
         <GroupCallScreen />
       </SbCallsProvider>
     </div>

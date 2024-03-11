@@ -10,26 +10,22 @@ import { toast } from "react-toastify";
 import { useSearchParams } from "next/navigation";
 import SbCallsAuthenticator from "@/lib/sendbird-calls/SbCallsAuthenticator";
 import GroupCall from "./GroupCall";
+import { useChatCredentialsQuery } from "@/api/chat";
 
 const GroupCallScreen = () => {
   const sbCalls = useSbCalls();
   const query = useSearchParams();
-  const [isRoomCreated, setIsRoomCreated] = useState(false);
   const roomIdQuery = query.get("room_id");
+
+  /* server state */
+  const chatCredentialsQuery = useChatCredentialsQuery();
+
   const { rooms } = sbCalls;
 
   useEffect(() => {
-    const room = rooms[rooms.length - 1];
-  }, [rooms]);
-
-  useEffect(() => {
-    console.log("isAuthenticated ==> ", sbCalls.isAuthenticated);
-    if (roomIdQuery) {
+    if (roomIdQuery && sbCalls.isAuthenticated) {
       enter(roomIdQuery);
-    } else if (sbCalls.isAuthenticated && !isRoomCreated) {
-      // createRoom();
-      setIsRoomCreated(true);
-    }
+    } 
   }, [sbCalls.isAuthenticated]);
 
   const onCall = useMemo(() => {
@@ -73,11 +69,18 @@ const GroupCallScreen = () => {
 
   return (
     <div>
-      <SbCallsAuthenticator
-        appId="88D50577-7CD1-4BC0-BF38-5AD91CE32645"
-        userId="pankajgurbani"
-      />
-      {onCall && <GroupCall room={onCall} />}
+      {chatCredentialsQuery.isPending && <div>Loading...</div>}
+      {chatCredentialsQuery.data?.userId &&
+        chatCredentialsQuery.data?.accessToken && (
+          <>
+            <SbCallsAuthenticator
+              appId={process.env.NEXT_PUBLIC_SENDBIRD_APP_ID || ""}
+              userId={chatCredentialsQuery.data.userId}
+              accessToken={chatCredentialsQuery.data.accessToken}
+            />
+            {onCall && <GroupCall room={onCall} />}
+          </>
+        )}
     </div>
   );
 };

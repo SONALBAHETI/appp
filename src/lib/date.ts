@@ -30,3 +30,18 @@ export function getFormattedTime(date: Date): string {
     hour12: true,
   });
 }
+
+export function groupByDate(data: any[], dateField: string) {
+  const groupedData = data.reduce((acc: any, item: any) => {
+    if (!item[dateField]) {
+      return acc;
+    }
+    const date = new Date(item[dateField]).toLocaleDateString();
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(item);
+    return acc;
+  }, {});
+  return groupedData;
+}

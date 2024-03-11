@@ -8,6 +8,9 @@ import {
 } from "@/api/chat";
 import { toast } from "react-toastify";
 import RejectChatRequestDialog from "./RejectChatRequestDialog";
+import ProfilePicture from "@/components/ui/ProfilePicture/ProfilePicture";
+import { useMemo } from "react";
+import { getFormattedTime } from "@/lib/date";
 
 interface IChatRequestDetailProps {
   chatRequestId: string;
@@ -23,6 +26,12 @@ export default function ChatRequestDetail({
   const { data, isPending, isError } = useChatRequestQuery(chatRequestId);
   const mutationAcceptChatRequest = useAcceptChatRequestMutation(chatRequestId);
   const mutationRejectChatRequest = useRejectChatRequestMutation(chatRequestId);
+
+  const formattedTime = useMemo(
+    () =>
+      data ? getFormattedTime(new Date(data?.chatRequest.updatedAt)) : null,
+    [data]
+  );
 
   const handleAccept = async () => {
     try {
@@ -61,16 +70,24 @@ export default function ChatRequestDetail({
   return (
     <div className="px-8 py-6">
       <div className="flex flex-col gap-3">
-        <h2 className="text-2xl font-medium">Chat request</h2>
-        <div className="flex">
-          {/* Avatar + View Profile */}
-          <div></div>
+        <h3 className="font-medium">Chat request</h3>
+        {/* Avatar + View Profile */}
+        <div className="flex gap-4">
+          <div>
+            <ProfilePicture
+              className="w-24 h-24"
+              userName={chatRequest?.from?.name}
+              profilePic={chatRequest.from.profile?.picture}
+            />
+          </div>
           {/* User & request details */}
           <div className="flex-grow flex flex-col gap-1">
             {/* User name & timestamp */}
             <div className="flex justify-between">
-              <h3 className="text-md font-bold">{chatRequest?.from?.name}</h3>
-              <span className="text-muted-foreground text-sm">12:35 PM</span>
+              <h4 className="font-bold">{chatRequest?.from?.name}</h4>
+              <span className="text-muted-foreground text-sm">
+                {formattedTime}
+              </span>
             </div>
 
             {/* User's badge */}
@@ -80,9 +97,9 @@ export default function ChatRequestDetail({
               {chatRequest?.message}
             </p>
           </div>
-          {/* Accept/Reject button */}
         </div>
-        <div className="flex justify-end">
+        {/* Accept/Reject button */}
+        <div className="flex justify-end mt-4">
           <div className="w-full lg:w-1/2 flex gap-2 items-stretch">
             <RejectChatRequestDialog
               onConfirmReject={handleReject}

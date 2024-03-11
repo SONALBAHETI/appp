@@ -1,5 +1,10 @@
+import ProfilePicture from "@/components/ui/ProfilePicture/ProfilePicture";
+import { getFormattedTime } from "@/lib/date";
+import { useMemo } from "react";
+
 interface IChatRequestListItemProps {
   learnerName: string;
+  profilePic?: string;
   timestamp: string;
   message?: string;
   isActive?: boolean;
@@ -15,25 +20,32 @@ const truncateMessage = (message: string | undefined) => {
 
 export default function ChatRequestListItem({
   learnerName,
+  profilePic,
   timestamp,
   message,
   isActive,
   onClick,
 }: IChatRequestListItemProps) {
+  const formattedTime = useMemo(
+    () => getFormattedTime(new Date(timestamp)),
+    [timestamp]
+  );
   return (
     <div
-      className={`flex flex-col px-3 py-6 cursor-pointer hover:bg-gray-100 ${
-        isActive ? "bg-gray-100" : ""
+      className={`flex gap-3 px-4 py-4 cursor-pointer rounded-lg ${
+        isActive ? "bg-muted" : "hover:bg-muted"
       }`}
-      onClick={onClick}
-      role="button"
     >
-      <div className="flex items-center">
-        <span className="text-md font-bold mr-2">{learnerName}</span>
+      <ProfilePicture userName={learnerName} profilePic={profilePic} />
+      <div className="flex flex-col" onClick={onClick} role="button">
+        <div className="flex items-center justify-between">
+          <span className="text-md font-bold mr-2">{learnerName}</span>
+          <span className="text-sm text-faded">{formattedTime}</span>
+        </div>
+        <p className="text-base leading-relaxed text-gray-600 mb-2">
+          {truncateMessage(message)}
+        </p>
       </div>
-      <p className="text-base leading-relaxed text-gray-600 mb-2">
-        {truncateMessage(message)}
-      </p>
     </div>
   );
 }

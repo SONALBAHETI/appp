@@ -5,6 +5,7 @@ import GroupChannelConversation from "@/components/chat/GroupChannelConversation
 import { useChatStore } from "@/store/useChatStore";
 import { TAB } from "@/interfaces/chat";
 import ChatRequestDetail from "../ChatRequestDetail/ChatRequestDetail";
+import NoChatRequestSelected from "../ChatRequestDetail/NoChatRequestSelected";
 
 export default function ChatView() {
   const { activeTab, selectedChatRequestId, setSelectedChatRequestId } =
@@ -27,7 +28,11 @@ export default function ChatView() {
                   onReject={() => setSelectedChatRequestId(null)}
                 />
               )}
-              {!selectedChatRequestId && <div>No chat request selected</div>}
+              {!selectedChatRequestId && (
+                <div className="flex h-full items-center justify-center pb-20">
+                  <NoChatRequestSelected />
+                </div>
+              )}
             </>
           )}
         </div>

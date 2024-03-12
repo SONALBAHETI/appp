@@ -29,14 +29,14 @@ export default function ChatRequestList() {
   }
 
   return (
-    <div className="divide-y divide-gray-200">
+    <div>
       {groupedData &&
         Object.keys(groupedData).map((date) => (
           <div key={date}>
-            <p className="text-sm text-faded px-3 py-1 rounded-lg bg-muted/50 mb-2">
+            <p className="text-sm text-faded px-3 py-1 rounded-lg bg-muted/50 my-2">
               {date}
             </p>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col divide-y divide-y-muted divide">
               {groupedData[date].map((chatRequest) => (
                 <ChatRequestItem
                   key={chatRequest.id}

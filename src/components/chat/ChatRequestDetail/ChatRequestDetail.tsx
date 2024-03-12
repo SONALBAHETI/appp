@@ -1,5 +1,3 @@
-import ButtonIcon from "@/components/ui/ButtonIcon";
-import { IconType } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/button";
 import {
   useChatRequestQuery,
@@ -11,6 +9,8 @@ import RejectChatRequestDialog from "./RejectChatRequestDialog";
 import ProfilePicture from "@/components/ui/ProfilePicture/ProfilePicture";
 import { useMemo } from "react";
 import { getFormattedTime } from "@/lib/date";
+import ChatRequestDetailSkeleton from "./ChatRequestDetailSkeleton";
+import Loader from "@/components/ui/Loader";
 
 interface IChatRequestDetailProps {
   chatRequestId: string;
@@ -57,15 +57,9 @@ export default function ChatRequestDetail({
     }
   };
 
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
-
   if (isError) {
     return <div>Something went wrong</div>;
   }
-
-  const { chatRequest } = data;
 
   return (
     <div className="px-8 py-6">
@@ -73,30 +67,36 @@ export default function ChatRequestDetail({
         <h3 className="font-medium">Chat request</h3>
         {/* Avatar + View Profile */}
         <div className="flex gap-4">
-          <div>
-            <ProfilePicture
-              className="w-24 h-24"
-              userName={chatRequest?.from?.name}
-              profilePic={chatRequest.from.profile?.picture}
-            />
-          </div>
-          {/* User & request details */}
-          <div className="flex-grow flex flex-col gap-1">
-            {/* User name & timestamp */}
-            <div className="flex justify-between">
-              <h4 className="font-bold">{chatRequest?.from?.name}</h4>
-              <span className="text-muted-foreground text-sm">
-                {formattedTime}
-              </span>
-            </div>
+          {isPending ? (
+            <ChatRequestDetailSkeleton />
+          ) : (
+            <>
+              <div>
+                <ProfilePicture
+                  className="w-24 h-24"
+                  userName={data.chatRequest?.from?.name}
+                  profilePic={data.chatRequest.from.profile?.picture}
+                />
+              </div>
+              {/* User & request details */}
+              <div className="flex-grow flex flex-col gap-1">
+                {/* User name & timestamp */}
+                <div className="flex justify-between">
+                  <h4 className="font-bold">{data.chatRequest?.from?.name}</h4>
+                  <span className="text-muted-foreground text-sm">
+                    {formattedTime}
+                  </span>
+                </div>
 
-            {/* User's badge */}
+                {/* User's badge */}
 
-            {/* Message */}
-            <p className="text-base leading-relaxed text-gray-600">
-              {chatRequest?.message}
-            </p>
-          </div>
+                {/* Message */}
+                <p className="text-base leading-relaxed text-gray-600">
+                  {data.chatRequest?.message}
+                </p>
+              </div>
+            </>
+          )}
         </div>
         {/* Accept/Reject button */}
         <div className="flex justify-end mt-4">
@@ -106,11 +106,14 @@ export default function ChatRequestDetail({
               loading={mutationRejectChatRequest.isPending}
             />
             <Button
-              // disabled={isAcceptLoading}
+              disabled={
+                mutationAcceptChatRequest.isPending ||
+                mutationRejectChatRequest.isPending
+              }
               className="flex-grow"
               onClick={handleAccept}
             >
-              Accept
+              {mutationAcceptChatRequest.isPending && <Loader />} Accept
             </Button>
           </div>
         </div>

@@ -1,14 +1,25 @@
 "use client";
+
 import ChatMenu from "@/components/chat/ChatMenu";
 import "@sendbird/uikit-react/dist/index.css";
 import GroupChannelConversation from "@/components/chat/GroupChannelConversation";
 import { useChatStore } from "@/store/useChatStore";
 import { TAB } from "@/interfaces/chat";
 import ChatRequestDetail from "../ChatRequestDetail/ChatRequestDetail";
+import NoChatRequestSelected from "../ChatRequestDetail/NoChatRequestSelected";
 
 export default function ChatView() {
-  const { activeTab, selectedChatRequestId, setSelectedChatRequestId } =
-    useChatStore();
+  const {
+    activeTab,
+    setActiveTab,
+    selectedChatRequestId,
+    setSelectedChatRequestId,
+  } = useChatStore();
+
+  const handleAcceptChatRequest = () => {
+    setSelectedChatRequestId(null);
+    setActiveTab(TAB.CHAT);
+  };
   return (
     <div className="w-full bg-transparent">
       <div className="flex flex-col md:flex-row h-full gap-3">
@@ -23,11 +34,15 @@ export default function ChatView() {
               {selectedChatRequestId && (
                 <ChatRequestDetail
                   chatRequestId={selectedChatRequestId}
-                  onAccept={() => setSelectedChatRequestId(null)}
+                  onAccept={handleAcceptChatRequest}
                   onReject={() => setSelectedChatRequestId(null)}
                 />
               )}
-              {!selectedChatRequestId && <div>No chat request selected</div>}
+              {!selectedChatRequestId && (
+                <div className="flex h-full items-center justify-center pb-20">
+                  <NoChatRequestSelected />
+                </div>
+              )}
             </>
           )}
         </div>

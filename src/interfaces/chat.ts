@@ -5,11 +5,16 @@ export interface IChatRequest {
   from: {
     id: string;
     name: string;
+    profile?: {
+      picture?: string;
+    };
   };
   to: {
     id: string;
     name: string;
   };
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IChatCredentials {

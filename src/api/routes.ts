@@ -1,5 +1,6 @@
 const baseUrls = {
   api: "/api/v1",
+  chat: "/api/v1/chats",
   chatRequests: "/api/v1/chats/requests",
   notes: "/api/v1/notes",
   chatbot: "api/v1/chatbot",
@@ -48,13 +49,13 @@ const notifications = {
 const onboarding = {
   getPrimaryInterestSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/primaryinterests?q=${searchTerm}`,
-  
+
   getExpertiseAreaSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/expertiseareas?q=${searchTerm}`,
-  
+
   getPracticeAreaSuggestions: (searchTerm: string) =>
     `${baseUrls.onboarding}/suggestions/practiceareas?q=${searchTerm}`,
-  
+
   submitOnboardingForm: `${baseUrls.onboarding}/form/submit`,
 };
 
@@ -70,7 +71,7 @@ const profileSettings = {
   uploadProfilePicture: `${baseUrls.settings}/profile/profile-picture`,
 
   submitEducationForm: `${baseUrls.settings}/profile/education`,
-  
+
   submitExpertiseForm: `${baseUrls.settings}/profile/expertise`,
 
   degrees: `${baseUrls.settings}/profile/education/degrees`,
@@ -106,11 +107,16 @@ const auth = {
   loginWithGoogle: `${baseUrls.auth}/login/google`,
 };
 
-export const apiRoutes = {
+const chat = {
   getChatRequest: `${baseUrls.chatRequests}/:id`,
   getChatRequests: `${baseUrls.chatRequests}`,
   acceptChatRequest: `${baseUrls.chatRequests}/accept`,
   rejectChatRequest: `${baseUrls.chatRequests}/reject`,
+  getCredentials: `${baseUrls.chat}/credentials`,
+};
+
+export const apiRoutes = {
+  chat,
   notes,
   chatbot,
   userMatch,

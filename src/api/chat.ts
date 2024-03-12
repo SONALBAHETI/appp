@@ -4,19 +4,22 @@ import {
   IUpdateChatRequestResponse,
   IGetChatRequestResponse,
   IGetChatRequestsResponse,
+  IChatCredentials,
 } from "@/interfaces/chat";
 
 import { usePost, useFetch } from "@/lib/react-query";
 import { createQueryKey, isEqualQueryKeys } from "@/lib/react-query/utils";
 
 export const getChatRequestQueryKey = (id: string) =>
-  createQueryKey(pathToUrl(apiRoutes.getChatRequest, { id }));
+  createQueryKey(pathToUrl(apiRoutes.chat.getChatRequest, { id }));
 export const getChatRequestsQueryKey = () =>
-  createQueryKey(apiRoutes.getChatRequests);
+  createQueryKey(apiRoutes.chat.getChatRequests);
+export const getChatCredentialsQueryKey = () =>
+  createQueryKey(apiRoutes.chat.getCredentials);
 export const getAcceptChatRequestMutationKey = () =>
-  createQueryKey(apiRoutes.acceptChatRequest);
+  createQueryKey(apiRoutes.chat.acceptChatRequest);
 export const getRejectChatRequestMutationKey = () =>
-  createQueryKey(apiRoutes.rejectChatRequest);
+  createQueryKey(apiRoutes.chat.rejectChatRequest);
 
 /**
  * Custom hook for getting a chat request by id.
@@ -34,6 +37,15 @@ export const useChatRequestQuery = (id: string) =>
  */
 export const useChatRequestsQuery = () =>
   useFetch<IGetChatRequestsResponse>(getChatRequestsQueryKey());
+
+/**
+ * Custom hook for getting chat and calls credentials.
+ * @returns The query result.
+ */
+export const useChatCredentialsQuery = () =>
+  useFetch<IChatCredentials>(getChatCredentialsQueryKey(), {
+    staleTime: Infinity,
+  });
 
 /**
  * Generates a mutation hook for accepting a chat request.

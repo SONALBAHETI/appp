@@ -12,6 +12,11 @@ export interface IChatRequest {
   };
 }
 
+export interface IChatCredentials {
+  userId?: string;
+  accessToken?: string;
+}
+
 export interface IGetChatRequestResponse {
   chatRequest: IChatRequest;
 }

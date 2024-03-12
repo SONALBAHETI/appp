@@ -51,6 +51,12 @@ export default function ChatRequestList() {
             </div>
           </div>
         ))}
+
+      {data.chatRequests?.length === 0 && (
+        <p className="text-muted-foreground text-center mt-4">
+          No chat requests
+        </p>
+      )}
     </div>
   );
 }

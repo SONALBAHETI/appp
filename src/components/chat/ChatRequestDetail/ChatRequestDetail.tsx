@@ -113,7 +113,7 @@ export default function ChatRequestDetail({
               className="flex-grow"
               onClick={handleAccept}
             >
-              {mutationAcceptChatRequest.isPending && <Loader />} Accept
+              {mutationAcceptChatRequest.isPending && <Loader className="mr-2" />} Accept
             </Button>
           </div>
         </div>

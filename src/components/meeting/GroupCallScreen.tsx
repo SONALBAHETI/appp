@@ -5,17 +5,19 @@
  */
 
 import { useSbCalls } from "@/lib/sendbird-calls";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
 import { useSearchParams } from "next/navigation";
 import SbCallsAuthenticator from "@/lib/sendbird-calls/SbCallsAuthenticator";
 import GroupCall from "./GroupCall";
 import { useChatCredentialsQuery } from "@/api/chat";
 
-const GroupCallScreen = () => {
+interface IGroupCallScreenProps {
+  roomId: string;
+}
+
+const GroupCallScreen = ({ roomId }: IGroupCallScreenProps) => {
   const sbCalls = useSbCalls();
-  const query = useSearchParams();
-  const roomIdQuery = query.get("room_id");
 
   /* server state */
   const chatCredentialsQuery = useChatCredentialsQuery();
@@ -23,8 +25,8 @@ const GroupCallScreen = () => {
   const { rooms } = sbCalls;
 
   useEffect(() => {
-    if (roomIdQuery && sbCalls.isAuthenticated) {
-      enter(roomIdQuery);
+    if (roomId && sbCalls.isAuthenticated) {
+      enter(roomId);
     } 
   }, [sbCalls.isAuthenticated]);
 

@@ -10,6 +10,7 @@ const baseUrls = {
   userMatch: "/api/v1/usermatch",
   mentorVerification: "/api/v1/verification/mentor",
   settings: "/api/v1/settings",
+  appointments: "/api/v1/appointments",
 };
 
 const notes = {
@@ -115,9 +116,14 @@ const chat = {
   getCredentials: `${baseUrls.chat}/credentials`,
 };
 
+const appointment = {
+  getAppointment: (id: string) => `${baseUrls.appointments}/${id}`,
+};
+
 export const apiRoutes = {
   chat,
   notes,
+  appointment,
   chatbot,
   userMatch,
   mentorVerification,

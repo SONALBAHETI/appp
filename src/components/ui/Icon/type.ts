@@ -14,4 +14,9 @@ export enum IconType {
   BACK = "ArrowLeft",
   USER = "User",
   SHARE = "Share",
+  ENDCALL = "EndCall",
+  MIC = "Mic",
+  MIC_OFF = "MicOff",
+  CAMERA = "Camera",
+  CAMERA_OFF = "CameraOff",
 }

@@ -19,6 +19,11 @@ import {
   ArrowLeft,
   User,
   Share2,
+  PhoneOff,
+  Mic,
+  MicOff,
+  Camera,
+  CameraOff,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -53,6 +58,16 @@ function changeTypeToIconComponent(type: IconType) {
       return User;
     case IconType.SHARE:
       return Share2;
+    case IconType.ENDCALL:
+      return PhoneOff;
+    case IconType.MIC:
+      return Mic;
+    case IconType.MIC_OFF:
+      return MicOff;
+    case IconType.CAMERA:
+      return Camera;
+    case IconType.CAMERA_OFF:
+      return CameraOff;
     default:
       return Plus; // TODO: Choose default icon?
   }

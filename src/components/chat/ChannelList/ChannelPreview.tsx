@@ -73,8 +73,8 @@ export default function ChannelPreview({
   return (
     <div
       className={`${
-        isActive ? "bg-gray-100" : ""
-      } flex items-center px-5 py-3 hover:bg-gray-100 cursor-pointer`}
+        isActive ? "bg-muted" : ""
+      } flex items-center px-5 py-3 hover:bg-muted cursor-pointer rounded-lg`}
       onClick={onClick}
     >
       <Avatar className="w-12 h-12 flex-shrink-0 mr-4">
@@ -83,7 +83,7 @@ export default function ChannelPreview({
       <div className="flex-1">
         <div className="flex items-center justify-between gap-2">
           {/* Channel Name */}
-          <h4 className="text-md font-semibold">{channelName}</h4>
+          <h6 className="font-semibold">{channelName}</h6>
           {/* Last Message Time */}
           <span
             className={`text-sm text-right ${

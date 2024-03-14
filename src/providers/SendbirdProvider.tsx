@@ -1,5 +1,6 @@
 "use client";
 
+import { useChatCredentialsQuery } from "@/api/chat";
 import { SendBirdProvider } from "@sendbird/uikit-react";
 
 export default function SendbirdProvider({
@@ -7,11 +8,13 @@ export default function SendbirdProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const chatCredentialsQuery = useChatCredentialsQuery();
+
   return (
     <SendBirdProvider
       appId={process.env.NEXT_PUBLIC_SENDBIRD_APP_ID || ""}
-      userId={process.env.NEXT_PUBLIC_SENDBIRD_USER_ID || ""}
-      accessToken={process.env.NEXT_PUBLIC_SENDBIRD_ACCESS_TOKEN}
+      userId={chatCredentialsQuery.data?.userId || ""}
+      accessToken={chatCredentialsQuery.data?.accessToken || ""}
     >
       {children}
     </SendBirdProvider>

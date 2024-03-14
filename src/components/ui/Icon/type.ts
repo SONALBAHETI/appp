@@ -19,4 +19,5 @@ export enum IconType {
   MIC_OFF = "MicOff",
   CAMERA = "Camera",
   CAMERA_OFF = "CameraOff",
+  CHECK = "Check",
 }

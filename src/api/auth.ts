@@ -3,6 +3,8 @@ import { usePost } from "@/lib/react-query";
 import { TSignInForm } from "@/validation/signinForm.validation";
 import {
   ILogoutResponse,
+  IResetPasswordResponse,
+  ISendResetPasswordEmailResponse,
   ISignInWithEmailPasswordResponse,
   ISignUpWithEmailPasswordResponse,
   IVerifyEmailResponse,
@@ -17,6 +19,10 @@ export const getSignUpWithEmailPasswordMutationKey = () =>
   createQueryKey(apiRoutes.auth.signUpWithEmailPassword);
 export const getVerifyEmailMutationKey = () =>
   createQueryKey(apiRoutes.auth.verifyEmail);
+export const getSendResetPasswordEmailMutationKey = () =>
+  createQueryKey(apiRoutes.auth.sendResetPasswordEmail);
+export const getResetPasswordMutationKey = () =>
+  createQueryKey(apiRoutes.auth.resetPassword);
 
 export const useLogoutMutation = () =>
   usePost<undefined, ILogoutResponse>({
@@ -34,11 +40,28 @@ export const useSignUpWithEmailPasswordMutation = () => {
   return usePost<SignUpForm, ISignUpWithEmailPasswordResponse>({
     queryKey: getSignUpWithEmailPasswordMutationKey(),
   });
-}
+};
 
 // Generates a mutation hook for verifying email.
 export const useVerifyEmailMutation = () => {
   return usePost<{ token: string }, IVerifyEmailResponse>({
     queryKey: getVerifyEmailMutationKey(),
+  });
+};
+
+// Generates a mutation hook for sending reset password email.
+export const useSendResetPasswordEmailMutation = () => {
+  return usePost<
+    { email: string; redirect: string },
+    ISendResetPasswordEmailResponse
+  >({
+    queryKey: getSendResetPasswordEmailMutationKey(),
+  });
+};
+
+// Generates a mutation hook for resetting password.
+export const useResetPasswordMutation = () => {
+  return usePost<{ token: string; password: string }, IResetPasswordResponse>({
+    queryKey: getResetPasswordMutationKey(),
   });
 };

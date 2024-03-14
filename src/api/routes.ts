@@ -108,8 +108,10 @@ const auth = {
   loginWithGoogle: `${baseUrls.auth}/login/google`,
   verifyEmail: `${baseUrls.auth}/verify-email`,
   sendVerificationEmail: `${baseUrls.auth}/send-verification-email`,
-  signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
-  signUpWithEmailPassword: `${baseUrls.api}/auth/register`,
+  sendResetPasswordEmail: `${baseUrls.auth}/send-reset-password-email`,
+  resetPassword: `${baseUrls.auth}/reset-password`,
+  signInWithEmailPassword: `${baseUrls.auth}/login/email-password`,
+  signUpWithEmailPassword: `${baseUrls.auth}/register`,
 };
 
 const user = {

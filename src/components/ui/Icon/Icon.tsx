@@ -24,6 +24,7 @@ import {
   MicOff,
   Camera,
   CameraOff,
+  CheckCheck,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -68,6 +69,8 @@ function changeTypeToIconComponent(type: IconType) {
       return Camera;
     case IconType.CAMERA_OFF:
       return CameraOff;
+    case IconType.CHECK:
+      return CheckCheck;
     default:
       return Plus; // TODO: Choose default icon?
   }

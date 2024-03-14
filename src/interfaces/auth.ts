@@ -16,3 +16,7 @@ export interface ILoginWithGoogleResponse {
 export interface ILogoutResponse {}
 
 export interface IVerifyEmailResponse {}
+
+export interface ISendResetPasswordEmailResponse { }
+
+export interface IResetPasswordResponse {}

@@ -125,6 +125,12 @@
   .page-width {
     @apply w-full max-w-screen-2xl mx-auto;
   }
+  .main-page {
+    @apply flex flex-col flex-grow h-full pb-6 w-full;
+  }
+  .main-page-fixed-height {
+    @apply max-h-[calc(100vh-6rem)];
+  }
   .full-screen {
     @apply w-screen min-h-screen;
   }

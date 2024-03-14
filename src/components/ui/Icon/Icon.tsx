@@ -12,7 +12,7 @@ import {
   LayoutDashboard,
   MessageCircle,
   Bot,
-  StickyNote,
+  FileText,
   Loader2,
   Video,
   Settings,
@@ -45,7 +45,7 @@ function changeTypeToIconComponent(type: IconType) {
     case IconType.BOT:
       return Bot;
     case IconType.NOTE:
-      return StickyNote;
+      return FileText;
     case IconType.LOADING:
       return Loader2;
     case IconType.VIDEO:

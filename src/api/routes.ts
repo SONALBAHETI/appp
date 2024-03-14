@@ -105,6 +105,10 @@ const settings = {
 
 const auth = {
   loginWithGoogle: `${baseUrls.auth}/login/google`,
+  verifyEmail: `${baseUrls.auth}/verify-email`,
+  sendVerificationEmail: `${baseUrls.auth}/send-verification-email`,
+  signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
+  signUpWithEmailPassword: `${baseUrls.api}/auth/register`,
 };
 
 const chat = {
@@ -126,5 +130,4 @@ export const apiRoutes = {
   onboarding,
   settings,
   logout: `${baseUrls.api}/auth/logout`,
-  signInWithEmailPassword: `${baseUrls.api}/auth/login/email-password`,
 };

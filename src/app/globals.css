@@ -125,4 +125,13 @@
   .page-width {
     @apply w-full max-w-screen-2xl mx-auto;
   }
+  .full-screen {
+    @apply w-screen min-h-screen;
+  }
+  .absolute-center {
+    @apply flex items-center justify-center;
+  }
+  .card {
+    @apply rounded-md shadow border p-4;
+  }
 }

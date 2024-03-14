@@ -27,11 +27,11 @@ const PasswordSchema = z
     "Password cannot be a common pattern"
   );
 
-export const SignUpFormSchema = z.object({
+export const SignUpForm = z.object({
   firstName: FirstNameSchema,
   lastName: LastNameSchema,
   email: EmailSchema,
   password: PasswordSchema,
 });
 
-export type SignUpFormValues = z.infer<typeof SignUpFormSchema>;
+export type SignUpForm = z.infer<typeof SignUpForm>;

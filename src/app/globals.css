@@ -140,4 +140,7 @@
   .card {
     @apply rounded-md shadow border p-4;
   }
+  .link {
+    @apply text-accent-2 font-bold hover:text-accent-2/90;
+  }
 }

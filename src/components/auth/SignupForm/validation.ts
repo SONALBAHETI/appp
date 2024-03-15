@@ -1,3 +1,4 @@
+import { PasswordSchema } from "@/validation/common.validation";
 import { z } from "zod";
 
 const FirstNameSchema = z.string().min(1, {
@@ -14,18 +15,6 @@ const EmailSchema = z
     message: "Please enter an email.",
   })
   .email("Please enter a valid email.");
-
-const PasswordSchema = z
-  .string()
-  .min(8, "Password must be at least 8 characters long")
-  .regex(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._])[A-Za-z\d@$!%*?&._]+$/,
-    "Passwords should be a combination of letters, numbers, and special characters with at least one uppercase letter, one lowercase letter, one number, and one special character"
-  )
-  .refine(
-    (value) => !/^(12345|qwerty)$/.test(value),
-    "Password cannot be a common pattern"
-  );
 
 export const SignUpForm = z.object({
   firstName: FirstNameSchema,

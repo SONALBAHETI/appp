@@ -7,21 +7,19 @@ import VideoCam from "@/components/meeting/VideoCam";
 import Icon, { IconType } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/button";
 import { SbCallsProvider } from "@/lib/sendbird-calls";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Loader from "../ui/Loader";
 
-export default function JoinMeeting() {
+export default function JoinMeeting({
+  appointmentId,
+}: {
+  appointmentId: string;
+}) {
   if (!process.env.NEXT_PUBLIC_SENDBIRD_APP_ID) {
     throw new Error("SENDBIRD_APP_ID is not defined");
   }
 
-  const pathname = usePathname();
   const [isJoinedMeeting, setIsJoinedMeeting] = useState(false);
-  const appointmentId = pathname?.split("/").pop();
-
-  if (!appointmentId) {
-    return <div>No meeting ID</div>;
-  }
 
   const onExit = () => {
     setIsJoinedMeeting(false);
@@ -38,6 +36,24 @@ export default function JoinMeeting() {
     );
   }
 
+  if (appointmentQuery.isPending) {
+    return (
+      <div className="full-screen absolute-center text-faded">
+        <div className="flex items-center px-6 py-6 bg-primary/10 rounded-lg">
+          <Loader className="mr-2" /> Getting appointment details
+        </div>
+      </div>
+    );
+  } else if (appointmentQuery.isError) {
+    return (
+      <div className="full-screen absolute-center text-faded">
+        <div className="flex items-center px-6 py-6 bg-destructive/10 rounded-lg">
+          {appointmentQuery.error.message}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-screen min-h-screen flex items-center justify-center">
       <div className="flex flex-wrap justify-center w-full gap-8 px-8 max-w-screen-2xl">
@@ -46,19 +62,17 @@ export default function JoinMeeting() {
 
         {/* Meeting info */}
         <div className="flex flex-1 justify-center items-center">
-          {appointmentId && (
-            <div className="flex flex-col gap-8">
-              <MeetingInfo meetingId={appointmentId} />
-              <Button
-                disabled={!meetingRoomId}
-                className="w-full"
-                onClick={() => setIsJoinedMeeting(true)}
-              >
-                <Icon className="mr-2" type={IconType.VIDEO} size={18} />
-                Start session
-              </Button>
-            </div>
-          )}
+          <div className="flex flex-col gap-8">
+            <MeetingInfo meetingId={appointmentId} />
+            <Button
+              disabled={!meetingRoomId}
+              className="w-full"
+              onClick={() => setIsJoinedMeeting(true)}
+            >
+              <Icon className="mr-2" type={IconType.VIDEO} size={18} />
+              Start session
+            </Button>
+          </div>
         </div>
       </div>
     </div>

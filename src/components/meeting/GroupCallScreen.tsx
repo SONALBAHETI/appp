@@ -7,7 +7,6 @@
 import { useSbCalls } from "@/lib/sendbird-calls";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { toast } from "react-toastify";
-import { useSearchParams } from "next/navigation";
 import SbCallsAuthenticator from "@/lib/sendbird-calls/SbCallsAuthenticator";
 import GroupCall from "./GroupCall";
 import { useChatCredentialsQuery } from "@/api/chat";

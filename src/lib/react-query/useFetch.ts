@@ -2,6 +2,7 @@ import { api } from "@/lib/api";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import type { TQueryKey } from "./types";
+import { AxiosError } from "axios";
 
 /**
  * Fetches data from the API using the provided query key.
@@ -13,7 +14,17 @@ export const fetcher = async <T>({
   signal,
 }: QueryFunctionContext<TQueryKey>): Promise<T> => {
   const [url, params] = queryKey;
-  return api.get<T>(url, { params, signal }).then((res) => res.data);
+  return api
+    .get<T>(url, { params, signal })
+    .then((res) => res.data)
+    .catch((e: AxiosError) => {
+      const data: any = e.response?.data;
+      if (data?.message) {
+        throw new AxiosError(data?.message, data?.code || e.code);
+      } else {
+        throw e;
+      }
+    });
 };
 
 interface UseFetchOptions<T>

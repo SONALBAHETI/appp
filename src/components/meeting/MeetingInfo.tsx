@@ -2,6 +2,7 @@
 
 import { useAppointmentQuery } from "@/api/appointment";
 import { AppointmentUserReference } from "@/interfaces/appointment";
+import { Skeleton } from "../ui/skeleton";
 
 interface IMeetingInfoProps {
   meetingId: string;
@@ -11,11 +12,11 @@ export default function MeetingInfo({ meetingId }: IMeetingInfoProps) {
   const appointmentQuery = useAppointmentQuery(meetingId);
 
   if (appointmentQuery.isPending) {
-    return <div>Loading...</div>;
+    return <MeetingInfoSkeleton />;
   }
 
   if (appointmentQuery.isError) {
-    return <div>Something went wrong</div>;
+    return <div>{appointmentQuery.error.message}</div>;
   }
 
   const { appointment } = appointmentQuery.data;
@@ -32,3 +33,15 @@ export default function MeetingInfo({ meetingId }: IMeetingInfoProps) {
     </div>
   );
 }
+
+const MeetingInfoSkeleton = () => {
+  return (
+    <div className="flex w-full flex-col gap-3">
+      <Skeleton className="w-1/2 h-4" />
+      <div className="flex flex-col gap-2">
+        <Skeleton className="w-96 h-3" />
+        <Skeleton className="w-1/3 h-3" />
+      </div>
+    </div>
+  );
+};

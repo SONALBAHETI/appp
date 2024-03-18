@@ -55,7 +55,7 @@ export default function JoinMeeting() {
                 onClick={() => setIsJoinedMeeting(true)}
               >
                 <Icon className="mr-2" type={IconType.VIDEO} size={18} />
-                Join meeting
+                Start session
               </Button>
             </div>
           )}

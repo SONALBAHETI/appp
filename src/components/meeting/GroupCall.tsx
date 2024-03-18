@@ -6,9 +6,16 @@ import { StatefulRoom } from "@/lib/sendbird-calls";
 import MeetingMedia from "./MeetingMedia";
 import ButtonIcon from "../ui/ButtonIcon";
 import { IconType } from "../ui/Icon";
+import GroupCallEnd from "./GroupCallEnd";
 
-export default function GroupCall({ room }: { room: StatefulRoom }) {
-  const { participants, localParticipant, remoteParticipants } = room;
+export default function GroupCall({
+  room,
+  onExit,
+}: {
+  room: StatefulRoom;
+  onExit?: () => void;
+}) {
+  const { localParticipant } = room;
 
   const toggleMic = () => {
     if (localParticipant.isAudioEnabled) {
@@ -26,6 +33,11 @@ export default function GroupCall({ room }: { room: StatefulRoom }) {
     }
   };
 
+  const onEndCall = () => {
+    room.exit();
+    onExit?.();
+  };
+
   return (
     <div className="w-screen h-screen max-h-screen flex items-center bg-black/90 px-4 pt-5 pb-8">
       <div className="flex flex-col gap-6 items-center w-full">
@@ -34,14 +46,7 @@ export default function GroupCall({ room }: { room: StatefulRoom }) {
         {/* Footer buttons */}
         <div className="fixed bottom-10 flex gap-4 items-center justify-center z-10">
           {/* End call button */}
-          <ButtonIcon
-            className="rounded-full w-14 h-14"
-            variant="destructive"
-            iconSize={24}
-            size="default"
-            iconType={IconType.ENDCALL}
-            onClick={() => room.exit()}
-          />
+          <GroupCallEnd onConfirmEnd={onEndCall} />
 
           {/* Mic button */}
           <ButtonIcon

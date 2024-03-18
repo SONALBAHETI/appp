@@ -11,6 +11,7 @@ export const config = {
     "/onboarding",
     "/onboarding/success",
     "/chat",
+    "/meeting/:path*",
   ],
 };
 

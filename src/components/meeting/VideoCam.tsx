@@ -35,7 +35,7 @@ const VideoCam = ({ className, ...props }: IVideoCamProps) => {
       autoPlay
       playsInline
       muted
-      className={cn("w-full aspect-video object-cover rounded-xl border", className)}
+      className={cn("w-full aspect-video object-cover rounded-xl border -scale-x-100", className)}
       {...props}
     />
   );

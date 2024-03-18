@@ -7,8 +7,14 @@ import MeetingMedia from "./MeetingMedia";
 import ButtonIcon from "../ui/ButtonIcon";
 import { IconType } from "../ui/Icon";
 
-export default function GroupCall({ room }: { room: StatefulRoom }) {
-  const { participants, localParticipant, remoteParticipants } = room;
+export default function GroupCall({
+  room,
+  onExit,
+}: {
+  room: StatefulRoom;
+  onExit?: () => void;
+}) {
+  const { localParticipant } = room;
 
   const toggleMic = () => {
     if (localParticipant.isAudioEnabled) {
@@ -26,6 +32,11 @@ export default function GroupCall({ room }: { room: StatefulRoom }) {
     }
   };
 
+  const onEndCall = () => {
+    room.exit();
+    onExit?.();
+  };
+
   return (
     <div className="w-screen h-screen max-h-screen flex items-center bg-black/90 px-4 pt-5 pb-8">
       <div className="flex flex-col gap-6 items-center w-full">
@@ -40,7 +51,7 @@ export default function GroupCall({ room }: { room: StatefulRoom }) {
             iconSize={24}
             size="default"
             iconType={IconType.ENDCALL}
-            onClick={() => room.exit()}
+            onClick={onEndCall}
           />
 
           {/* Mic button */}

@@ -11,8 +11,6 @@ import React, {
 import type { AuthOption, DirectCall } from "sendbird-calls";
 import SendbirdCall, {
   LoggerLevel,
-  sdkVersion,
-  SoundType,
   RoomType,
 } from "sendbird-calls";
 
@@ -21,8 +19,6 @@ import type { ContextType } from "./context";
 import { reducer } from "./reducer";
 import { initialState } from "./state";
 import { statefyDirectCall, statefyRoom } from "./statefy";
-
-console.log({ SoundType, sdkVersion });
 
 /**
  * Provides the SbCallsProvider to its child components.

@@ -23,29 +23,34 @@ export default function JoinMeeting() {
     return <div>No meeting ID</div>;
   }
 
+  const onExit = () => {
+    setIsJoinedMeeting(false);
+  };
+
   const appointmentQuery = useAppointmentQuery(appointmentId);
   const meetingRoomId = appointmentQuery.data?.appointment.meetingRoomId;
 
   if (isJoinedMeeting && meetingRoomId) {
     return (
       <SbCallsProvider appId={process.env.NEXT_PUBLIC_SENDBIRD_APP_ID}>
-        <GroupCallScreen roomId={meetingRoomId} />
+        <GroupCallScreen onExit={onExit} roomId={meetingRoomId} />
       </SbCallsProvider>
     );
   }
-  
+
   return (
     <div className="w-screen min-h-screen flex items-center justify-center">
-      <div className="flex w-full gap-8 px-8 max-w-screen-2xl">
+      <div className="flex flex-wrap justify-center w-full gap-8 px-8 max-w-screen-2xl">
         {/* Live video before joining to see how you look */}
         <VideoCam className="flex-1" />
 
         {/* Meeting info */}
-        <div className="flex-1 flex items-center">
+        <div className="flex flex-1 justify-center items-center">
           {appointmentId && (
             <div className="flex flex-col gap-8">
               <MeetingInfo meetingId={appointmentId} />
               <Button
+                disabled={!meetingRoomId}
                 className="w-full"
                 onClick={() => setIsJoinedMeeting(true)}
               >

@@ -14,9 +14,10 @@ import { useChatCredentialsQuery } from "@/api/chat";
 
 interface IGroupCallScreenProps {
   roomId: string;
+  onExit?: () => void;
 }
 
-const GroupCallScreen = ({ roomId }: IGroupCallScreenProps) => {
+const GroupCallScreen = ({ roomId, onExit }: IGroupCallScreenProps) => {
   const sbCalls = useSbCalls();
 
   /* server state */
@@ -54,21 +55,6 @@ const GroupCallScreen = ({ roomId }: IGroupCallScreenProps) => {
     [sbCalls]
   );
 
-  const createRoom = useCallback(() => {
-    sbCalls
-      .createRoom({ roomType: sbCalls.RoomType.SMALL_ROOM_FOR_VIDEO })
-      .then((room) => {
-        console.log("room created", room);
-        return room.enter({
-          audioEnabled: true,
-          videoEnabled: true,
-        });
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      });
-  }, [sbCalls]);
-
   return (
     <div>
       {chatCredentialsQuery.isPending && <div>Loading...</div>}
@@ -80,7 +66,7 @@ const GroupCallScreen = ({ roomId }: IGroupCallScreenProps) => {
               userId={chatCredentialsQuery.data.userId}
               accessToken={chatCredentialsQuery.data.accessToken}
             />
-            {onCall && <GroupCall room={onCall} />}
+            {onCall && <GroupCall onExit={onExit} room={onCall} />}
           </>
         )}
     </div>

@@ -1,23 +1,20 @@
-import { IconType } from "@/components/ui/Icon";
-
-export interface INotificationAction {
-  text: string;
-  icon?: IconType;
-  type: string;
-  link?: string;
-  action?: string;
+export enum INotificationStatus {
+  PENDING = "pending",
+  SENT = "sent",
+  READ = "read",
+  CLEARED = "cleared",
 }
 
 export interface INotification {
   id: string;
-  user?: string;
+  receiver: string;
   title: string;
   type: string;
-  content?: string;
+  description?: string;
   metadata: any;
-  read?: boolean;
-  actions: INotificationAction[];
+  status: INotificationStatus;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface IGetNotificationsResponse

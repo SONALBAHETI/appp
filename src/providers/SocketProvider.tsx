@@ -31,6 +31,10 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     socketConn.on("disconnect", () => {
       console.log("disconnected from socket");
     });
+    // console log event data when server emits anything
+    socketConn.on("notification", (data) => {
+      console.log(data);
+    })
     return () => {
       if (socketConn) {
         socketConn.disconnect();

@@ -1,6 +1,3 @@
-"use client";
-
-import SendbirdProvider from "@/providers/SendbirdProvider";
 import dynamic from "next/dynamic";
 
 const Chat = dynamic(() => import("@/components/chat"), {
@@ -11,9 +8,7 @@ const Chat = dynamic(() => import("@/components/chat"), {
 export default function ChatPage() {
   return (
     <div className="main-page main-page-fixed-height">
-      <SendbirdProvider>
-        <Chat />
-      </SendbirdProvider>
+      <Chat />
     </div>
   );
 }

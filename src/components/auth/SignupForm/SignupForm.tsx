@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { SignUpFormSchema, SignUpFormValues } from "./validation";
+import { SignUpForm } from "./validation";
 
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
@@ -23,43 +23,41 @@ import {
 
 import { toast } from "react-toastify";
 
-import { useApi } from "@/hooks/useApi";
 import { useAuth } from "@/hooks/useAuth";
+import { useSignUpWithEmailPasswordMutation } from "@/api/auth";
+import { ISignUpWithEmailPasswordResponse } from "@/interfaces/auth";
+import { AxiosError } from "axios";
 
 interface SignupFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function SignupForm({ className, ...props }: SignupFormProps) {
-  const [signInWithEmailPassword, isLoading] = useApi({
-    url: "/api/v1/auth/register",
-    method: "POST",
-  });
+  const mutationSignUpWithEmailPassword = useSignUpWithEmailPasswordMutation();
   const { saveAuth } = useAuth();
   const router = useRouter();
 
-  const form = useForm<SignUpFormValues>({
-    resolver: zodResolver(SignUpFormSchema),
+  const form = useForm<SignUpForm>({
+    resolver: zodResolver(SignUpForm),
     mode: "onSubmit",
   });
 
-  async function onSubmit(data: SignUpFormValues) {
+  async function onSubmit(data: SignUpForm) {
     try {
-      const { response, result } = await signInWithEmailPassword({
-        config: { body: JSON.stringify(data) },
+      const response = (await mutationSignUpWithEmailPassword.mutateAsync(
+        data
+      )) as ISignUpWithEmailPasswordResponse;
+      saveAuth({
+        userId: response.userId,
+        accessToken: response.accessToken,
       });
-      const { user, tokens } = result;
-      if (response.ok && user && tokens) {
-        saveAuth({
-          userId: user.id,
-          accessToken: tokens.access.token,
-        });
-        router.push("/onboarding");
-      } else {
-        toast.error(
-          result?.message || "Something went wrong. Please try again."
-        );
+      router.push("/verification/email/request");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
       }
-    } catch (error) {}
+    }
   }
+
+  const { isPending } = mutationSignUpWithEmailPassword;
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
@@ -78,7 +76,7 @@ export default function SignupForm({ className, ...props }: SignupFormProps) {
                       placeholder="First Name"
                       autoCapitalize="words"
                       autoComplete="given-name"
-                      disabled={isLoading}
+                      disabled={isPending}
                       {...field}
                     />
                   </FormControl>
@@ -98,7 +96,7 @@ export default function SignupForm({ className, ...props }: SignupFormProps) {
                       placeholder="Last Name"
                       autoCapitalize="words"
                       autoComplete="family-name"
-                      disabled={isLoading}
+                      disabled={isPending}
                       {...field}
                     />
                   </FormControl>
@@ -121,7 +119,7 @@ export default function SignupForm({ className, ...props }: SignupFormProps) {
                     autoCapitalize="none"
                     autoComplete="email"
                     autoCorrect="off"
-                    disabled={isLoading}
+                    disabled={isPending}
                     {...field}
                   />
                 </FormControl>
@@ -141,7 +139,7 @@ export default function SignupForm({ className, ...props }: SignupFormProps) {
                     placeholder="Min. 8 characters"
                     type="password"
                     autoComplete="password"
-                    disabled={isLoading}
+                    disabled={isPending}
                     {...field}
                   />
                 </FormControl>
@@ -149,8 +147,8 @@ export default function SignupForm({ className, ...props }: SignupFormProps) {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{" "}
+          <Button type="submit" disabled={isPending}>
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{" "}
             Create My Account
           </Button>
         </form>

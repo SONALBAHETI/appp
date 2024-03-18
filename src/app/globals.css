@@ -131,4 +131,16 @@
   .main-page-fixed-height {
     @apply max-h-[calc(100vh-6rem)];
   }
+  .full-screen {
+    @apply w-screen min-h-screen;
+  }
+  .absolute-center {
+    @apply flex items-center justify-center;
+  }
+  .card {
+    @apply rounded-md shadow border p-4;
+  }
+  .link {
+    @apply text-accent-2 font-bold hover:text-accent-2/90;
+  }
 }

@@ -23,7 +23,7 @@ export default function RejectChatRequestDialog({
 }: IRejectChatRequestDialogProps) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
         <ButtonIcon
           disabled={loading}
           className="h-12 w-12"

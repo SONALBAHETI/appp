@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import PathHeading from "./PathHeading";
 import UserPopup from "./UserPopup";
+import NotificationPopup from "./NotificationPopup";
 
 interface ITopBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -16,7 +17,8 @@ const TopBar = ({ className, ...props }: ITopBarProps) => {
       </div>
 
       {/* Right side */}
-      <div>
+      <div className="flex items-center gap-4">
+        <NotificationPopup />
         <UserPopup />
       </div>
     </div>

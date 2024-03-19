@@ -46,6 +46,7 @@ const mentorVerification = {
 
 const notifications = {
   base: `${baseUrls.notifications}`,
+  unreadCount: `${baseUrls.notifications}/unread/count`,
 };
 
 const onboarding = {

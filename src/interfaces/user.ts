@@ -14,3 +14,7 @@ export interface IAchievements {
 export interface IGetAchievementsResponse {
   achievements: IAchievements;
 }
+
+export interface IGetVisibilityResponse {
+  online: boolean;
+}

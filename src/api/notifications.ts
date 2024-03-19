@@ -1,15 +1,16 @@
 import { apiRoutes } from "./routes";
 import {
-  IGetNotificationsResponse,
   IGetUnreadNotificationsCountResponse,
+  INotification,
 } from "@/interfaces/notification";
 
 import { useFetch } from "@/lib/react-query";
+import { useLoadMore } from "@/lib/react-query/useLoadMore";
 import { createQueryKey } from "@/lib/react-query/utils";
 import { QueryClient } from "@tanstack/react-query";
 
 export const getNotificationsQueryKey = () =>
-  createQueryKey(apiRoutes.notifications.base);
+  createQueryKey(apiRoutes.notifications.base, { limit: 10 });
 export const getUnreadNotificationsCountQueryKey = () =>
   createQueryKey(apiRoutes.notifications.unreadCount);
 
@@ -18,7 +19,7 @@ export const getUnreadNotificationsCountQueryKey = () =>
  * @returns The query result.
  */
 export const useNotificationsQuery = () =>
-  useFetch<IGetNotificationsResponse>(getNotificationsQueryKey());
+  useLoadMore<INotification>(getNotificationsQueryKey());
 
 /**
  * Custom hook for getting unread notifications count.

@@ -30,14 +30,16 @@ export default function NotificationList() {
   }
 
   return (
-    <div className="p-1 max-w-screen-lg flex flex-col gap-2">
-      {data.docs.map((notification) => (
-        // todo: handle notification types
-        <ChatRequestAcceptedNotification
-          key={notification.id}
-          notification={notification}
-        />
-      ))}
+    <div className="p-1 max-w-xl flex flex-col gap-2">
+      {data.pages.map((page) =>
+        page.docs.map((notification) => (
+          // todo: handle notification types
+          <ChatRequestAcceptedNotification
+            key={notification.id}
+            notification={notification}
+          />
+        ))
+      )}
     </div>
   );
 }

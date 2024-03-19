@@ -11,8 +11,8 @@ export default function ChatRequestAcceptedNotification({
 }: INotificationComponentProps) {
   const createdAt = getCreatedAtRelativeTimeString(notification);
   return (
-    <Card>
-      <CardContent className="py-4 px-4">
+    <Card className="w-full">
+      <CardContent className="py-4 px-4 w-full">
         <div className="flex items-start gap-4">
           {/* Profile image */}
           <Avatar>
@@ -31,7 +31,7 @@ export default function ChatRequestAcceptedNotification({
           </div>
 
           {/* Action */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-grow flex-col gap-2 items-end">
             <Link href={NAV_ROUTES.CHAT.path}>
               <Button>Chat now</Button>
             </Link>

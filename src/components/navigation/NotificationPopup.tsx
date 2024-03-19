@@ -7,7 +7,7 @@ export default function NotificationPopup() {
   return (
     <Popover>
       <PopoverTrigger>
-        <div className="rounded-full border border-accent-foreground p-[11px] hover:bg-accent relative">
+        <div className="rounded-2xl border border-accent-foreground/80 p-[10px] hover:bg-accent relative">
           <Icon type={IconType.NOTIFICATION} />
           <div className="absolute -top-1 -right-1">
             {/* Unread count badge */}

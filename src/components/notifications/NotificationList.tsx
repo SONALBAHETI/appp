@@ -1,13 +1,28 @@
 "use client";
 
-import { useNotificationsQuery } from "@/api/notifications";
+import {
+  invalidateNotificationsCountQuery,
+  useNotificationsQuery,
+} from "@/api/notifications";
 import { AppointmentConfirmationNotification } from "./NotificationTypes";
+import ChatRequestAcceptedNotification from "./NotificationTypes/ChatRequestAcceptedNotification";
+import NotificationListSkeleton from "./NotificationListSkeleton";
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function NotificationList() {
   const { data, isPending, isError } = useNotificationsQuery();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (data) {
+      // once the notifications are fetched we need to refetch the unread notifications count
+      invalidateNotificationsCountQuery(queryClient);
+    }
+  }, [data]);
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <NotificationListSkeleton />;
   }
 
   if (isError) {
@@ -15,9 +30,10 @@ export default function NotificationList() {
   }
 
   return (
-    <div className="p-4 max-w-screen-lg flex flex-col gap-2">
+    <div className="p-1 max-w-screen-lg flex flex-col gap-2">
       {data.docs.map((notification) => (
-        <AppointmentConfirmationNotification
+        // todo: handle notification types
+        <ChatRequestAcceptedNotification
           key={notification.id}
           notification={notification}
         />

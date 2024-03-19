@@ -1,6 +1,8 @@
 "use client";
 
+import NotificationToast from "@/components/notifications/NotificationToast";
 import { SocketContext } from "@/context/SocketContext";
+import { INotification } from "@/interfaces/notification";
 import React, { useState, ReactNode, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Socket, io } from "socket.io-client";
@@ -18,7 +20,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   }
   useEffect(() => {
     const socketConn = io(socketServerURL, {
-      transports: ["websocket"]
+      transports: ["websocket"],
     });
     setSocket(socketConn);
     socketConn.on("connect", () => {
@@ -30,11 +32,16 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     });
     socketConn.on("disconnect", () => {
       console.log("disconnected from socket");
+      setTimeout(() => {
+        socketConn.connect();
+      }, 3000); // retry after 3 seconds
     });
     // console log event data when server emits anything
-    socketConn.on("notification", (data) => {
-      console.log(data);
-    })
+    socketConn.on("notification", (notification: INotification) => {
+      toast(<NotificationToast notification={notification} />, {
+        autoClose: 12000,
+      });
+    });
     return () => {
       if (socketConn) {
         socketConn.disconnect();

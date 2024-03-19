@@ -20,4 +20,5 @@ export enum IconType {
   CAMERA = "Camera",
   CAMERA_OFF = "CameraOff",
   CHECK = "Check",
+  NOTIFICATION = "Notification",
 }

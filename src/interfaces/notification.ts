@@ -17,5 +17,13 @@ export interface INotification {
   updatedAt: string;
 }
 
+export interface INotificationComponentProps {
+  notification: INotification;
+}
+
 export interface IGetNotificationsResponse
-  extends PaginationResult<INotification> {}
+  extends PaginationResult<INotification> { }
+  
+export interface IGetUnreadNotificationsCountResponse {
+  unreadCount: number;
+}

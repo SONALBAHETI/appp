@@ -70,7 +70,7 @@ export default function LicenseDetailForm({
       });
     } catch (error: any) {
       toast.error(
-        error.response?.data?.message || "Couldn't submit license details"
+        error.message || "Couldn't submit license details"
       );
     } finally {
       onSubmitting(false);

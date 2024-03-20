@@ -3,24 +3,24 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const sideNavLinks: INavLink[] = [
   {
-    label: "Personal Details",
-    link: "/settings/profile/personal-details",
+    label: "Quick replies",
+    link: "/settings/account/quick-replies",
   },
   {
-    label: "Verification Documents",
-    link: "/settings/profile/verification-documents",
+    label: "Notifications",
+    link: "/settings/account/verification-documents",
   },
   {
-    label: "Bank Details",
-    link: "/settings/profile/bank-details",
+    label: "Change Password",
+    link: "/settings/account/change-password",
   },
   {
-    label: "Certifications & Badges",
-    link: "/settings/profile/certifications-and-badges",
+    label: "Delete Account",
+    link: "/settings/account/delete",
   },
 ];
 
-export default function ProfileSettingsLayout({
+export default function AccountSettingsLayout({
   children,
 }: {
   children: React.ReactNode;

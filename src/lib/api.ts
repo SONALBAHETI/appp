@@ -26,6 +26,8 @@ axiosInstance.interceptors.response.use(
       } catch (error) {
         // Handle error if refresh token request fails
         console.log("Error refreshing tokens:", error);
+        // Redirect to login page
+        window.location.href = "/signin";
         throw error;
       }
     }

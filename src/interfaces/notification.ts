@@ -21,9 +21,6 @@ export interface INotificationComponentProps {
   notification: INotification;
 }
 
-export interface IGetNotificationsResponse
-  extends PaginationResult<INotification> { }
-  
 export interface IGetUnreadNotificationsCountResponse {
   unreadCount: number;
 }

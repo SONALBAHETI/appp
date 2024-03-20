@@ -7,7 +7,7 @@ export default function NotificationPopup() {
   return (
     <Popover>
       <PopoverTrigger>
-        <div className="rounded-full border border-accent-foreground p-[11px] hover:bg-accent relative">
+        <div className="rounded-2xl border border-accent-foreground/80 p-[10px] hover:bg-accent relative">
           <Icon type={IconType.NOTIFICATION} />
           <div className="absolute -top-1 -right-1">
             {/* Unread count badge */}
@@ -18,7 +18,7 @@ export default function NotificationPopup() {
       <PopoverContent
         side="bottom"
         align="end"
-        className="p-0 rounded-lg xs:w-full max-w-md"
+        className="p-2 rounded-lg w-full max-w-[100vw] xxs:max-w-screen-xxs xs:max-w-screen-xs md:max-w-md main-page-fixed-height overflow-y-scroll"
       >
         {/* Notifications list */}
         <NotificationList />

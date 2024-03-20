@@ -7,12 +7,21 @@ import {
 import { AppointmentConfirmationNotification } from "./NotificationTypes";
 import ChatRequestAcceptedNotification from "./NotificationTypes/ChatRequestAcceptedNotification";
 import NotificationListSkeleton from "./NotificationListSkeleton";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 
 export default function NotificationList() {
-  const { data, isPending, isError } = useNotificationsQuery();
+  const {
+    data,
+    isPending,
+    isFetchingNextPage,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+  } = useNotificationsQuery();
   const queryClient = useQueryClient();
+  const { ref, inView } = useInView();
 
   useEffect(() => {
     if (data) {
@@ -20,6 +29,12 @@ export default function NotificationList() {
       invalidateNotificationsCountQuery(queryClient);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   if (isPending) {
     return <NotificationListSkeleton />;
@@ -30,14 +45,27 @@ export default function NotificationList() {
   }
 
   return (
-    <div className="p-1 max-w-screen-lg flex flex-col gap-2">
-      {data.docs.map((notification) => (
-        // todo: handle notification types
-        <ChatRequestAcceptedNotification
-          key={notification.id}
-          notification={notification}
-        />
-      ))}
+    <div className="max-w-xl flex flex-col gap-2">
+      {data.pages.map((page) =>
+        page.docs.map((notification, index) => (
+          // todo: handle notification types
+          <Fragment key={notification.id}>
+            {index === page.docs.length - 1 ? (
+              <ChatRequestAcceptedNotification
+                ref={ref}
+                key={notification.id}
+                notification={notification}
+              />
+            ) : (
+              <ChatRequestAcceptedNotification
+                key={notification.id}
+                notification={notification}
+              />
+            )}
+          </Fragment>
+        ))
+      )}
+      {isFetchingNextPage && <NotificationListSkeleton />}
     </div>
   );
 }

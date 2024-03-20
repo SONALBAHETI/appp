@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/skeleton";
 
 export default function NotificationListSkeleton() {
   return (
-    <div className="space-y-4 w-full p-2">
+    <div className="space-y-4 w-full p-2 max-w-xl">
       {Array.from({ length: 3 }).map((_, index) => (
         <div
           key={index}

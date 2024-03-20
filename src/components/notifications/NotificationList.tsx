@@ -7,7 +7,7 @@ import {
 import { AppointmentConfirmationNotification } from "./NotificationTypes";
 import ChatRequestAcceptedNotification from "./NotificationTypes/ChatRequestAcceptedNotification";
 import NotificationListSkeleton from "./NotificationListSkeleton";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
@@ -49,7 +49,7 @@ export default function NotificationList() {
       {data.pages.map((page) =>
         page.docs.map((notification, index) => (
           // todo: handle notification types
-          <>
+          <Fragment key={notification.id}>
             {index === page.docs.length - 1 ? (
               <ChatRequestAcceptedNotification
                 ref={ref}
@@ -62,7 +62,7 @@ export default function NotificationList() {
                 notification={notification}
               />
             )}
-          </>
+          </Fragment>
         ))
       )}
       {isFetchingNextPage && <NotificationListSkeleton />}

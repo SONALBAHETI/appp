@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/FormFields";
 import Loader from "@/components/ui/Loader";
 import { Button } from "@/components/ui/button";
 import {
+  DialogClose,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -147,7 +148,11 @@ export default function UpdateQuickReply({
           />
           {/* Footer */}
           <DialogFooter>
-            <Button variant="outline">Discard</Button>
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                Discard
+              </Button>
+            </DialogClose>
             <Button type="submit">
               {createQuickReplyMutation.isPending && (
                 <Loader className="mr-2" />

@@ -18,7 +18,7 @@ export default function NotificationPopup() {
       <PopoverContent
         side="bottom"
         align="end"
-        className="p-0 rounded-lg w-full max-w-[100vw] xxs:max-w-screen-xxs xs:max-w-screen-xs md:max-w-md"
+        className="p-2 rounded-lg w-full max-w-[100vw] xxs:max-w-screen-xxs xs:max-w-screen-xs md:max-w-md main-page-fixed-height overflow-y-scroll"
       >
         {/* Notifications list */}
         <NotificationList />

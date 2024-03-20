@@ -8,7 +8,7 @@ const sideNavLinks: INavLink[] = [
   },
   {
     label: "Notifications",
-    link: "/settings/account/verification-documents",
+    link: "/settings/account/notifications",
   },
   {
     label: "Change Password",

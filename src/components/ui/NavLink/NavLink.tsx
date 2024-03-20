@@ -24,7 +24,10 @@ export default function NavLink({
   return (
     <Link
       href={href}
-      className={cn(`py-2 ${active ? activeClassName : inactiveClassName}`, className)}
+      className={cn(
+        `py-2 ${active ? activeClassName : inactiveClassName}`,
+        className
+      )}
       {...props}
     >
       {children}

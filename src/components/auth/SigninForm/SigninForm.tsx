@@ -52,7 +52,7 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
       router.push("/");
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
+        toast.error(error.message);
       }
     }
   }

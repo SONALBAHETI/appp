@@ -52,7 +52,7 @@ export default function SignupForm({ className, ...props }: SignupFormProps) {
       router.push("/verification/email/request");
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
+        toast.error(error.message);
       }
     }
   }

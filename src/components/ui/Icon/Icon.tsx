@@ -26,6 +26,8 @@ import {
   CameraOff,
   CheckCheck,
   Bell,
+  Trash2,
+  PenLine,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -74,6 +76,10 @@ function changeTypeToIconComponent(type: IconType) {
       return CheckCheck;
     case IconType.NOTIFICATION:
       return Bell;
+    case IconType.TRASH:
+      return Trash2;
+    case IconType.EDIT:
+      return PenLine;
     default:
       return Plus; // TODO: Choose default icon?
   }

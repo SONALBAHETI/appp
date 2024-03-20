@@ -102,8 +102,14 @@ const profileSettings = {
     `${baseUrls.settings}/profile/suggestions/fellowship-programs?q=${searchTerm}`,
 };
 
+const accountSettings = {
+  quickReplies: `${baseUrls.settings}/account/quick-replies`,
+  quickReply: (id: string) => `${baseUrls.settings}/account/quick-replies/${id}`,
+};
+
 const settings = {
   profile: profileSettings,
+  account: accountSettings,
 };
 
 const auth = {

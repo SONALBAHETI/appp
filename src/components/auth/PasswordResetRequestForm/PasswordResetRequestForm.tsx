@@ -50,7 +50,7 @@ export default function PasswordResetRequestForm({
       setEmailSent(true);
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
+        toast.error(error.message);
       } else {
         toast.error("Couldn't send password reset email");
       }

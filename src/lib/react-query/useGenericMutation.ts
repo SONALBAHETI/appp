@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
-import type { TOptimisticUpdater, TGenericMutation, TQueryKey } from "./types";
+import type { TGenericMutation, TQueryKey } from "./types";
 
 /**
  * Custom hook for performing a generic mutation.

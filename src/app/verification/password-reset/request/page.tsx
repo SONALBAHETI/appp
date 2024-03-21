@@ -15,7 +15,7 @@ export default function PasswordResetRequestPage() {
         </p>
         <PasswordResetRequestForm
           className="mt-4"
-          redirect={`${process.env.NEXT_PUBLIC_FRONTENT_BASE_URL}`}
+          redirect={`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}`}
         />
       </LeftColumn>
 

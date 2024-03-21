@@ -21,6 +21,8 @@ export const getVerifyEmailMutationKey = () =>
   createQueryKey(apiRoutes.auth.verifyEmail);
 export const getSendResetPasswordEmailMutationKey = () =>
   createQueryKey(apiRoutes.auth.sendResetPasswordEmail);
+export const getSendResetPasswordEmailWithAuthMutationKey = () =>
+  createQueryKey(apiRoutes.auth.sendResetPasswordEmailWithAuth);
 export const getResetPasswordMutationKey = () =>
   createQueryKey(apiRoutes.auth.resetPassword);
 
@@ -56,6 +58,13 @@ export const useSendResetPasswordEmailMutation = () => {
     ISendResetPasswordEmailResponse
   >({
     queryKey: getSendResetPasswordEmailMutationKey(),
+  });
+};
+
+// Generates a mutation hook for sending authenticated reset password email.
+export const useSendResetPasswordEmailMutationWithAuth = () => {
+  return usePost<{ redirect: string }, ISendResetPasswordEmailResponse>({
+    queryKey: getSendResetPasswordEmailWithAuthMutationKey(),
   });
 };
 

@@ -118,6 +118,7 @@ const auth = {
   verifyEmail: `${baseUrls.auth}/verify-email`,
   sendVerificationEmail: `${baseUrls.auth}/send-verification-email`,
   sendResetPasswordEmail: `${baseUrls.auth}/send-reset-password-email`,
+  sendResetPasswordEmailWithAuth: `${baseUrls.auth}/send-reset-password-email-with-auth`,
   resetPassword: `${baseUrls.auth}/reset-password`,
   signInWithEmailPassword: `${baseUrls.auth}/login/email-password`,
   signUpWithEmailPassword: `${baseUrls.auth}/register`,

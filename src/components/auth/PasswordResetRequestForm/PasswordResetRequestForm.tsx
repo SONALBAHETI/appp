@@ -12,7 +12,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useSendResetPasswordEmailMutation } from "@/api/auth";
+import {
+  useSendResetPasswordEmailMutation,
+  useSendResetPasswordEmailMutationWithAuth,
+} from "@/api/auth";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/Loader";
@@ -25,28 +28,38 @@ import { AxiosError } from "axios";
 export interface IPasswordResetRequestFormProps
   extends React.HTMLAttributes<HTMLDivElement> {
   redirect: string;
+  showEmailField?: boolean;
 }
 
 export default function PasswordResetRequestForm({
   className,
   redirect,
+  showEmailField = true,
   ...props
 }: IPasswordResetRequestFormProps) {
   const sendResetPasswordEmailMutation = useSendResetPasswordEmailMutation();
+  const sendResetPasswordEmailMutationWithAuth =
+    useSendResetPasswordEmailMutationWithAuth();
 
   const [emailSent, setEmailSent] = useState(false);
 
   const form = useForm<PasswordResetRequestFormSchema>({
-    resolver: zodResolver(PasswordResetRequestFormSchema),
+    resolver: showEmailField
+      ? zodResolver(PasswordResetRequestFormSchema)
+      : undefined,
     mode: "onSubmit",
   });
 
   async function onSubmit(data: PasswordResetRequestFormSchema) {
     try {
-      await sendResetPasswordEmailMutation.mutateAsync({
-        email: data.email,
-        redirect,
-      });
+      if (showEmailField) {
+        await sendResetPasswordEmailMutation.mutateAsync({
+          email: data.email,
+          redirect,
+        });
+      } else {
+        await sendResetPasswordEmailMutationWithAuth.mutateAsync({ redirect });
+      }
       setEmailSent(true);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -63,28 +76,30 @@ export default function PasswordResetRequestForm({
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-4"
         >
-          <FormField
-            control={form.control}
-            name="email"
-            defaultValue=""
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="name@example.com"
-                    type="email"
-                    autoCapitalize="none"
-                    autoComplete="email"
-                    autoCorrect="off"
-                    disabled={sendResetPasswordEmailMutation.isPending}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {showEmailField && (
+            <FormField
+              control={form.control}
+              name="email"
+              defaultValue=""
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="name@example.com"
+                      type="email"
+                      autoCapitalize="none"
+                      autoComplete="email"
+                      autoCorrect="off"
+                      disabled={sendResetPasswordEmailMutation.isPending}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
           {emailSent && (
             <>
               <p className="text-sm text-primary">
@@ -100,7 +115,8 @@ export default function PasswordResetRequestForm({
               className="w-full"
               disabled={sendResetPasswordEmailMutation.isPending}
             >
-              {sendResetPasswordEmailMutation.isPending && (
+              {(sendResetPasswordEmailMutation.isPending ||
+                sendResetPasswordEmailMutationWithAuth.isPending) && (
                 <Loader className="mr-2" />
               )}
               Send password reset email

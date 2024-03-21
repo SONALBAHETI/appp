@@ -7,11 +7,11 @@ import Link from "next/link";
 const settingTabs = [
   {
     label: "Profile",
-    link: "/settings/profile/personal-details",
+    link: "/settings/profile/",
   },
   {
     label: "Account",
-    link: "/settings/account/quick-replies",
+    link: "/settings/account/",
   },
   {
     label: "Appointment",

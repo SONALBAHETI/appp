@@ -1,3 +1,10 @@
+"use client";
+
+import {
+  useNotificationSettingsQuery,
+  useUpdateNotificationSettingsMutation,
+} from "@/api/accountSettings";
+import Loader from "@/components/ui/Loader";
 import { Switch } from "@/components/ui/switch";
 import {
   Table,
@@ -7,9 +14,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  INotificationMode,
+  INotificationType,
+} from "@/interfaces/notificationSettings";
 import { Fragment } from "react";
+import { toast } from "react-toastify";
 
-const notificationSettings = [
+const notificationSettings: {
+  field: INotificationType;
+  label: string;
+}[] = [
   {
     field: "newMessage",
     label: "New Message",
@@ -53,6 +68,43 @@ const notificationSettings = [
 ];
 
 export default function NotificationSettings() {
+  const notificationSettingsQuery = useNotificationSettingsQuery();
+  const updateNotificationSettingsMutation =
+    useUpdateNotificationSettingsMutation();
+
+  if (notificationSettingsQuery.isPending) {
+    return (
+      <div className="absolute-center p-5">
+        <Loader />
+      </div>
+    );
+  }
+
+  if (notificationSettingsQuery.isError) {
+    return (
+      <div className="absolute-center p-5 text-faded">
+        Oops! Something went wrong.
+      </div>
+    );
+  }
+
+  const onSettingsToggle = async (
+    mode: INotificationMode,
+    notification: INotificationType,
+    enabled: boolean
+  ) => {
+    try {
+      await updateNotificationSettingsMutation.mutateAsync({
+        mode,
+        notification,
+        enabled,
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update notification settings");
+    }
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -69,11 +121,29 @@ export default function NotificationSettings() {
               <TableCell className="font-medium max-w-[100px]">
                 {label}
               </TableCell>
+              {/* In-app switch */}
               <TableCell>
-                <Switch />
+                <Switch
+                  checked={
+                    notificationSettingsQuery.data.notificationSettings
+                      .inAppNotifications[field]
+                  }
+                  onCheckedChange={(checked) =>
+                    onSettingsToggle("inAppNotifications", field, checked)
+                  }
+                />
               </TableCell>
+              {/* Email switch */}
               <TableCell>
-                <Switch />
+                <Switch
+                  checked={
+                    notificationSettingsQuery.data.notificationSettings
+                      .emailNotifications[field]
+                  }
+                  onCheckedChange={(checked) =>
+                    onSettingsToggle("emailNotifications", field, checked)
+                  }
+                />
               </TableCell>
             </TableRow>
           </Fragment>

@@ -105,6 +105,7 @@ const profileSettings = {
 const accountSettings = {
   quickReplies: `${baseUrls.settings}/account/quick-replies`,
   quickReply: (id: string) => `${baseUrls.settings}/account/quick-replies/${id}`,
+  notifications: `${baseUrls.settings}/account/notifications`,
 };
 
 const settings = {

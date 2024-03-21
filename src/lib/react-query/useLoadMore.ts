@@ -28,7 +28,13 @@ export const infiniteFetcher = async <T>({
     .catch((e: AxiosError) => {
       const data: any = e.response?.data;
       if (data?.message) {
-        throw new AxiosError(data?.message, data?.code || e.code);
+        throw new AxiosError(
+              data?.message,
+              data?.code || e.code,
+              e.config,
+              e.request,
+              e.response
+            );
       } else {
         throw e;
       }

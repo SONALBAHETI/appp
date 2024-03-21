@@ -3,11 +3,18 @@ import { IQuickReply } from "@/interfaces/quickReply";
 import { createQueryKey, isEqualQueryKeys } from "@/lib/react-query/utils";
 import { apiRoutes } from "./routes";
 import { QuickReplySchema } from "@/validation/settingsValidations/quickReply.validation";
+import {
+  IGetNotificationSettingsResponse,
+  INotificationMode,
+  INotificationType,
+} from "@/interfaces/notificationSettings";
 
 const getQuickRepliesQueryKey = () =>
   createQueryKey(apiRoutes.settings.account.quickReplies);
 const getSingleQueryReplyQueryKey = (id: string) =>
   createQueryKey(apiRoutes.settings.account.quickReply(id));
+const getNotificationsQueryKey = () =>
+  createQueryKey(apiRoutes.settings.account.notifications);
 
 /**
  * Custom hook for getting quick replies.
@@ -91,6 +98,43 @@ export const useDeleteQuickReplyMutation = (id: string) =>
             (quickReply: IQuickReply) => quickReply.id !== id
           ),
         } as { quickReplies: IQuickReply[] };
+      }
+    },
+  });
+
+/**
+ * Custom hook for getting all notification settings
+ * @returns The query result.
+ */
+export const useNotificationSettingsQuery = () =>
+  useFetch<IGetNotificationSettingsResponse>(getNotificationsQueryKey(), {
+    staleTime: Infinity,
+  });
+
+/**
+ * Mutation hook to update notification settings
+ * @returns The mutation result.
+ */
+export const useUpdateNotificationSettingsMutation = () =>
+  usePatch<
+    {
+      mode: INotificationMode;
+      notification: INotificationType;
+      enabled: boolean;
+    },
+    IGetNotificationSettingsResponse
+  >({
+    queryKey: getNotificationsQueryKey(),
+    dependentQueryKeys: [getNotificationsQueryKey()],
+    optimisticUpdater: (queryKey, oldQueryData, mutatedData) => {
+      if (isEqualQueryKeys(queryKey, getNotificationsQueryKey())) {
+        return {
+          ...oldQueryData,
+          [mutatedData.mode]: {
+            ...oldQueryData[mutatedData.mode],
+            [mutatedData.notification]: mutatedData.enabled,
+          },
+        } as IGetNotificationSettingsResponse;
       }
     },
   });

@@ -106,6 +106,8 @@ const accountSettings = {
   quickReplies: `${baseUrls.settings}/account/quick-replies`,
   quickReply: (id: string) => `${baseUrls.settings}/account/quick-replies/${id}`,
   notifications: `${baseUrls.settings}/account/notifications`,
+  deactivateAccount: `${baseUrls.settings}/account/deactivate`,
+  deleteAccount: `${baseUrls.settings}/account/delete`,
 };
 
 const settings = {

@@ -1,6 +1,6 @@
 export default function PopularInboxLinks() {
   return (
-    <ul className="flex gap-2 items-stretch">
+    <ul className="flex gap-2 items-stretch text-center">
       <li className="flex-1 flex-shrink-0">
         <a
           className="flex flex-col gap-1 items-center justify-center text-sm card h-full hover:bg-muted"

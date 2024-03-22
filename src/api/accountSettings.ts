@@ -138,3 +138,21 @@ export const useUpdateNotificationSettingsMutation = () =>
       }
     },
   });
+
+/**
+ * Mutation hook to deactivate a user's account
+ * @returns The mutation result.
+ */
+export const useDeactivateAccountMutation = () =>
+  useDelete<{ success: boolean }>({
+    queryKey: createQueryKey(apiRoutes.settings.account.deactivateAccount),
+  });
+
+/**
+ * Mutation hook to schedule account deletion
+ * @returns The mutation result.
+ */
+export const useScheduleAccountDeletionMutation = () =>
+  useDelete<{ success: boolean }>({
+    queryKey: createQueryKey(apiRoutes.settings.account.deleteAccount),
+  });

@@ -20,6 +20,7 @@ interface IConfirmDialogProps {
   cancelBtnLabel?: string;
   confirmBtnLabel?: string;
   confirmBtnClassName?: string;
+  cancelBtnClassName?: string;
 }
 
 export default function ConfirmDialog({
@@ -31,6 +32,7 @@ export default function ConfirmDialog({
   cancelBtnLabel = "Cancel",
   confirmBtnLabel = "Confirm",
   confirmBtnClassName,
+  cancelBtnClassName,
 }: IConfirmDialogProps) {
   return (
     <AlertDialog>
@@ -38,10 +40,14 @@ export default function ConfirmDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription className="text-faded">{description}</AlertDialogDescription>
+          <AlertDialogDescription className="text-faded">
+            {description}
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{cancelBtnLabel}</AlertDialogCancel>
+          <AlertDialogCancel className={cancelBtnClassName}>
+            {cancelBtnLabel}
+          </AlertDialogCancel>
           <AlertDialogAction
             className={cn(
               "bg-destructive text-destructive-foreground hover:bg-destructive/90 hover:text-destructive-foreground",

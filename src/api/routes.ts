@@ -108,6 +108,9 @@ const accountSettings = {
   notifications: `${baseUrls.settings}/account/notifications`,
   deactivateAccount: `${baseUrls.settings}/account/deactivate`,
   deleteAccount: `${baseUrls.settings}/account/delete`,
+  googleCalendarSync: `${baseUrls.settings}/account/calendar-sync/google`,
+  authorizeGoogleCalendarSync: `${baseUrls.settings}/account/calendar-sync/google/auth`,
+  verifyGoogleCalendarSync: `${baseUrls.settings}/account/calendar-sync/google/verify`,
 };
 
 const settings = {

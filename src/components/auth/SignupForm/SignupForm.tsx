@@ -53,6 +53,8 @@ export default function SignupForm({ className, ...props }: SignupFormProps) {
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.message);
+      } else {
+        toast.error("Something went wrong");
       }
     }
   }

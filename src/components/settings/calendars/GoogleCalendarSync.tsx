@@ -3,7 +3,7 @@ import {
   useAuthorizeGoogleCalendarSyncMutation,
   useRemoveGoogleCalendarSyncMutation,
   useVerifyGoogleCalendarSyncQuery,
-} from "@/api/accountSettings";
+} from "@/api/appointmentSettings";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import Icon, { IconType } from "@/components/ui/Icon";
 import Loader from "@/components/ui/Loader";

@@ -132,6 +132,7 @@ const auth = {
 const user = {
   achievements: `${baseUrls.user}/achievements`,
   visibility: `${baseUrls.user}/visibility`,
+  availability: `${baseUrls.user}/availability`,
 };
 
 const chat = {

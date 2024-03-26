@@ -1,4 +1,4 @@
-import { UseControllerProps } from "react-hook-form";
+import { UseControllerProps, useWatch } from "react-hook-form";
 
 import {
   FormControl,
@@ -20,10 +20,11 @@ import { AppointmentSettingsFormSchema } from "@/validation/settingsValidations/
 export default function HourlyRateFormField(
   props: UseControllerProps<AppointmentSettingsFormSchema>
 ) {
+  const value = useWatch({ name: props.name, control: props.control });
   return (
     <FormField
       {...props}
-      render={({ field: { value, onChange } }) => (
+      render={({ field: { onChange } }) => (
         <FormItem>
           <FormLabel>Hourly rate</FormLabel>
           <Select

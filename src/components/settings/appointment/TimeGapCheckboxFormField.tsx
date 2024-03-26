@@ -1,5 +1,5 @@
 import { AppointmentSettingsFormSchema } from "@/validation/settingsValidations/appointment.validation";
-import { UseControllerProps } from "react-hook-form";
+import { UseControllerProps, useWatch } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -11,16 +11,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 export default function TimeGapCheckboxFormField(
   props: UseControllerProps<AppointmentSettingsFormSchema, "timeGap">
 ) {
+  const value = useWatch({ name: props.name, control: props.control });
   return (
     <FormField
       {...props}
-      render={({ field: { value, onChange } }) => (
+      render={({ field: { onChange } }) => (
         <FormItem className="flex items-center gap-2">
           <FormControl>
             <Checkbox
-              checked={value.active as boolean}
+              checked={value?.active as boolean}
               onCheckedChange={(checked) => {
-                console.log(checked);
                 onChange({ ...value, active: checked });
               }}
             />

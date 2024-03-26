@@ -38,18 +38,19 @@ export default function AppointmentSettingsPage() {
   useEffect(() => {
     if (!appointmentSettingsQuery.data) return;
     const { availability } = appointmentSettingsQuery.data;
-    if (availability.hourlyRate) {
-      form.setValue("hourlyRate", availability.hourlyRate);
-    }
-    if (availability.timegap) {
-      form.setValue("timeGap", {
-        active: true,
-        gap: availability.timegap,
-      });
-    }
     // this is a heavy task, so we should not block the UI rendering
     // timeout is added to ensure that the form is rendered after other renders
+    // todo: optimize this heavy task
     setTimeout(() => {
+      if (availability.hourlyRate) {
+        form.setValue("hourlyRate", availability.hourlyRate);
+      }
+      if (availability.timegap) {
+        form.setValue("timeGap", {
+          active: true,
+          gap: availability.timegap,
+        });
+      }
       if (availability.weeklySchedule) {
         form.setValue("weeklyTimeSlots", availability.weeklySchedule);
       } else {

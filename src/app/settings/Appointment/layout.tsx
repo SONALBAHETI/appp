@@ -3,8 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const sideNavLinks: INavLink[] = [
   {
-    label: "Availability",
-    link: "/settings/appointment/availability",
+    label: "Appointment settings",
+    link: "/settings/appointment/appointment-settings",
   },
   {
     label: "Calendar sync",

@@ -15,8 +15,6 @@ const getSingleQueryReplyQueryKey = (id: string) =>
   createQueryKey(apiRoutes.settings.account.quickReply(id));
 const getNotificationsQueryKey = () =>
   createQueryKey(apiRoutes.settings.account.notifications);
-const getVerifyGoogleCalendarSyncQueryKey = () =>
-  createQueryKey(apiRoutes.settings.account.verifyGoogleCalendarSync);
 
 /**
  * Custom hook for getting quick replies.
@@ -157,35 +155,4 @@ export const useDeactivateAccountMutation = () =>
 export const useScheduleAccountDeletionMutation = () =>
   useDelete<{ success: boolean }>({
     queryKey: createQueryKey(apiRoutes.settings.account.deleteAccount),
-  });
-
-/**
- * Mutation hook to authorize google calendar sync
- * @returns The mutation result.
- */
-export const useAuthorizeGoogleCalendarSyncMutation = () =>
-  usePost<{ code: string }, { success: boolean }>({
-    queryKey: createQueryKey(
-      apiRoutes.settings.account.authorizeGoogleCalendarSync
-    ),
-    dependentQueryKeys: [getVerifyGoogleCalendarSyncQueryKey()],
-  });
-
-/**
- * Query hook to verify google calendar sync
- * @returns The query result.
- */
-export const useVerifyGoogleCalendarSyncQuery = () =>
-  useFetch<{ authorized: boolean }>(getVerifyGoogleCalendarSyncQueryKey(), {
-    staleTime: Infinity,
-  });
-
-/**
- * Mutation hook to remove google calendar sync
- * @returns The mutation result.
- */
-export const useRemoveGoogleCalendarSyncMutation = () =>
-  useDelete<{ success: boolean }>({
-    queryKey: createQueryKey(apiRoutes.settings.account.googleCalendarSync),
-    dependentQueryKeys: [getVerifyGoogleCalendarSyncQueryKey()],
   });

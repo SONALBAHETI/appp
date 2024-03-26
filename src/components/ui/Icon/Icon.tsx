@@ -28,6 +28,7 @@ import {
   Bell,
   Trash2,
   PenLine,
+  Copy,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -80,6 +81,8 @@ function changeTypeToIconComponent(type: IconType) {
       return Trash2;
     case IconType.EDIT:
       return PenLine;
+    case IconType.COPY:
+      return Copy;
     default:
       return Plus; // TODO: Choose default icon?
   }

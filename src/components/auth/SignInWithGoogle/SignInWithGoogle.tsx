@@ -17,7 +17,7 @@ export default function SignInWithGoogle() {
         credential,
       }
     );
-    response.data.user?.accountStatus?.isOnboarded
+    response.data.isOnboarded
       ? router.push("/")
       : router.push("/onboarding");
   };

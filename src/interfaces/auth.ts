@@ -10,7 +10,8 @@ export interface ISignUpWithEmailPasswordResponse {
 
 export interface ILoginWithGoogleResponse {
   accessToken: IToken;
-  user: any;
+  userId: string;
+  isOnboarded: boolean;
 }
 
 export interface ILogoutResponse {}

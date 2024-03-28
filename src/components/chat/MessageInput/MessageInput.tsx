@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { useSendbirdStateContext } from "@sendbird/uikit-react/useSendbirdStateContext";
 import sendbirdSelectors from "@sendbird/uikit-react/sendbirdSelectors";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChannelContext } from "@sendbird/uikit-react/Channel/context";
 import SBMessageInput from "@sendbird/uikit-react/Channel/components/MessageInput";
 import QuoteMessageInput from "@sendbird/uikit-react/ui/QuoteMessageInput";
@@ -13,14 +13,70 @@ import {
 import Icon from "@/components/ui/Icon";
 import { IconType } from "@/components/ui/Icon";
 import "./sb-message-input.override.css";
+import QuickReplyPopup from "../QuickReply/QuickReplyPopup";
+import { useChatStore } from "@/store/useChatStore";
+import { useQuickRepliesQuery } from "@/api/accountSettings";
 
 export default function MessageInput() {
+  /* Local states and refs */
   const [message, setMessage] = useState<string>("");
-  const globalStore = useSendbirdStateContext();
-  const { currentGroupChannel, quoteMessage, setQuoteMessage } =
-    useChannelContext();
-  const sendFileMessage = sendbirdSelectors.getSendFileMessage(globalStore);
   const fileUploadRef = useRef<HTMLInputElement>(null);
+
+  /* Sendbird states */
+  const globalStore = useSendbirdStateContext();
+  const {
+    currentGroupChannel,
+    quoteMessage,
+    setQuoteMessage,
+    messageInputRef,
+  } = useChannelContext();
+  const sendFileMessage = sendbirdSelectors.getSendFileMessage(globalStore);
+
+  /* Chat store */
+  const { selectedQuickReply, setSelectedQuickReply } = useChatStore();
+
+  /* Server states */
+  const quickRepliesQuery = useQuickRepliesQuery();
+
+  /* Side effects */
+  useEffect(() => {
+    const handleQuickReplyShortcut = () => {
+      if (quickRepliesQuery.data?.quickReplies.length) {
+        const { quickReplies } = quickRepliesQuery.data;
+        // check if the input string is a shortcut for a quick reply
+        const matchedQuickReply = quickReplies.find(
+          (quickReply) =>
+            quickReply.shortcut ===
+            messageInputRef.current.innerText?.substring(1)
+        );
+        if (matchedQuickReply) {
+          // setting timeout so that for a brief moment, the last input character is also visible
+          setTimeout(() => {
+            setMessage(matchedQuickReply.text);
+          }, 200);
+        }
+      }
+    }
+    // there's no onchange handler on the SBMessageInput component :(
+    if (messageInputRef.current) {
+      messageInputRef.current.oninput = () => {
+        setMessage(messageInputRef.current.innerText);
+        handleQuickReplyShortcut();
+      };
+    }
+    return () => {
+      if (messageInputRef.current) {
+        messageInputRef.current.oninput = null;
+      }
+    };
+  }, [messageInputRef.current, quickRepliesQuery.data]);
+
+  useEffect(() => {
+    if (selectedQuickReply) {
+      setMessage(selectedQuickReply);
+      setSelectedQuickReply("");
+    }
+  }, [selectedQuickReply]);
 
   const onFileUploadClicked = () => {
     if (fileUploadRef.current) {
@@ -63,7 +119,8 @@ export default function MessageInput() {
             <ul>
               <li>
                 <div
-                  className="py-3 px-4 hover:bg-gray-100 rounded-t-md cursor-pointer"
+                  role="button"
+                  className="py-3 px-4 hover:bg-muted rounded-t-md cursor-pointer"
                   onClick={onFileUploadClicked}
                 >
                   Upload a File
@@ -76,9 +133,19 @@ export default function MessageInput() {
                 </div>
               </li>
               <li>
-                <div className="py-3 px-4 hover:bg-gray-100 rounded-b-md cursor-pointer">
-                  Quick Replies
-                </div>
+                <QuickReplyPopup asChild>
+                  <div
+                    role="button"
+                    className="py-3 px-4 hover:bg-muted rounded-b-md cursor-pointer flex items-center gap-2"
+                  >
+                    <Icon
+                      type={IconType.ZAP}
+                      size={22}
+                      className="fill-light-bulb"
+                    />
+                    Quick Replies
+                  </div>
+                </QuickReplyPopup>
               </li>
             </ul>
           </PopoverContent>

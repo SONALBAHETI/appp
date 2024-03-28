@@ -4,8 +4,24 @@ import { useQuickRepliesQuery } from "@/api/accountSettings";
 import QuickReply from ".";
 import QuickReplySkeleton from "./QuickReplySkeleton";
 import QuickReplyContainer from "./QuickReplyContainer";
+import { IQuickReply } from "@/interfaces/quickReply";
+import { cn } from "@/lib/utils";
 
-export default function QuickReplyList() {
+interface IQuickReplyListProps {
+  showEditButton?: boolean;
+  showDeleteButton?: boolean;
+  showCopyButton?: boolean;
+  className?: string;
+  onSelect?: (quickReply: IQuickReply) => void;
+}
+
+export default function QuickReplyList({
+  showEditButton = true,
+  showDeleteButton = true,
+  showCopyButton = true,
+  className,
+  onSelect,
+}: IQuickReplyListProps) {
   const quickRepliesQuery = useQuickRepliesQuery();
 
   if (quickRepliesQuery.isPending) {
@@ -21,7 +37,9 @@ export default function QuickReplyList() {
   if (quickRepliesQuery.isError) {
     return (
       <QuickReplyContainer>
-        <p className="text-center text-destructive my-5">Something went wrong.</p>
+        <p className="text-center text-destructive my-5">
+          Something went wrong.
+        </p>
       </QuickReplyContainer>
     );
   }
@@ -38,9 +56,16 @@ export default function QuickReplyList() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cn("flex flex-col gap-2", className)}>
       {quickRepliesQuery.data.quickReplies.map((quickReply) => (
-        <QuickReply key={quickReply.id} quickReply={quickReply} />
+        <QuickReply
+          key={quickReply.id}
+          quickReply={quickReply}
+          showEditButton={showEditButton}
+          showDeleteButton={showDeleteButton}
+          showCopyButton={showCopyButton}
+          onSelect={onSelect}
+        />
       ))}
     </div>
   );

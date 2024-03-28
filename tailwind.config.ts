@@ -63,6 +63,9 @@ module.exports = {
           DEFAULT: "hsl(var(--accent-2-light))",
           foreground: "hsl(var(--accent-2-foreground))",
         },
+        "light-bulb": {
+          DEFAULT: "hsl(var(--light-bulb))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",

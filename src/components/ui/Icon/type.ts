@@ -24,4 +24,5 @@ export enum IconType {
   TRASH = "Trash",
   EDIT = "Edit",
   COPY = "Copy",
+  ZAP = "Zap",
 }

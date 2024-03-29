@@ -15,7 +15,10 @@ export interface IGetOrgSearchUrlResponse {
 }
 
 export interface ISubmitMentorVerificationDataResponse {
-  verificationId: string;
+  currentStep: string;
+}
+
+export interface ISubmitStudentVerificationDataResponse {
   currentStep: string;
 }
 

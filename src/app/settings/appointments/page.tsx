@@ -7,7 +7,7 @@ export default function AppointmentSettingsPage() {
   const router = useRouter();
   useEffect(() => {
     // TODO: Change this to availability tab
-    router.push("/settings/appointment/calendar-sync");
+    router.push("/settings/appointment/appointment-settings");
   }, []);
   return null;
 }

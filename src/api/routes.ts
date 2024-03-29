@@ -9,7 +9,9 @@ const baseUrls = {
   notifications: "/api/v1/notifications",
   onboarding: "/api/v1/onboarding",
   userMatch: "/api/v1/usermatch",
-  mentorVerification: "/api/v1/verification/mentor",
+  sheerIDVerification: "/api/v1/verification/identity",
+  mentorVerification: "/api/v1/verification/identity/mentor",
+  studentVerification: "/api/v1/verification/identity/student",
   settings: "/api/v1/settings",
   appointments: "/api/v1/appointments",
 };
@@ -35,7 +37,6 @@ const userMatch = {
 const mentorVerification = {
   getCurrentStep: `${baseUrls.mentorVerification}/current-step`,
   submitVerificationData: `${baseUrls.mentorVerification}/submit-data`,
-  docUpload: `${baseUrls.mentorVerification}/doc-upload`,
   getOrgSearchUrl: `${baseUrls.mentorVerification}/organizations/search-url`,
   getOrganizations: (orgSearchUrl?: string, searchTerm?: string) =>
     `${baseUrls.mentorVerification}/organizations/search?orgSearchUrl=${
@@ -43,6 +44,21 @@ const mentorVerification = {
     }&searchTerm=${searchTerm}`,
   submitData: `${baseUrls.mentorVerification}/submit-data`,
 };
+
+const studentVerification = {
+  getCurrentStep: `${baseUrls.studentVerification}/current-step`,
+  submitVerificationData: `${baseUrls.studentVerification}/submit-data`,
+  getOrgSearchUrl: `${baseUrls.studentVerification}/organizations/search-url`,
+  getOrganizations: (orgSearchUrl?: string, searchTerm?: string) =>
+    `${baseUrls.studentVerification}/organizations/search?orgSearchUrl=${
+      orgSearchUrl && encodeURIComponent(orgSearchUrl)
+    }&searchTerm=${searchTerm}`,
+  submitData: `${baseUrls.studentVerification}/submit-data`,
+};
+
+const sheerIDVerification = {
+  docUpload: `${baseUrls.sheerIDVerification}/doc-upload`,
+}
 
 const notifications = {
   base: `${baseUrls.notifications}`,
@@ -104,7 +120,8 @@ const profileSettings = {
 
 const accountSettings = {
   quickReplies: `${baseUrls.settings}/account/quick-replies`,
-  quickReply: (id: string) => `${baseUrls.settings}/account/quick-replies/${id}`,
+  quickReply: (id: string) =>
+    `${baseUrls.settings}/account/quick-replies/${id}`,
   notifications: `${baseUrls.settings}/account/notifications`,
   deactivateAccount: `${baseUrls.settings}/account/deactivate`,
   deleteAccount: `${baseUrls.settings}/account/delete`,
@@ -155,6 +172,8 @@ export const apiRoutes = {
   chatbot,
   userMatch,
   mentorVerification,
+  studentVerification,
+  sheerIDVerification,
   auth,
   notifications,
   onboarding,

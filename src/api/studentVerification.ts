@@ -2,21 +2,21 @@ import {
   IGetCurrentVerificationStepResponse,
   IGetOrgSearchUrlResponse,
   ISearchOrganizationsResponse,
-  ISubmitMentorVerificationDataResponse,
+  ISubmitStudentVerificationDataResponse,
 } from "@/interfaces/verification";
 import { useFetch, usePost } from "@/lib/react-query";
 import { createQueryKey } from "@/lib/react-query/utils";
 import { apiRoutes } from "./routes";
-import { LicenseFormSchema } from "@/validation/settingsValidations/license.validation";
 import { QueryClient } from "@tanstack/react-query";
+import { StudentVerificationFormSchema } from "@/validation/studentVerificationForm.validation";
 
 // get query key for getCurrentStep
 export const getCurrentVerificationStepQueryKey = () =>
-  createQueryKey(apiRoutes.mentorVerification.getCurrentStep);
+  createQueryKey(apiRoutes.studentVerification.getCurrentStep);
 
 // get query key for getOrgSearchUrl
 export const getOrgSearchUrlQueryKey = () =>
-  createQueryKey(apiRoutes.mentorVerification.getOrgSearchUrl);
+  createQueryKey(apiRoutes.studentVerification.getOrgSearchUrl);
 
 // get query key for getOrganizations
 export const getOrganizationsQueryKey = (
@@ -24,12 +24,12 @@ export const getOrganizationsQueryKey = (
   searchTerm?: string
 ) =>
   createQueryKey(
-    apiRoutes.mentorVerification.getOrganizations(orgSearchUrl, searchTerm)
+    apiRoutes.studentVerification.getOrganizations(orgSearchUrl, searchTerm)
   );
 
-// get mutation key for submitMentorVerificationData
-export const getSubmitMentorVerificationDataMutationKey = () =>
-  createQueryKey(apiRoutes.mentorVerification.submitData);
+// get mutation key for submitStudentVerificationData
+export const getSubmitStudentVerificationDataMutationKey = () =>
+  createQueryKey(apiRoutes.studentVerification.submitData);
 
 /**
  * Executes a query to fetch the current verification step using useFetch hook.
@@ -48,9 +48,7 @@ export const useCurrentVerificationStepQuery = () =>
  * Invalidates the current verification step in the query client.
  * @param queryClient - The query client
  */
-export const invalidateCurrentVerificationStepQuery = (
-  queryClient: QueryClient
-) => {
+export const invalidateCurrentVerificationStepQuery = (queryClient: QueryClient) => {
   queryClient.invalidateQueries({
     queryKey: getCurrentVerificationStepQueryKey(),
   });
@@ -90,8 +88,8 @@ export const useOrganizationsQuery = (
  *
  * @returns A function for submitting mentor verification data
  */
-export const useSubmitMentorVerificationDataMutation = () =>
-  usePost<LicenseFormSchema, ISubmitMentorVerificationDataResponse>({
-    queryKey: getSubmitMentorVerificationDataMutationKey(),
+export const useSubmitStudentVerificationDataMutation = () =>
+  usePost<StudentVerificationFormSchema, ISubmitStudentVerificationDataResponse>({
+    queryKey: getSubmitStudentVerificationDataMutationKey(),
     dependentQueryKeys: [getCurrentVerificationStepQueryKey()],
   });

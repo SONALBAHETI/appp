@@ -1,9 +1,9 @@
-import { invalidateCurrentVerificationStepQuery } from "@/api/mentorVerification";
+import { invalidateCurrentVerificationStepQuery } from "@/api/studentVerification";
 import { IGetCurrentVerificationStepResponse } from "@/interfaces/verification";
 import { useQueryClient } from "@tanstack/react-query";
 import VerificationPending from "../Verification/VerificationPending";
 
-export default function LicenseVerificationPending({
+export default function StudentVerificationPending({
   verificationStatus,
 }: {
   verificationStatus: IGetCurrentVerificationStepResponse;
@@ -17,7 +17,7 @@ export default function LicenseVerificationPending({
   return (
     <VerificationPending
       verificationStatus={verificationStatus}
-      title="Your license is under review."
+      title="Student verification is under review."
       onRefreshStatus={onRefreshStatus}
     />
   );

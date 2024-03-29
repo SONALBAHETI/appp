@@ -1,9 +1,17 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import {
+  useOrgSearchUrlQuery,
+  useOrganizationsQuery,
+  useSubmitStudentVerificationDataMutation,
+} from "@/api/studentVerification";
+import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
+import { StudentVerificationFormSchema } from "@/validation/studentVerificationForm.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LicenseFormSchema } from "./validation";
-import { Input, DatePicker } from "@/components/ui/FormFields";
+import { AxiosError } from "axios";
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import {
   Form,
   FormControl,
@@ -12,40 +20,33 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Combobox from "@/components/ui/combobox";
-import { HEALTHCARE_PROFESSIONAL_STATUSES } from "@/constants/sheerID";
-import {
-  useOrgSearchUrlQuery,
-  useOrganizationsQuery,
-  useSubmitMentorVerificationDataMutation,
-} from "@/api/mentorVerification";
-import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
+import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/FormFields";
 import SearchAndSelect from "@/components/ui/SearchAndSelect";
-import { toast } from "react-toastify";
-import { useEffect, useRef } from "react";
 
-interface ILicenseDetailFormProps {
-  onSubmitting: (isSubmitting: boolean) => void;
+interface IStudentVerificationDetailFormProps {
+  onSubmitting?: (isSubmitting: boolean) => void;
 }
 
-export default function LicenseDetailForm({
-  onSubmitting,
-}: ILicenseDetailFormProps) {
+export default function StudentVerificationDetailForm({ onSubmitting }: IStudentVerificationDetailFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
-  const form = useForm<LicenseFormSchema>({
-    resolver: zodResolver(LicenseFormSchema),
+  const form = useForm<StudentVerificationFormSchema>({
+    resolver: zodResolver(StudentVerificationFormSchema),
     mode: "onSubmit",
   });
+
   const [orgSearchTerm, setOrgSearchTerm, debouncedOrgSearchTerm] =
     useDebouncedSearchTerm();
 
   const orgSearchUrlQuery = useOrgSearchUrlQuery();
+
   const organizationsQuery = useOrganizationsQuery(
     orgSearchUrlQuery.data?.orgSearchUrl,
     debouncedOrgSearchTerm
   );
-  const submitMentorVerificationDataMutation =
-    useSubmitMentorVerificationDataMutation();
+
+  const submitStudentVerificationDataMutation =
+    useSubmitStudentVerificationDataMutation();
 
   useEffect(() => {
     const handleSaveAndNextEvent = () => {
@@ -61,24 +62,24 @@ export default function LicenseDetailForm({
     };
   }, []);
 
-  const onSubmit = async (data: LicenseFormSchema) => {
+  const onSubmit = async (data: StudentVerificationFormSchema) => {
     try {
-      onSubmitting(true);
-      await submitMentorVerificationDataMutation.mutateAsync({
-        ...data,
-      });
-    } catch (error: any) {
-      toast.error(
-        error.message || "Couldn't submit license details"
-      );
+      onSubmitting?.(true);
+      await submitStudentVerificationDataMutation.mutateAsync(data);
+    } catch (error) {
+      let errMessage = "Couldn't submit student verification details";
+      if (error instanceof AxiosError) {
+        errMessage = error.message;
+      }
+      toast.error(errMessage);
     } finally {
-      onSubmitting(false);
+      onSubmitting?.(false);
     }
   };
 
   return (
     <div className="py-5 px-6 rounded-xl border">
-      <h3 className="mb-7 mt-3">License Details</h3>
+      <h3 className="mb-7 mt-3">Verify your student identity</h3>
       <Form {...form}>
         <form
           ref={formRef}
@@ -130,7 +131,7 @@ export default function LicenseDetailForm({
             defaultValue=""
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Email address (associated with license)</FormLabel>
+                <FormLabel>Student Email address</FormLabel>
                 <FormControl>
                   <Input placeholder="Email" autoComplete="email" {...field} />
                 </FormControl>
@@ -153,51 +154,13 @@ export default function LicenseDetailForm({
           />
           <FormField
             control={form.control}
-            name="postalCode"
-            defaultValue=""
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Postal Code</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="009039"
-                    autoComplete="postal-code"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field: { value, onChange } }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Status</FormLabel>
-                <FormControl>
-                  <div>
-                    <Combobox
-                      value={value}
-                      onChange={onChange}
-                      className="w-full"
-                      options={HEALTHCARE_PROFESSIONAL_STATUSES}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="organization"
             render={({ field: { value, onChange, ...props } }) => (
               <FormItem>
-                <FormLabel>Organization</FormLabel>
+                <FormLabel>School/University</FormLabel>
                 <FormControl>
                   <SearchAndSelect
-                    placeholder="eg. North Carolina Board of Nursing"
+                    placeholder="eg. University of North Carolina at Chapel Hill"
                     value={orgSearchTerm}
                     isLoading={organizationsQuery.isPending}
                     suggestions={

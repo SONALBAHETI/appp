@@ -47,7 +47,7 @@ export default function MessageInput() {
         const matchedQuickReply = quickReplies.find(
           (quickReply) =>
             quickReply.shortcut ===
-            messageInputRef.current.innerText?.substring(1)
+            messageInputRef.current.innerText?.substring(1) // removing the forward slash at the start
         );
         if (matchedQuickReply) {
           // setting timeout so that for a brief moment, the last input character is also visible

@@ -9,15 +9,25 @@ import UpdateQuickReply from "./UpdateQuickReply";
 import DeleteQuickReply from "./DeleteQuickReply";
 import { useState } from "react";
 
+interface IQuickReplyProps {
+  quickReply: IQuickReply;
+  showEditButton?: boolean;
+  showDeleteButton?: boolean;
+  showCopyButton?: boolean;
+  onSelect?: (quickReply: IQuickReply) => void;
+}
+
 export default function QuickReply({
   quickReply,
-}: {
-  quickReply: IQuickReply;
-}) {
+  showEditButton = true,
+  showDeleteButton = true,
+  showCopyButton = true,
+  onSelect,
+}: IQuickReplyProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   return (
-    <QuickReplyContainer>
-      <div className="flex gap-x-3">
+    <QuickReplyContainer className={onSelect ? "cursor-pointer hover:shadow-md" : ""}>
+      <div className="flex gap-x-3" onClick={() => onSelect?.(quickReply)}>
         {/* Quick reply info */}
         <div className="flex flex-grow flex-col gap-y-2">
           <div>
@@ -26,24 +36,30 @@ export default function QuickReply({
           </div>
           <div className="flex items-center gap-x-2">
             <p className="text-faded">/{quickReply.shortcut}</p>
-            <CopyToClipboard text={`/${quickReply.shortcut}`} />
+            {showCopyButton && (
+              <CopyToClipboard text={`/${quickReply.shortcut}`} />
+            )}
           </div>
         </div>
 
         {/* Action buttons */}
         <div className="flex flex-col gap-y-2">
-          <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-            <DialogTrigger>
-              <Icon type={IconType.EDIT} />
-            </DialogTrigger>
-            <DialogContent>
-              <UpdateQuickReply
-                quickReplyId={quickReply.id}
-                onSuccess={() => setIsEditDialogOpen(false)}
-              />
-            </DialogContent>
-          </Dialog>
-          <DeleteQuickReply quickReplyId={quickReply.id} />
+          {showEditButton && (
+            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+              <DialogTrigger>
+                <Icon type={IconType.EDIT} />
+              </DialogTrigger>
+              <DialogContent>
+                <UpdateQuickReply
+                  quickReplyId={quickReply.id}
+                  onSuccess={() => setIsEditDialogOpen(false)}
+                />
+              </DialogContent>
+            </Dialog>
+          )}
+          {showDeleteButton && (
+            <DeleteQuickReply quickReplyId={quickReply.id} />
+          )}
         </div>
       </div>
     </QuickReplyContainer>

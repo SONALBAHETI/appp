@@ -29,6 +29,7 @@ import {
   Trash2,
   PenLine,
   Copy,
+  Zap,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -83,6 +84,8 @@ function changeTypeToIconComponent(type: IconType) {
       return PenLine;
     case IconType.COPY:
       return Copy;
+    case IconType.ZAP:
+      return Zap;
     default:
       return Plus; // TODO: Choose default icon?
   }

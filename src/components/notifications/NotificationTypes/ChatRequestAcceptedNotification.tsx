@@ -19,7 +19,7 @@ const ChatRequestAcceptedNotification = React.forwardRef<
   const createdAt = getCreatedAtRelativeTimeString(notification);
   return (
     <Card className={cn("w-full", className)} {...props} ref={ref}>
-      <CardContent className="py-4 px-4 w-full">
+      <CardContent className="p-4 w-full">
         <div className="flex items-start gap-4">
           {/* Profile image */}
           <Avatar>

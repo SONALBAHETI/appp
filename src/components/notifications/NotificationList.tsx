@@ -10,6 +10,7 @@ import NotificationListSkeleton from "./NotificationListSkeleton";
 import { Fragment, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
+import NotificationListEmpty from "./NotificationListEmpty";
 
 export default function NotificationList() {
   const {
@@ -42,6 +43,10 @@ export default function NotificationList() {
 
   if (isError) {
     return <div>Something went wrong</div>;
+  }
+
+  if (data && data.pages[0].totalDocs === 0) {
+    return <NotificationListEmpty />
   }
 
   return (

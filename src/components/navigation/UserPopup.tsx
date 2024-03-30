@@ -21,12 +21,12 @@ import React from "react";
 const QuickLinks = [
   {
     name: "Personal Settings",
-    href: "/settings/profile/personal-details",
+    href: "/settings/profile",
     icon: IconType.SETTINGS,
   },
   {
     name: "Appointment Settings",
-    href: "/settings/appointments",
+    href: "/settings/appointment",
     icon: IconType.USER,
   },
 ];

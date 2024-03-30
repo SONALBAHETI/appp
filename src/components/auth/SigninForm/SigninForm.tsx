@@ -44,12 +44,18 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
 
   async function onSubmit(data: TSignInForm) {
     try {
-      const response = await mutationSignInWithEmailPassword.mutateAsync(data) as ISignInWithEmailPasswordResponse;
+      const response = (await mutationSignInWithEmailPassword.mutateAsync(
+        data
+      )) as ISignInWithEmailPasswordResponse;
       saveAuth({
         userId: response.userId,
         accessToken: response.accessToken,
       });
-      router.push("/");
+      if (response.isOnboarded) {
+        router.push("/");
+      } else {
+        router.push("/onboarding");
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.message);

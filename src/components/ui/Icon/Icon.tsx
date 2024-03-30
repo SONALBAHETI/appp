@@ -30,6 +30,7 @@ import {
   PenLine,
   Copy,
   Zap,
+  PartyPopper,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -86,6 +87,8 @@ function changeTypeToIconComponent(type: IconType) {
       return Copy;
     case IconType.ZAP:
       return Zap;
+    case IconType.PARTYPOPPER:
+      return PartyPopper;
     default:
       return Plus; // TODO: Choose default icon?
   }

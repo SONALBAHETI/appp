@@ -1,3 +1,5 @@
+import { Permission, Role } from "@/constants/user";
+
 export {};
 
 declare global {
@@ -12,6 +14,8 @@ declare global {
   interface INavLink {
     label: string;
     link: string;
+    permissions?: Permission[];
+    roles?: Role[];
   }
   interface IToggleOption {
     label: string;

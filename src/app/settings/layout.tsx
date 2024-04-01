@@ -1,10 +1,11 @@
 import Icon, { IconType } from "@/components/ui/Icon";
 import NavLink from "@/components/ui/NavLink/NavLink";
+import { Role } from "@/constants/user";
 import { ResumeProvider } from "@/context/ResumeContext";
 import BaseTemplate from "@/templates/BaseTemplate";
 import Link from "next/link";
 
-const settingTabs = [
+const settingTabs: INavLink[] = [
   {
     label: "Profile",
     link: "/settings/profile/",
@@ -16,6 +17,7 @@ const settingTabs = [
   {
     label: "Appointment",
     link: "/settings/appointment/",
+    roles: [Role.UNVERIFIED_MENTOR, Role.MENTOR],
   },
   {
     label: "Transactions",
@@ -49,7 +51,7 @@ export default function SettingsLayout({
       </div>
       <div className="flex gap-8 text-lg mt-4">
         {settingTabs.map((tab) => (
-          <NavLink href={tab.link} key={tab.link}>
+          <NavLink href={tab.link} key={tab.link} roles={tab.roles}>
             {tab.label}
           </NavLink>
         ))}

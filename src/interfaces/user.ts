@@ -1,3 +1,5 @@
+import { Permission, Role } from "@/constants/user";
+
 export interface IUserBadge {
   id: string;
   name: string;
@@ -17,4 +19,9 @@ export interface IGetAchievementsResponse {
 
 export interface IGetVisibilityResponse {
   online: boolean;
+}
+
+export interface IGetRightsResponse {
+  rights: Permission[];
+  role: Role;
 }

@@ -1,14 +1,16 @@
 import { SideNavbar } from "@/components/ui/SideNavbar";
 import { Card, CardContent } from "@/components/ui/card";
+import { Role } from "@/constants/user";
 
 const sideNavLinks: INavLink[] = [
   {
-    label: "Quick replies",
-    link: "/settings/account/quick-replies",
-  },
-  {
     label: "Notifications",
     link: "/settings/account/notifications",
+  },
+  {
+    label: "Quick replies",
+    link: "/settings/account/quick-replies",
+    roles: [Role.MENTOR],
   },
   {
     label: "Change Password",

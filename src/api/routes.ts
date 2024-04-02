@@ -14,6 +14,7 @@ const baseUrls = {
   studentVerification: "/api/v1/verification/identity/student",
   settings: "/api/v1/settings",
   appointments: "/api/v1/appointments",
+  payment: "/api/v1/payment",
 };
 
 const notes = {
@@ -58,7 +59,7 @@ const studentVerification = {
 
 const sheerIDVerification = {
   docUpload: `${baseUrls.sheerIDVerification}/doc-upload`,
-}
+};
 
 const notifications = {
   base: `${baseUrls.notifications}`,
@@ -164,6 +165,12 @@ const appointment = {
   getAppointment: (id: string) => `${baseUrls.appointments}/${id}`,
 };
 
+const payment = {
+  subscription: {
+    checkout: `${baseUrls.payment}/subscription/checkout`,
+  },
+};
+
 export const apiRoutes = {
   chat,
   user,
@@ -178,5 +185,6 @@ export const apiRoutes = {
   notifications,
   onboarding,
   settings,
+  payment,
   logout: `${baseUrls.api}/auth/logout`,
 };

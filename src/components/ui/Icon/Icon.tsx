@@ -24,6 +24,7 @@ import {
   MicOff,
   Camera,
   CameraOff,
+  Check,
   CheckCheck,
   Bell,
   Trash2,
@@ -89,6 +90,8 @@ function changeTypeToIconComponent(type: IconType) {
       return Zap;
     case IconType.PARTYPOPPER:
       return PartyPopper;
+    case IconType.SINGLE_CHECK:
+      return Check;
     default:
       return Plus; // TODO: Choose default icon?
   }

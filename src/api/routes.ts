@@ -151,6 +151,7 @@ const user = {
   achievements: `${baseUrls.user}/achievements`,
   visibility: `${baseUrls.user}/visibility`,
   availability: `${baseUrls.user}/availability`,
+  rights: `${baseUrls.user}/rights`,
 };
 
 const chat = {

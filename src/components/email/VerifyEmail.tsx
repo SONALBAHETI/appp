@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import Loader from "../ui/Loader";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useVerifyEmailMutation } from "@/api/auth";
 
 export default function VerifyEmail() {
@@ -10,6 +10,7 @@ export default function VerifyEmail() {
   const router = useRouter();
   const verifyEmailMutation = useVerifyEmailMutation();
   const [error, setError] = useState<string | null>(null);
+  const initialized = useRef(false);
   useEffect(() => {
     const verifyEmail = async (token: string) => {
       try {
@@ -22,7 +23,9 @@ export default function VerifyEmail() {
       }
     };
     const token = searchParams.get("token");
-    if (token) {
+    // to make sure that verifyEmail is called only once
+    if (token && !initialized.current) {
+      initialized.current = true;
       verifyEmail(token);
     }
   }, [searchParams]);

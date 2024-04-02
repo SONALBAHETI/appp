@@ -3,18 +3,18 @@
 import { useSubscriptionCheckoutMutation } from "@/api/payment";
 import Loader from "@/components/ui/Loader";
 import { Button, ButtonProps } from "@/components/ui/button";
-import { ISubscriptionCheckoutResponse } from "@/interfaces/payment";
+import { ICheckoutResponse } from "@/interfaces/payment";
 import { useRouter } from "next/navigation";
 import { forwardRef } from "react";
 import { toast } from "react-toastify";
 
-interface ICheckoutButtonProps extends ButtonProps {
+interface ISubscriptionCheckoutButtonProps extends ButtonProps {
   priceId: string;
   successUrl: string;
   cancelUrl: string;
 }
 
-const CheckoutButton = forwardRef<HTMLButtonElement, ICheckoutButtonProps>(
+const SubscriptionCheckoutButton = forwardRef<HTMLButtonElement, ISubscriptionCheckoutButtonProps>(
   ({ priceId, successUrl, cancelUrl, children, ...props }, ref) => {
     const router = useRouter();
     const subscriptionCheckoutMutation = useSubscriptionCheckoutMutation();
@@ -25,7 +25,7 @@ const CheckoutButton = forwardRef<HTMLButtonElement, ICheckoutButtonProps>(
           priceId,
           successUrl,
           cancelUrl,
-        })) as ISubscriptionCheckoutResponse;
+        })) as ICheckoutResponse;
         // navigate to session url
         router.push(response.sessionUrl);
       } catch (error) {
@@ -43,4 +43,4 @@ const CheckoutButton = forwardRef<HTMLButtonElement, ICheckoutButtonProps>(
   }
 );
 
-export default CheckoutButton;
+export default SubscriptionCheckoutButton;

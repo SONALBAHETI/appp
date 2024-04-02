@@ -1,7 +1,6 @@
 import PlanCard from "./PlanCard";
 import PlanBenefits, { PlanBenefitItem } from "./PlanBenefits";
-import { Button } from "@/components/ui/button";
-import CheckoutButton from "../payment/Checkout/CheckoutButton";
+import SubscriptionCheckoutButton from "../payment/Checkout/SubscriptionCheckoutButton";
 
 interface IStudentPlanProps {
   price: number;
@@ -46,14 +45,14 @@ export default function StudentPlan({
         <PlanBenefitItem>Securely share and upload documents</PlanBenefitItem>
         <PlanBenefitItem>Mentorship and learning analytics</PlanBenefitItem>
       </PlanBenefits>
-      <CheckoutButton
+      <SubscriptionCheckoutButton
         priceId={priceId}
         successUrl="http://localhost:3000" /** @todo this is temporary */
         cancelUrl="http://localhost:3000/settings/account/subscription" /** @todo this is temporary */
         className="w-full"
       >
-        Join as a student
-      </CheckoutButton>
+        Subscribe
+      </SubscriptionCheckoutButton>
     </PlanCard>
   );
 }

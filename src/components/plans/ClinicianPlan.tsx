@@ -1,6 +1,6 @@
 import PlanCard from "./PlanCard";
 import PlanBenefits, { PlanBenefitItem } from "./PlanBenefits";
-import CheckoutButton from "../payment/Checkout/CheckoutButton";
+import SubscriptionCheckoutButton from "../payment/Checkout/SubscriptionCheckoutButton";
 
 interface IClinicianPlanProps {
   price: number;
@@ -46,14 +46,14 @@ export default function ClinicianPlan({
         <PlanBenefitItem>Securely share and upload documents</PlanBenefitItem>
         <PlanBenefitItem>Mentorship and learning analytics</PlanBenefitItem>
       </PlanBenefits>
-      <CheckoutButton
+      <SubscriptionCheckoutButton
         priceId={priceId}
         successUrl="http://localhost:3000" /** @todo this is temporary */
         cancelUrl="http://localhost:3000/settings/account/subscription" /** @todo this is temporary */
         className="w-full"
       >
-        Join as a clinician
-      </CheckoutButton>
+        Subscribe
+      </SubscriptionCheckoutButton>
     </PlanCard>
   );
 }

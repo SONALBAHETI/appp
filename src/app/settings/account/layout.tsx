@@ -13,6 +13,10 @@ const sideNavLinks: INavLink[] = [
     roles: [Role.MENTOR],
   },
   {
+    label: "Subscription",
+    link: "/settings/account/subscription",
+  },
+  {
     label: "Change Password",
     link: "/settings/account/change-password",
   },

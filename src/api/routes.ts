@@ -167,9 +167,12 @@ const appointment = {
 };
 
 const payment = {
-  subscription: {
-    checkout: `${baseUrls.payment}/subscription/checkout`,
+  checkout: {
+    subscription: `${baseUrls.payment}/checkout/subscription`,
+    credits: `${baseUrls.payment}/checkout/credits`,
   },
+  credits: `${baseUrls.payment}/credits`,
+  subscription: `${baseUrls.payment}/subscription`,
 };
 
 export const apiRoutes = {

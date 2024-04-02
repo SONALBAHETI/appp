@@ -32,6 +32,7 @@ import {
   Copy,
   Zap,
   PartyPopper,
+  Wallet,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -92,6 +93,8 @@ function changeTypeToIconComponent(type: IconType) {
       return PartyPopper;
     case IconType.SINGLE_CHECK:
       return Check;
+    case IconType.WALLET:
+      return Wallet;
     default:
       return Plus; // TODO: Choose default icon?
   }

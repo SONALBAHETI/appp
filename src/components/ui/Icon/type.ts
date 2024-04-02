@@ -27,4 +27,5 @@ export enum IconType {
   COPY = "Copy",
   ZAP = "Zap",
   PARTYPOPPER = "PartyPopper",
+  WALLET = "Wallet",
 }

@@ -48,7 +48,7 @@ export default function ClinicianPlan({
       </PlanBenefits>
       <SubscriptionCheckoutButton
         priceId={priceId}
-        successUrl="http://localhost:3000" /** @todo this is temporary */
+        successUrl="http://localhost:3000/settings/account/subscription" /** @todo this is temporary */
         cancelUrl="http://localhost:3000/settings/account/subscription" /** @todo this is temporary */
         className="w-full"
       >

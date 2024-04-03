@@ -171,8 +171,18 @@ const payment = {
     subscription: `${baseUrls.payment}/checkout/subscription`,
     credits: `${baseUrls.payment}/checkout/credits`,
   },
+  stripe: {
+    enabled: `${baseUrls.payment}/stripe/enabled`,
+    connect: {
+      baseUrl: `${baseUrls.payment}/stripe/connect`,
+      status: `${baseUrls.payment}/stripe/connect/status`,
+      onboarding: `${baseUrls.payment}/stripe/connect/onboarding`,
+      login: `${baseUrls.payment}/stripe/connect/login`,
+    },
+  },
   credits: `${baseUrls.payment}/credits`,
   subscription: `${baseUrls.payment}/subscription`,
+  customerPortal: `${baseUrls.payment}/customer-portal`,
 };
 
 export const apiRoutes = {

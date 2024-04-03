@@ -1,6 +1,6 @@
 "use client";
 
-import { useCreditsCheckoutMutation } from "@/api/payment";
+import { useCreditsCheckoutMutation, useStripeEnabledQuery } from "@/api/payment";
 import Icon, { IconType } from "@/components/ui/Icon";
 import Loader from "@/components/ui/Loader";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 export default function CreditsCheckoutButton() {
+  const stripeEnabledQuery = useStripeEnabledQuery();
   const creditsCheckoutMutation = useCreditsCheckoutMutation();
 
   const form = useForm<AddCreditsFormSchema>({
@@ -39,6 +40,10 @@ export default function CreditsCheckoutButton() {
   const creditsQuantity = form.watch("quantity") || 25;
 
   const router = useRouter();
+
+  if (!stripeEnabledQuery.data?.enabled) {
+    return null;
+  }
 
   const onSubmit = async (data: AddCreditsFormSchema) => {
     try {

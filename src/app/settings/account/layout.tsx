@@ -17,6 +17,10 @@ const sideNavLinks: INavLink[] = [
     link: "/settings/account/subscription",
   },
   {
+    label: "Payout",
+    link: "/settings/account/payout",
+  },
+  {
     label: "Change Password",
     link: "/settings/account/change-password",
   },

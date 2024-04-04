@@ -5,6 +5,8 @@ import SubscriptionCheckoutButton from "../payment/Checkout/SubscriptionCheckout
 interface IStudentPlanProps {
   price: number;
   interval: "month" | "year";
+  successUrl: string;
+  cancelUrl: string;
   offer?: string;
 }
 
@@ -14,6 +16,8 @@ const yearlyPriceId =
   process.env.NEXT_PUBLIC_STRIPE_STUDENT_ANNUAL_SUBSCRIPTION_PRICE_ID;
 
 export default function StudentPlan({
+  successUrl,
+  cancelUrl,
   price,
   interval,
   offer,
@@ -44,8 +48,8 @@ export default function StudentPlan({
       </PlanBenefits>
       <SubscriptionCheckoutButton
         priceId={priceId}
-        successUrl="http://localhost:3000/settings/account/subscription" /** @todo this is temporary */
-        cancelUrl="http://localhost:3000/settings/account/subscription" /** @todo this is temporary */
+        successUrl={successUrl}
+        cancelUrl={cancelUrl}
         className="w-full"
       >
         Subscribe

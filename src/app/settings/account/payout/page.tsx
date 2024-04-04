@@ -1,4 +1,5 @@
 import ConnectedAccount from "@/components/payment/ConnectedAccount";
+import { AppRoutes, getFullRoute } from "@/constants/appRoutes";
 
 export default function PayoutPage() {
   return (
@@ -9,7 +10,9 @@ export default function PayoutPage() {
           Scholarnetics360 partners with <b>Stripe</b> for managing payouts.
         </p>
       </div>
-      <ConnectedAccount />
+      <ConnectedAccount
+        returnUrl={getFullRoute(AppRoutes.Settings.Account.Payout.path)}
+      />
     </div>
   );
 }

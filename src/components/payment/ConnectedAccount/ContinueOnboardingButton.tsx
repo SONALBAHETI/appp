@@ -3,6 +3,7 @@
 import { useConnectedAccountOnboardingLinkMutation } from "@/api/payment";
 import Loader from "@/components/ui/Loader";
 import { Button, ButtonProps } from "@/components/ui/button";
+import { AppRoutes, getFullRoute } from "@/constants/appRoutes";
 import { ICreateConnectedAccountOnboardingLinkResponse } from "@/interfaces/payment";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
@@ -12,6 +13,10 @@ import { toast } from "react-toastify";
 interface IContinueOnboardingButtonProps extends ButtonProps {
   returnUrl: string;
 }
+
+export const OnboardingRefreshUrl = getFullRoute(
+  AppRoutes.Stripe.Onboarding.path
+);
 
 const ContinueOnboardingButton = forwardRef<
   HTMLButtonElement,
@@ -26,7 +31,7 @@ const ContinueOnboardingButton = forwardRef<
       const response =
         (await connectedAccountOnboardingLinkMutation.mutateAsync({
           returnUrl,
-          refreshUrl: "http://localhost:3000", /** @todo change url */
+          refreshUrl: OnboardingRefreshUrl,
         })) as ICreateConnectedAccountOnboardingLinkResponse;
       router.push(response.onboardingUrl);
     } catch (error) {

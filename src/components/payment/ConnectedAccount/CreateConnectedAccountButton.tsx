@@ -8,6 +8,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { forwardRef } from "react";
 import { toast } from "react-toastify";
+import { OnboardingRefreshUrl } from "./ContinueOnboardingButton";
 
 interface ICreateConnectedAccountButtonProps extends ButtonProps {
   returnUrl: string;
@@ -25,7 +26,7 @@ const CreateConnectedAccountButton = forwardRef<
     try {
       const response = (await createStripeConnectedAccountMutation.mutateAsync({
         returnUrl,
-        refreshUrl: "http://localhost:3000", /** @todo change url */
+        refreshUrl: OnboardingRefreshUrl,
       })) as ICreateStripeConnectedAccountResponse;
       router.push(response.onboardingUrl);
     } catch (error) {
@@ -39,11 +40,7 @@ const CreateConnectedAccountButton = forwardRef<
   };
 
   return (
-    <Button
-      ref={ref}
-      {...props}
-      onClick={createConnectedAccount}
-    >
+    <Button ref={ref} {...props} onClick={createConnectedAccount}>
       {createStripeConnectedAccountMutation.isPending && (
         <Loader className="mr-2" />
       )}

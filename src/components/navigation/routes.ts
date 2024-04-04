@@ -23,15 +23,3 @@ export const NAV_ROUTES: { [key: string]: IRoute } = {
     icon: IconType.NOTE,
   },
 };
-
-export const AllRoutes = {
-  Settings: {
-    path: "/settings",
-    Account: {
-      path: "/settings/account",
-      QuickReplies: {
-        path: "/settings/account/quick-replies",
-      }
-    }
-  }
-}

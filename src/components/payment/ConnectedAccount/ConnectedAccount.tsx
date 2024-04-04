@@ -6,7 +6,7 @@ import CreateConnectedAccountButton from "./CreateConnectedAccountButton";
 import ContinueOnboardingButton from "./ContinueOnboardingButton";
 import ConnectedAccountLoginButton from "./ConnectedAccountLoginButton";
 
-export default function ConnectedAccount() {
+export default function ConnectedAccount({ returnUrl }: { returnUrl: string }) {
   const connectedAccountStatusQuery = useConnectedAccountStatusQuery();
 
   if (connectedAccountStatusQuery.isPending) {
@@ -38,7 +38,7 @@ export default function ConnectedAccount() {
             </div>
             <CreateConnectedAccountButton
               className="w-max"
-              returnUrl="http://localhost:3000/settings/account/payout" /** @todo change url */
+              returnUrl={returnUrl}
             >
               Create your connected account
             </CreateConnectedAccountButton>
@@ -56,7 +56,7 @@ export default function ConnectedAccount() {
             </div>
             <ContinueOnboardingButton
               className="w-max"
-              returnUrl="http://localhost:3000/settings/account/payout" /** @todo change url */
+              returnUrl={returnUrl}
             >
               Continue onboarding
             </ContinueOnboardingButton>

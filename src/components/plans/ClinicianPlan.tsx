@@ -5,6 +5,8 @@ import SubscriptionCheckoutButton from "../payment/Checkout/SubscriptionCheckout
 interface IClinicianPlanProps {
   price: number;
   interval: "month" | "year";
+  successUrl: string;
+  cancelUrl: string;
   offer?: string;
 }
 
@@ -14,6 +16,8 @@ const yearlyPriceId =
   process.env.NEXT_PUBLIC_STRIPE_CLINICIAN_ANNUAL_SUBSCRIPTION_PRICE_ID;
 
 export default function ClinicianPlan({
+  successUrl,
+  cancelUrl,
   price,
   interval,
   offer,
@@ -45,8 +49,8 @@ export default function ClinicianPlan({
       </PlanBenefits>
       <SubscriptionCheckoutButton
         priceId={priceId}
-        successUrl="http://localhost:3000/settings/account/subscription" /** @todo this is temporary */
-        cancelUrl="http://localhost:3000/settings/account/subscription" /** @todo this is temporary */
+        successUrl={successUrl}
+        cancelUrl={cancelUrl}
         className="w-full"
       >
         Subscribe

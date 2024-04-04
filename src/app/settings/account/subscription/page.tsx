@@ -4,6 +4,7 @@ import CustomerPortalButton from "@/components/payment/CustomerPortal/CustomerPo
 import UserSubscriptionPlan from "@/components/payment/UserSubscriptionPlan";
 import PlansWrapper from "@/components/plans/PlansWrapper";
 import { Separator } from "@/components/ui/separator";
+import { AppRoutes, getFullRoute } from "@/constants/appRoutes";
 
 export default function SubscriptionPage() {
   return (
@@ -16,11 +17,10 @@ export default function SubscriptionPage() {
             <CreditsCheckoutButton />
           </div>
         </div>
-        {/* TODO: change url */}
         <CustomerPortalButton
           variant="secondary"
           className="self-center md:self-start"
-          returnUrl="http://localhost:3000/settings/account/subscription" /** @todo change url */
+          returnUrl={getFullRoute(AppRoutes.Settings.Account.Subscription.path)}
         >
           Manage Subscription & Invoices
         </CustomerPortalButton>

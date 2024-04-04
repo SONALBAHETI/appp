@@ -1,6 +1,5 @@
 "use client";
 
-import { AllRoutes } from "@/components/navigation/routes";
 import { QuickReplyList } from "@/components/settings/account/QuickReply";
 import CreateQuickReply from "@/components/settings/account/QuickReply/CreateQuickReply";
 import {
@@ -11,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { AppRoutes } from "@/constants/appRoutes";
 import { useChatStore } from "@/store/useChatStore";
 import Link from "next/link";
 import { useState } from "react";
@@ -44,7 +44,10 @@ export default function QuickReplyPopup({
           }}
         />
         <DialogFooter className="flex items-center gap-4">
-          <Link className="underline underline-offset-4" href={AllRoutes.Settings.Account.QuickReplies.path}>
+          <Link
+            className="underline underline-offset-4"
+            href={AppRoutes.Settings.Account.QuickReplies.path}
+          >
             Manage Quick Replies
           </Link>
           <CreateQuickReply />

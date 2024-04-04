@@ -29,6 +29,7 @@ import { useSignInWithEmailPasswordMutation } from "@/api/auth";
 import { AxiosError } from "axios";
 import { useAuth } from "@/hooks/useAuth";
 import { ISignInWithEmailPasswordResponse } from "@/interfaces/auth";
+import { AppRoutes } from "@/constants/appRoutes";
 
 interface SignInFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -52,9 +53,9 @@ export default function SignInForm({ className, ...props }: SignInFormProps) {
         accessToken: response.accessToken,
       });
       if (response.isOnboarded) {
-        router.push("/");
+        router.push(AppRoutes.Root.path);
       } else {
-        router.push("/onboarding");
+        router.push(AppRoutes.Onboarding.path);
       }
     } catch (error) {
       if (error instanceof AxiosError) {

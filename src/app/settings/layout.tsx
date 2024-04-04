@@ -1,5 +1,6 @@
 import Icon, { IconType } from "@/components/ui/Icon";
 import NavLink from "@/components/ui/NavLink/NavLink";
+import { AppRoutes } from "@/constants/appRoutes";
 import { Role } from "@/constants/user";
 import { ResumeProvider } from "@/context/ResumeContext";
 import BaseTemplate from "@/templates/BaseTemplate";
@@ -8,28 +9,28 @@ import Link from "next/link";
 const settingTabs: INavLink[] = [
   {
     label: "Profile",
-    link: "/settings/profile/",
+    link: AppRoutes.Settings.Profile.path,
   },
   {
     label: "Account",
-    link: "/settings/account/",
+    link: AppRoutes.Settings.Account.path,
   },
   {
     label: "Appointment",
-    link: "/settings/appointment/",
+    link: AppRoutes.Settings.Appointment.path,
     roles: [Role.UNVERIFIED_MENTOR, Role.MENTOR],
   },
   {
     label: "Transactions",
-    link: "/settings/transactions/",
+    link: AppRoutes.Settings.Transactions.path,
   },
   {
     label: "Refer & Earn",
-    link: "/settings/refer-earn/",
+    link: AppRoutes.Settings.ReferAndEarn.path,
   },
   {
     label: "Feedback & Support",
-    link: "/settings/feedback-support/",
+    link: AppRoutes.Settings.FeedbackSupport.path,
   },
 ];
 
@@ -45,7 +46,10 @@ export default function SettingsLayout({
           <Icon type={IconType.SETTINGS} size={30} />
           <h2>Settings</h2>
         </div>
-        <Link className="flex gap-2 items-center font-semibold" href="/">
+        <Link
+          className="flex gap-2 items-center font-semibold"
+          href={AppRoutes.Root.path}
+        >
           <Icon type={IconType.BACK} size={22} /> Back to Dashboard
         </Link>
       </div>

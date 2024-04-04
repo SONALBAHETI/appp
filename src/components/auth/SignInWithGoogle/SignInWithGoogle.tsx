@@ -1,6 +1,7 @@
 "use client";
 
 import { apiRoutes } from "@/api/routes";
+import { AppRoutes } from "@/constants/appRoutes";
 import { ILoginWithGoogleResponse } from "@/interfaces/auth";
 import { api } from "@/lib/api";
 import { GoogleLogin } from "@react-oauth/google";
@@ -18,8 +19,8 @@ export default function SignInWithGoogle() {
       }
     );
     response.data.isOnboarded
-      ? router.push("/")
-      : router.push("/onboarding");
+      ? router.push(AppRoutes.Root.path)
+      : router.push(AppRoutes.Onboarding.path);
   };
 
   return (

@@ -41,7 +41,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useDebouncedSearchTerm from "@/hooks/useDebouncedSearchTerm";
 import { toast } from "react-toastify";
 import Loader from "../ui/Loader";
-import { ISubmitOnboardingFormResponse } from "@/interfaces/onboarding";
+import { AppRoutes } from "@/constants/appRoutes";
 
 export default function OnboardingForm() {
   const router = useRouter();
@@ -85,7 +85,7 @@ export default function OnboardingForm() {
   async function onSubmit(data: TOnboardingForm) {
     try {
       await mutationSubmitForm.mutateAsync(data);
-      router.push("/dashboard");
+      router.push(AppRoutes.Dashboard.path);
     } catch (error) {
       console.error(error);
       toast.error("An error occurred while submitting the form");

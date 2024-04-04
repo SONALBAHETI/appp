@@ -1,3 +1,4 @@
+import { AppRoutes } from "@/constants/appRoutes";
 import { IconType } from "../ui/Icon";
 
 interface IRoute {
@@ -7,19 +8,19 @@ interface IRoute {
 
 export const NAV_ROUTES: { [key: string]: IRoute } = {
   DASHBOARD: {
-    path: "/dashboard",
+    path: AppRoutes.Dashboard.path,
     icon: IconType.DASHBOARD,
   },
   CHAT: {
-    path: "/chat",
+    path: AppRoutes.Chat.path,
     icon: IconType.CHAT,
   },
   CHATBOT: {
-    path: "/chatbot",
+    path: AppRoutes.Chatbot.path,
     icon: IconType.BOT,
   },
   NOTES: {
-    path: "/notes",
+    path: AppRoutes.Notes.path,
     icon: IconType.NOTE,
   },
 };

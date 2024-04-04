@@ -1,6 +1,7 @@
 import SignInWithGoogle from "@/components/auth/SignInWithGoogle/SignInWithGoogle";
 import SignInForm from "@/components/auth/SigninForm";
 import TextLine from "@/components/ui/TextLine";
+import { AppRoutes } from "@/constants/appRoutes";
 import Link from "next/link";
 
 export default function SignInPage() {
@@ -19,10 +20,18 @@ export default function SignInPage() {
       <SignInForm />
       <div className="flex justify-between gap-2">
         <p className="font-light">
-          Not registered yet? <Link className="link" href={"/signup"}>Create an account</Link>
+          Not registered yet?{" "}
+          <Link className="link" href={AppRoutes.Auth.Signup.path}>
+            Create an account
+          </Link>
         </p>
         <p className="font-light">
-          <Link className="link" href={"/verification/password-reset/request"}>Forgot password?</Link>
+          <Link
+            className="link"
+            href={AppRoutes.Verification.PasswordReset.Request.path}
+          >
+            Forgot password?
+          </Link>
         </p>
       </div>
     </div>

@@ -63,7 +63,7 @@ export default function PersonalDetails() {
           {showActionButtons && (
             <div className="ml-auto flex items-center gap-6">
               <Link
-                href="/"
+                href="/" /** @todo change to profile url */
                 className="underline underline-offset-4 text-foreground"
               >
                 View Profile

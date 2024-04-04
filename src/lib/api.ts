@@ -1,3 +1,4 @@
+import { AppRoutes } from "@/constants/appRoutes";
 import axios from "axios";
 
 const baseURL = process.env.NEXT_PUBLIC_SERVER_BASE_URL;
@@ -27,7 +28,7 @@ axiosInstance.interceptors.response.use(
         // Handle error if refresh token request fails
         console.log("Error refreshing tokens:", error);
         // Redirect to login page
-        window.location.href = "/signin";
+        window.location.href = AppRoutes.Auth.Signin.path;
         throw error;
       }
     }

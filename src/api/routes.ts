@@ -145,6 +145,7 @@ const auth = {
   resetPassword: `${baseUrls.auth}/reset-password`,
   signInWithEmailPassword: `${baseUrls.auth}/login/email-password`,
   signUpWithEmailPassword: `${baseUrls.auth}/register`,
+  refreshTokens: `${baseUrls.auth}/refresh-tokens`,
 };
 
 const user = {

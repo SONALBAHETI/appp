@@ -1,14 +1,15 @@
 import { SideNavbar } from "@/components/ui/SideNavbar";
 import { Card, CardContent } from "@/components/ui/card";
+import { AppRoutes } from "@/constants/appRoutes";
 
 const sideNavLinks: INavLink[] = [
   {
     label: "Appointment settings",
-    link: "/settings/appointment/appointment-settings",
+    link: AppRoutes.Settings.Appointment.AppointmentSettings.path,
   },
   {
     label: "Calendar sync",
-    link: "/settings/appointment/calendar-sync",
+    link: AppRoutes.Settings.Appointment.CalendarSync.path,
   },
 ];
 

@@ -1,34 +1,35 @@
 import { SideNavbar } from "@/components/ui/SideNavbar";
 import { Card, CardContent } from "@/components/ui/card";
+import { AppRoutes } from "@/constants/appRoutes";
 import { Role } from "@/constants/user";
 
 const sideNavLinks: INavLink[] = [
   {
     label: "Notifications",
-    link: "/settings/account/notifications",
+    link: AppRoutes.Settings.Account.Notifications.path,
   },
   {
     label: "Quick replies",
-    link: "/settings/account/quick-replies",
+    link: AppRoutes.Settings.Account.QuickReplies.path,
     roles: [Role.MENTOR],
   },
   {
     label: "Subscription",
-    link: "/settings/account/subscription",
-    roles: [Role.MENTEE]
+    link: AppRoutes.Settings.Account.Subscription.path,
+    roles: [Role.MENTEE],
   },
   {
     label: "Payout",
-    link: "/settings/account/payout",
+    link: AppRoutes.Settings.Account.Payout.path,
     roles: [Role.MENTOR],
   },
   {
     label: "Change Password",
-    link: "/settings/account/change-password",
+    link: AppRoutes.Settings.Account.ChangePassword.path,
   },
   {
     label: "Delete Account",
-    link: "/settings/account/delete",
+    link: AppRoutes.Settings.Account.Delete.path,
   },
 ];
 

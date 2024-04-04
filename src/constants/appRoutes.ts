@@ -1,4 +1,29 @@
 export const AppRoutes = {
+  Root: {
+    path: "/",
+  },
+  Auth: {
+    Signin: {
+      path: "/signin",
+    },
+    Signup: {
+      path: "/signup",
+    },
+  },
+  Verification: {
+    PasswordReset: {
+      path: "/verification/password-reset",
+      Request: {
+        path: "/verification/password-reset/request",
+      },
+    },
+    Email: {
+      path: "/verification/email",
+      Request: {
+        path: "/verification/email/request",
+      }
+    }
+  },
   Settings: {
     path: "/settings",
     Account: {
@@ -12,13 +37,70 @@ export const AppRoutes = {
       Payout: {
         path: "/settings/account/payout",
       },
+      Notifications: {
+        path: "/settings/account/notifications",
+      },
+      ChangePassword: {
+        path: "/settings/account/change-password",
+      },
+      Delete: {
+        path: "/settings/account/delete",
+      }
     },
+    Profile: {
+      path: "/settings/profile",
+      PersonalDetails: {
+        path: "/settings/profile/personal-details",
+      },
+      VerificationDocuments: {
+        path: "/settings/profile/verification-documents",
+      },
+      BankDetails: {
+        path: "/settings/profile/bank-details",
+      },
+      CertificationsAndBadges: {
+        path: "/settings/profile/certifications-and-badges",
+      }
+    },
+    Appointment: {
+      path: "/settings/appointment",
+      AppointmentSettings: {
+        path: "/settings/appointment/appointment-settings",
+      },
+      CalendarSync: {
+        path: "/settings/appointment/calendar-sync",
+      }
+    },
+    Transactions: {
+      path: "/settings/transactions",
+    },
+    ReferAndEarn: {
+      path: "/settings/refer-earn",
+    },
+    FeedbackSupport: {
+      path: "/settings/feedback-support",
+    }
   },
   Stripe: {
     Onboarding: {
       path: "/stripe/onboarding",
     },
   },
+  Onboarding: {
+    path: "/onboarding",
+  },
+  Dashboard: {
+    path: "/dashboard",
+  },
+  Chat: {
+    path: "/chat",
+  },
+  Chatbot: {
+    path: "/chatbot",
+  },
+  Notes: {
+    path: "/notes",
+  }
 };
 
 /**

@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Loader from "../ui/Loader";
 import { useEffect, useRef, useState } from "react";
 import { useVerifyEmailMutation } from "@/api/auth";
+import { AppRoutes } from "@/constants/appRoutes";
 
 export default function VerifyEmail() {
   const searchParams = useSearchParams();
@@ -16,7 +17,7 @@ export default function VerifyEmail() {
       try {
         await verifyEmailMutation.mutateAsync({ token });
         setTimeout(() => {
-          router.push(searchParams.get("redirect") || "/");
+          router.push(searchParams.get("redirect") || AppRoutes.Root.path);
         }, 2000);
       } catch (error) {
         setError("Email verification failed. Please try again.");

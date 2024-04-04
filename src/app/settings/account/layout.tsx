@@ -15,10 +15,12 @@ const sideNavLinks: INavLink[] = [
   {
     label: "Subscription",
     link: "/settings/account/subscription",
+    roles: [Role.MENTEE]
   },
   {
     label: "Payout",
     link: "/settings/account/payout",
+    roles: [Role.MENTOR],
   },
   {
     label: "Change Password",

@@ -18,9 +18,6 @@ export default function StudentPlan({
   interval,
   offer,
 }: IStudentPlanProps) {
-  if (!monthlyPriceId || !yearlyPriceId) {
-    throw new Error("Missing Stripe price IDs in environment variables");
-  }
   const priceId = interval === "month" ? monthlyPriceId : yearlyPriceId;
   return (
     <PlanCard

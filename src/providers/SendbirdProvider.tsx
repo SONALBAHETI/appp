@@ -12,9 +12,9 @@ export default function SendbirdProvider({
 
   return (
     <SendBirdProvider
-      appId={process.env.NEXT_PUBLIC_SENDBIRD_APP_ID || ""}
-      userId={chatCredentialsQuery.data?.userId || ""}
-      accessToken={chatCredentialsQuery.data?.accessToken || ""}
+      appId={process.env.NEXT_PUBLIC_SENDBIRD_APP_ID}
+      userId={chatCredentialsQuery.data?.userId || ""} /** @todo handle userId not defined */
+      accessToken={chatCredentialsQuery.data?.accessToken || ""} /** @todo handle accessToken not defined */
     >
       {children}
     </SendBirdProvider>

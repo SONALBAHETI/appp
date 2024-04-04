@@ -18,9 +18,6 @@ export default function ClinicianPlan({
   interval,
   offer,
 }: IClinicianPlanProps) {
-  if (!monthlyPriceId || !yearlyPriceId) {
-    throw new Error("Missing Stripe price IDs in environment variables");
-  }
   const priceId = interval === "month" ? monthlyPriceId : yearlyPriceId;
 
   return (

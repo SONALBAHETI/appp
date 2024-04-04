@@ -61,7 +61,7 @@ const GroupCallScreen = ({ roomId, onExit }: IGroupCallScreenProps) => {
         chatCredentialsQuery.data?.accessToken && (
           <>
             <SbCallsAuthenticator
-              appId={process.env.NEXT_PUBLIC_SENDBIRD_APP_ID || ""}
+              appId={process.env.NEXT_PUBLIC_SENDBIRD_APP_ID}
               userId={chatCredentialsQuery.data.userId}
               accessToken={chatCredentialsQuery.data.accessToken}
             />

@@ -56,9 +56,10 @@ export const useRemoveFavoriteUserMutation = (favoriteUserId: string) =>
     ],
     optimisticUpdater: (queryKey, oldQueryData) => {
       if (isEqualQueryKeys(queryKey, getFavoriteUsersQueryKey())) {
+        if (!oldQueryData) return oldQueryData;
         return {
           ...oldQueryData,
-          favoriteUsers: oldQueryData?.favoriteUsers.filter(
+          favoriteUsers: oldQueryData.favoriteUsers.filter(
             (favUser: IFavoriteUser) => favUser.user !== favoriteUserId
           ),
         } as IGetFavoriteUsersResponse;

@@ -11,7 +11,8 @@ export default function VerificationSuccessful() {
             Now you can go ahead and start collaborating with experts.
           </p>
         </div>
-        <Link href="/experts">
+        {/* TODO: Change URL to profile */}
+        <Link href="/">
           <Button className="w-40">View Profile</Button>
         </Link>
       </div>

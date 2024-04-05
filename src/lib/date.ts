@@ -12,6 +12,13 @@ export function getRelativeTimeString(
   return timeString;
 }
 
+export function getFormattedDateFromUnix(
+  unixTimeStamp: number,
+  options: Intl.DateTimeFormatOptions = {}
+): string {
+  return getFormattedDate(new Date(unixTimeStamp * 1000), options);
+}
+
 export function getFormattedDate(
   date: Date,
   options: Intl.DateTimeFormatOptions = {}

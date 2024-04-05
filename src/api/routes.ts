@@ -14,6 +14,7 @@ const baseUrls = {
   studentVerification: "/api/v1/verification/identity/student",
   settings: "/api/v1/settings",
   appointments: "/api/v1/appointments",
+  payment: "/api/v1/payment",
 };
 
 const notes = {
@@ -58,7 +59,7 @@ const studentVerification = {
 
 const sheerIDVerification = {
   docUpload: `${baseUrls.sheerIDVerification}/doc-upload`,
-}
+};
 
 const notifications = {
   base: `${baseUrls.notifications}`,
@@ -144,6 +145,7 @@ const auth = {
   resetPassword: `${baseUrls.auth}/reset-password`,
   signInWithEmailPassword: `${baseUrls.auth}/login/email-password`,
   signUpWithEmailPassword: `${baseUrls.auth}/register`,
+  refreshTokens: `${baseUrls.auth}/refresh-tokens`,
 };
 
 const user = {
@@ -165,6 +167,25 @@ const appointment = {
   getAppointment: (id: string) => `${baseUrls.appointments}/${id}`,
 };
 
+const payment = {
+  checkout: {
+    subscription: `${baseUrls.payment}/checkout/subscription`,
+    credits: `${baseUrls.payment}/checkout/credits`,
+  },
+  stripe: {
+    enabled: `${baseUrls.payment}/stripe/enabled`,
+    connect: {
+      baseUrl: `${baseUrls.payment}/stripe/connect`,
+      status: `${baseUrls.payment}/stripe/connect/status`,
+      onboarding: `${baseUrls.payment}/stripe/connect/onboarding`,
+      login: `${baseUrls.payment}/stripe/connect/login`,
+    },
+  },
+  credits: `${baseUrls.payment}/credits`,
+  subscription: `${baseUrls.payment}/subscription`,
+  customerPortal: `${baseUrls.payment}/customer-portal`,
+};
+
 export const apiRoutes = {
   chat,
   user,
@@ -179,5 +200,6 @@ export const apiRoutes = {
   notifications,
   onboarding,
   settings,
+  payment,
   logout: `${baseUrls.api}/auth/logout`,
 };

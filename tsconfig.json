@@ -3,6 +3,7 @@
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "checkJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
@@ -27,7 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "node_modules/@sendbird/uikit-react/index.d.ts"
+    "node_modules/@sendbird/uikit-react/index.d.ts",
+    "src/validateEnv.js"
   ],
   "exclude": ["node_modules"]
 }

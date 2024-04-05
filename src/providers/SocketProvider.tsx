@@ -15,9 +15,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   const socketServerURL = process.env.NEXT_PUBLIC_SOCKET_SERVER_URL;
-  if (!socketServerURL) {
-    throw new Error("NEXT_PUBLIC_SOCKET_SERVER_URL is not defined");
-  }
+  
   useEffect(() => {
     const socketConn = io(socketServerURL, {
       transports: ["websocket"],
@@ -28,7 +26,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     });
     socketConn.on("connect_error", (err) => {
       console.log(err);
-      toast.warn(`Couldn't establish a connection with server`);
     });
     socketConn.on("disconnect", () => {
       console.log("disconnected from socket");

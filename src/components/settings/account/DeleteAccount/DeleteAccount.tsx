@@ -8,6 +8,7 @@ import { useLogoutMutation } from "@/api/auth";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import Loader from "@/components/ui/Loader";
 import { Button } from "@/components/ui/button";
+import { AppRoutes } from "@/constants/appRoutes";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -23,7 +24,7 @@ const DeactivateAccount = () => {
       await deactivateAccountMutation.mutateAsync(undefined);
       await mutationLogout.mutateAsync(undefined);
       queryClient.invalidateQueries();
-      router.push("/signin");
+      router.push(AppRoutes.Auth.Signin.path);
     } catch (error) {
       toast.error("Something went wrong. Please try again later.");
     }
@@ -56,7 +57,7 @@ const DeleteAccount = () => {
       await scheduleAccountDeletionMutation.mutateAsync(undefined);
       await mutationLogout.mutateAsync(undefined);
       queryClient.invalidateQueries();
-      router.push("/signin");
+      router.push(AppRoutes.Auth.Signin.path);
     } catch (error) {
       toast.error("Something went wrong. Please try again later.");
     }

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "@/api/auth";
 import { useQueryClient } from "@tanstack/react-query";
+import { AppRoutes } from "@/constants/appRoutes";
 
 export default function Logout() {
   const mutationLogout = useLogoutMutation();
@@ -16,7 +17,7 @@ export default function Logout() {
     try {
       await mutationLogout.mutateAsync(undefined);
       queryClient.invalidateQueries();
-      router.push("/signin");
+      router.push(AppRoutes.Auth.Signin.path);
     } catch (error) {
       console.log(error);
       toast.error("Couldn't logout");

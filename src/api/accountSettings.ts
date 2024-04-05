@@ -20,8 +20,9 @@ const getNotificationsQueryKey = () =>
  * Custom hook for getting quick replies.
  * @returns The query result.
  */
-export const useQuickRepliesQuery = () =>
+export const useQuickRepliesQuery = (enabled = true) =>
   useFetch<{ quickReplies: IQuickReply[] }>(getQuickRepliesQueryKey(), {
+    enabled,
     staleTime: Infinity,
   });
 

@@ -2,7 +2,7 @@ import { useChannelListContext } from "@sendbird/uikit-react/ChannelList/context
 import ChannelPreview from "./ChannelPreview";
 import ChannelListUISkeleton from "./ChannelListUISkeleton";
 
-enum ChannelListActionTypes {
+export enum ChannelListActionTypes {
   SET_CURRENT_CHANNEL = "SET_CURRENT_CHANNEL",
 }
 

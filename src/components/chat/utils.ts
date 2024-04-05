@@ -1,4 +1,4 @@
-import type { GroupChannel } from "@sendbird/chat/groupChannel";
+import type { GroupChannel, Member } from "@sendbird/chat/groupChannel";
 
 /**
  * Generates the name of the channel - which is the name of the other member
@@ -12,7 +12,7 @@ import type { GroupChannel } from "@sendbird/chat/groupChannel";
 export const generateChannelName = (
   channel: GroupChannel,
   currentUserId: string
-): { chatUser: any | null; channelName: string; channelImageUrl: string } => {
+): { chatUser: Member | null; channelName: string; channelImageUrl: string } => {
   if (!channel) {
     return {
       chatUser: null,

@@ -1,76 +1,75 @@
-import { ChannelListProvider } from "@sendbird/uikit-react/ChannelList/context";
-import { GroupChannelListQueryParams } from "@sendbird/chat/groupChannel";
-import type { GroupChannel } from "@sendbird/chat/groupChannel";
 import { ChatRequestList } from "../ChatRequests";
-import ChannelListUI from "../ChannelList/ChannelListUI";
+import ChannelListUI, {
+  ChannelListActionTypes,
+} from "../ChannelList/ChannelListUI";
 
 import Tabs from "./Tabs";
 import { Input } from "@/components/ui/input";
 
-import { TAB } from "../tab";
+import { TAB } from "@/interfaces/chat";
 import "./chat-menu.css";
 import { useChatStore } from "@/store/useChatStore";
+import FavoriteUserList from "@/components/favorites/FavoriteUserList";
+import { IFavoriteUserPopulated } from "@/interfaces/favoriteUser";
+import { useChannelListContext } from "@sendbird/uikit-react/ChannelList/context";
 
-interface IChatMenuProps {
-  className?: string;
-}
+const TAB_LIST = [TAB.CHAT, TAB.FAVORITES, TAB.REQUESTS];
 
-const TAB_LIST = [TAB.CHAT, TAB.REQUESTS];
-
-export default function ChatMenu({ className }: IChatMenuProps) {
+export default function ChatMenu() {
   const {
     activeTab,
     setActiveTab,
-    setCurrentChannelUrl,
-    channelSearchQuery,
     setChannelSearchQuery,
   } = useChatStore();
+  const { allChannels, channelListDispatcher } = useChannelListContext();
 
-  // for searching channels
-  const queryParams: GroupChannelListQueryParams = {
-    nicknameContainsFilter: channelSearchQuery,
-  };
-
-  const onChannelSelect = (channel: GroupChannel | null) => {
-    setCurrentChannelUrl(channel?.url || null);
+  const onFavoriteUserChatClick = ({
+    chatChannelUrl,
+  }: IFavoriteUserPopulated) => {
+    if (chatChannelUrl) {
+      const channel = allChannels.find(
+        (channel) => channel.url === chatChannelUrl
+      );
+      if (channel) {
+        channelListDispatcher({
+          type: ChannelListActionTypes.SET_CURRENT_CHANNEL,
+          payload: channel,
+        });
+        setActiveTab(TAB.CHAT);
+      }
+    }
   };
 
   return (
-    <ChannelListProvider
-      onChannelSelect={onChannelSelect}
-      queries={{
-        channelListQuery: queryParams, // for searching channels
-      }}
-      className={className}
-    >
-      <div className="flex flex-col gap-4 max-h-full">
-        {/* Tabs */}
-        <Tabs
-          items={TAB_LIST}
-          activeItem={activeTab}
-          onTabChange={setActiveTab}
-        />
-        <div className="flex items-center justify-between">
-          {activeTab === TAB.CHAT && (
-            <Input
-              placeholder="Search chats..."
-              onChange={(e) => setChannelSearchQuery(e.target.value)}
-            />
-            // Add filter button
-          )}
-        </div>
-
-        {/* Chat List | Favorites | Chat Requests */}
-        <div className="overflow-y-auto">
-          {activeTab === TAB.CHAT ? (
-            <ChannelListUI />
-          ) : activeTab === TAB.REQUESTS ? (
-            <ChatRequestList />
-          ) : (
-            <></>
-          )}
-        </div>
+    <div className="flex flex-col gap-4 max-h-full">
+      {/* Tabs */}
+      <Tabs
+        items={TAB_LIST}
+        activeItem={activeTab}
+        onTabChange={setActiveTab}
+      />
+      <div className="flex items-center justify-between">
+        {activeTab === TAB.CHAT && (
+          <Input
+            placeholder="Search chats..."
+            onChange={(e) => setChannelSearchQuery(e.target.value)}
+          />
+          // Add filter button
+        )}
       </div>
-    </ChannelListProvider>
+
+      {/* Chat List | Favorites | Chat Requests */}
+      <div className="overflow-y-auto">
+        {activeTab === TAB.CHAT ? (
+          <ChannelListUI />
+        ) : activeTab === TAB.REQUESTS ? (
+          <ChatRequestList />
+        ) : activeTab === TAB.FAVORITES ? (
+          <FavoriteUserList onChatButtonClick={onFavoriteUserChatClick} />
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
   );
 }

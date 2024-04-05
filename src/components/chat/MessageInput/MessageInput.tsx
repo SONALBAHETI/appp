@@ -16,6 +16,9 @@ import "./sb-message-input.override.css";
 import QuickReplyPopup from "../QuickReply/QuickReplyPopup";
 import { useChatStore } from "@/store/useChatStore";
 import { useQuickRepliesQuery } from "@/api/accountSettings";
+import ProtectedComponent from "@/components/access-control/ProtectedComponent";
+import { Role } from "@/constants/user";
+import { useRightsQuery } from "@/api/user";
 
 export default function MessageInput() {
   /* Local states and refs */
@@ -36,7 +39,10 @@ export default function MessageInput() {
   const { selectedQuickReply, setSelectedQuickReply } = useChatStore();
 
   /* Server states */
-  const quickRepliesQuery = useQuickRepliesQuery();
+  const rightsQuery = useRightsQuery();
+  const quickRepliesQuery = useQuickRepliesQuery(
+    rightsQuery.data?.role === Role.MENTOR
+  );
 
   /* Side effects */
   useEffect(() => {
@@ -47,7 +53,7 @@ export default function MessageInput() {
         const matchedQuickReply = quickReplies.find(
           (quickReply) =>
             quickReply.shortcut ===
-            messageInputRef.current.innerText?.substring(1)
+            messageInputRef.current.innerText?.substring(1) // removing the forward slash at the start
         );
         if (matchedQuickReply) {
           // setting timeout so that for a brief moment, the last input character is also visible
@@ -56,7 +62,7 @@ export default function MessageInput() {
           }, 200);
         }
       }
-    }
+    };
     // there's no onchange handler on the SBMessageInput component :(
     if (messageInputRef.current) {
       messageInputRef.current.oninput = () => {
@@ -132,21 +138,23 @@ export default function MessageInput() {
                   />
                 </div>
               </li>
-              <li>
-                <QuickReplyPopup asChild>
-                  <div
-                    role="button"
-                    className="py-3 px-4 hover:bg-muted rounded-b-md cursor-pointer flex items-center gap-2"
-                  >
-                    <Icon
-                      type={IconType.ZAP}
-                      size={22}
-                      className="fill-light-bulb"
-                    />
-                    Quick Replies
-                  </div>
-                </QuickReplyPopup>
-              </li>
+              <ProtectedComponent allowedRoles={[Role.MENTOR]}>
+                <li>
+                  <QuickReplyPopup asChild>
+                    <div
+                      role="button"
+                      className="py-3 px-4 hover:bg-muted rounded-b-md cursor-pointer flex items-center gap-2"
+                    >
+                      <Icon
+                        type={IconType.ZAP}
+                        size={22}
+                        className="fill-light-bulb"
+                      />
+                      Quick Replies
+                    </div>
+                  </QuickReplyPopup>
+                </li>
+              </ProtectedComponent>
             </ul>
           </PopoverContent>
         </Popover>

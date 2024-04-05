@@ -38,3 +38,7 @@ export enum TAB {
   CHAT = "chat",
   REQUESTS = "requests",
 }
+
+export interface ISendbirdUserMetadata {
+  scholarnetics_user_id: string;
+}

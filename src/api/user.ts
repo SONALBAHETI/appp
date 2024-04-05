@@ -1,4 +1,4 @@
-import { useFetch, usePost } from "@/lib/react-query";
+import { useDelete, useFetch, usePost } from "@/lib/react-query";
 import { apiRoutes } from "./routes";
 import { createQueryKey, isEqualQueryKeys } from "@/lib/react-query/utils";
 import {
@@ -6,8 +6,69 @@ import {
   IGetRightsResponse,
   IGetVisibilityResponse,
 } from "@/interfaces/user";
+import {
+  ICreateFavoriteUserRequest,
+  ICreateFavoriteUserResponse,
+  IFavoriteUser,
+  IGetFavoriteUsersResponse,
+  IGetSingleFavoriteUserResponse,
+  IRemoveFavoriteUserResponse,
+} from "@/interfaces/favoriteUser";
 
 const getVisibilityQueryKey = () => createQueryKey(apiRoutes.user.visibility);
+const getSingleFavoriteUserQueryKey = (id: string) =>
+  createQueryKey(apiRoutes.user.favoriteUser(id));
+const getFavoriteUsersQueryKey = () =>
+  createQueryKey(apiRoutes.user.favoriteUsers);
+
+/** Fetch single favorite user */
+export const useSingleFavoriteUserQuery = (id: string) =>
+  useFetch<IGetSingleFavoriteUserResponse>(getSingleFavoriteUserQueryKey(id), {
+    staleTime: Infinity,
+    enabled: !!id,
+  });
+
+/** Fetch favorite users */
+export const useFavoriteUsersQuery = () =>
+  useFetch<IGetFavoriteUsersResponse>(getFavoriteUsersQueryKey(), {
+    staleTime: Infinity,
+  });
+
+/** Create a favorite user */
+export const useCreateFavoriteUserMutation = (favoriteUserId?: string) => {
+  const dependentQueryKeys = [getFavoriteUsersQueryKey()];
+  if (favoriteUserId) {
+    dependentQueryKeys.push(getSingleFavoriteUserQueryKey(favoriteUserId));
+  }
+  return usePost<ICreateFavoriteUserRequest, ICreateFavoriteUserResponse>({
+    queryKey: getFavoriteUsersQueryKey(),
+    dependentQueryKeys,
+  });
+};
+
+/** Remove a user from favorites */
+export const useRemoveFavoriteUserMutation = (favoriteUserId: string) =>
+  useDelete<IRemoveFavoriteUserResponse>({
+    queryKey: getSingleFavoriteUserQueryKey(favoriteUserId),
+    dependentQueryKeys: [
+      getFavoriteUsersQueryKey(),
+      getSingleFavoriteUserQueryKey(favoriteUserId),
+    ],
+    optimisticUpdater: (queryKey, oldQueryData) => {
+      if (isEqualQueryKeys(queryKey, getFavoriteUsersQueryKey())) {
+        return {
+          ...oldQueryData,
+          favoriteUsers: oldQueryData?.favoriteUsers.filter(
+            (favUser: IFavoriteUser) => favUser.user !== favoriteUserId
+          ),
+        } as IGetFavoriteUsersResponse;
+      } else if (
+        isEqualQueryKeys(queryKey, getSingleFavoriteUserQueryKey(favoriteUserId))
+      ) {
+        return { favoriteUser: null } as IGetSingleFavoriteUserResponse;
+      }
+    },
+  });
 
 /**
  * A custom hook to fetch achievements of a user.

@@ -5,12 +5,26 @@ import type { GroupChannel } from "@sendbird/chat/groupChannel";
 import Icon from "@/components/ui/Icon";
 import { IconType } from "@/components/ui/Icon/type";
 import ButtonIcon from "@/components/ui/ButtonIcon";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ChannelHeaderSkeleton from "./ChannelHeaderSkeleton";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import OnlineStatus from "@/components/ui/OnlineStatus/OnlineStatus";
+import OnlineStatus, {
+  TOnlineStatus,
+} from "@/components/ui/OnlineStatus/OnlineStatus";
+import {
+  useCreateFavoriteUserMutation,
+  useRemoveFavoriteUserMutation,
+  useSingleFavoriteUserQuery,
+} from "@/api/user";
+import { toast } from "react-toastify";
+import { ISendbirdUserMetadata } from "@/interfaces/chat";
 
 export default function ChannelHeader() {
+  /* Local states */
+  const [otherMemberScholarneticsId, setOtherMemberScholarneticsId] =
+    useState<string>("");
+
+  /* Sendbird states */
   const { currentGroupChannel, loading } = useChannelContext();
   const {
     stores: {
@@ -19,17 +33,65 @@ export default function ChannelHeader() {
       },
     },
   } = useSendbirdStateContext();
+
+  // chatUser is the other member of the channel
   const { chatUser, channelName, channelImageUrl } = generateChannelName(
     currentGroupChannel as GroupChannel,
     userId
   );
-  const connectionStatus = chatUser?.connectionStatus;
+
+  /* Server states */
+  const otherMemberFavoriteUserQuery = useSingleFavoriteUserQuery(
+    otherMemberScholarneticsId
+  );
+  const createFavoriteUserMutation = useCreateFavoriteUserMutation(
+    otherMemberScholarneticsId
+  );
+  const deleteFavoriteUserMutation = useRemoveFavoriteUserMutation(
+    otherMemberScholarneticsId
+  );
+
+  // online / offline status of the other member in the chat.
+  const connectionStatus = chatUser?.connectionStatus as TOnlineStatus;
+
+  const handleFavoriteToggle = async () => {
+    if (
+      otherMemberFavoriteUserQuery.isPending ||
+      otherMemberFavoriteUserQuery.isError ||
+      createFavoriteUserMutation.isPending ||
+      deleteFavoriteUserMutation.isPending
+    ) {
+      return;
+    }
+    if (otherMemberScholarneticsId && currentGroupChannel) {
+      try {
+        if (!otherMemberFavoriteUserQuery.data?.favoriteUser) {
+          await createFavoriteUserMutation.mutateAsync({
+            userId: otherMemberScholarneticsId,
+            chatChannelUrl: currentGroupChannel?.url,
+          });
+        } else {
+          await deleteFavoriteUserMutation.mutateAsync(undefined);
+        }
+      } catch (error) {
+        toast.error("Something went wrong");
+      }
+    }
+  };
 
   useEffect(() => {
     if (currentGroupChannel) {
       currentGroupChannel.refresh();
     }
   }, [currentGroupChannel]);
+
+  useEffect(() => {
+    if (chatUser && !otherMemberScholarneticsId) {
+      setOtherMemberScholarneticsId(
+        (chatUser?.metaData as ISendbirdUserMetadata)?.scholarnetics_user_id
+      );
+    }
+  }, [chatUser]);
 
   return (
     <ChannelHeaderSkeleton loading={loading}>
@@ -46,7 +108,18 @@ export default function ChannelHeader() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Icon type={IconType.HEART} size={22} className="cursor-pointer" />
+          {/* Favorite button */}
+          <Icon
+            type={IconType.HEART}
+            size={22}
+            className={`cursor-pointer ${
+              otherMemberFavoriteUserQuery.data?.favoriteUser
+                ? "fill-destructive text-destructive"
+                : ""
+            }`}
+            onClick={handleFavoriteToggle}
+          />
+          {/* More button */}
           <ButtonIcon
             variant="ghost"
             iconType={IconType.MORE_VERTICAL}

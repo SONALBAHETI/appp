@@ -1,3 +1,5 @@
+export type TOnlineStatus = "online" | "offline" | undefined;
+
 export default function OnlineStatus({
   status,
 }: {

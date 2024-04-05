@@ -153,6 +153,8 @@ const user = {
   visibility: `${baseUrls.user}/visibility`,
   availability: `${baseUrls.user}/availability`,
   rights: `${baseUrls.user}/rights`,
+  favoriteUser: (id: string) => `${baseUrls.user}/favorites/${id}`,
+  favoriteUsers: `${baseUrls.user}/favorites`,
 };
 
 const chat = {

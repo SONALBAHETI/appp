@@ -5,8 +5,19 @@ export interface IFavoriteUser {
   chatChannelUrl?: string;
 }
 
+export interface IFavoriteUserPopulated extends Omit<IFavoriteUser, "user"> {
+  user: {
+    id: string;
+    name: string;
+    profile: {
+      picture: string;
+    };
+    occupation: string;
+  };
+}
+
 export interface IGetFavoriteUsersResponse {
-  favoriteUsers: IFavoriteUser[];
+  favoriteUsers: IFavoriteUserPopulated[];
 }
 
 export interface ICreateFavoriteUserRequest {

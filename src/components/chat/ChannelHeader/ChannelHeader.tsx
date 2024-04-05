@@ -83,15 +83,18 @@ export default function ChannelHeader() {
     if (currentGroupChannel) {
       currentGroupChannel.refresh();
     }
-  }, [currentGroupChannel]);
-
-  useEffect(() => {
-    if (chatUser && !otherMemberScholarneticsId) {
-      setOtherMemberScholarneticsId(
-        (chatUser?.metaData as ISendbirdUserMetadata)?.scholarnetics_user_id
-      );
+    if (chatUser) {
+      const scholarneticsUserId = (chatUser.metaData as ISendbirdUserMetadata)
+        .scholarnetics_user_id;
+      if (scholarneticsUserId !== otherMemberScholarneticsId) {
+        setOtherMemberScholarneticsId(
+          (chatUser?.metaData as ISendbirdUserMetadata)?.scholarnetics_user_id
+        );
+      }
+    } else {
+      setOtherMemberScholarneticsId("");
     }
-  }, [chatUser]);
+  }, [currentGroupChannel, chatUser, otherMemberScholarneticsId]);
 
   return (
     <ChannelHeaderSkeleton loading={loading}>

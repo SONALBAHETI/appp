@@ -36,6 +36,7 @@ export interface IUpdateChatRequestResponse {
 
 export enum TAB {
   CHAT = "chat",
+  FAVORITES = "favorites",
   REQUESTS = "requests",
 }
 

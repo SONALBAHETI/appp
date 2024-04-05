@@ -1,3 +1,5 @@
+require("./src/validateEnv");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config) => {

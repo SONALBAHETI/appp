@@ -15,10 +15,6 @@ export default function JoinMeeting({
 }: {
   appointmentId: string;
 }) {
-  if (!process.env.NEXT_PUBLIC_SENDBIRD_APP_ID) {
-    throw new Error("SENDBIRD_APP_ID is not defined");
-  }
-
   const [isJoinedMeeting, setIsJoinedMeeting] = useState(false);
 
   const onExit = () => {

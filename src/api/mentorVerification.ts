@@ -1,5 +1,4 @@
 import {
-  IDocUploadResponse,
   IGetCurrentVerificationStepResponse,
   IGetOrgSearchUrlResponse,
   ISearchOrganizationsResponse,
@@ -32,10 +31,6 @@ export const getOrganizationsQueryKey = (
 export const getSubmitMentorVerificationDataMutationKey = () =>
   createQueryKey(apiRoutes.mentorVerification.submitData);
 
-// get mutation key for docUpload
-export const getDocUploadMutationKey = () =>
-  createQueryKey(apiRoutes.mentorVerification.docUpload);
-
 /**
  * Executes a query to fetch the current verification step using useFetch hook.
  *
@@ -53,7 +48,9 @@ export const useCurrentVerificationStepQuery = () =>
  * Invalidates the current verification step in the query client.
  * @param queryClient - The query client
  */
-export const invalidateCurrentVerificationStepQuery = (queryClient: QueryClient) => {
+export const invalidateCurrentVerificationStepQuery = (
+  queryClient: QueryClient
+) => {
   queryClient.invalidateQueries({
     queryKey: getCurrentVerificationStepQueryKey(),
   });
@@ -96,16 +93,5 @@ export const useOrganizationsQuery = (
 export const useSubmitMentorVerificationDataMutation = () =>
   usePost<LicenseFormSchema, ISubmitMentorVerificationDataResponse>({
     queryKey: getSubmitMentorVerificationDataMutationKey(),
-    dependentQueryKeys: [getCurrentVerificationStepQueryKey()],
-  });
-
-/**
- * Returns a mutation function for submitting mentor verification data.
- *
- * @returns A function for submitting mentor verification data
- */
-export const useDocUploadMutation = () =>
-  usePost<FormData, IDocUploadResponse>({
-    queryKey: getDocUploadMutationKey(),
     dependentQueryKeys: [getCurrentVerificationStepQueryKey()],
   });

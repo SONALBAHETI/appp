@@ -26,7 +26,6 @@ import { useEffect, useRef } from "react";
 
 interface ILicenseDetailFormProps {
   onSubmitting: (isSubmitting: boolean) => void;
-  onComplete?: () => void;
 }
 
 export default function LicenseDetailForm({

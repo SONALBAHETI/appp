@@ -6,7 +6,6 @@ import IdentityInfo from "./Identity/IdentityInfo";
 import Education from "./Education/Education";
 import { LicenseVerification } from "./License";
 import Expertise from "./Expertise/Expertise";
-import { Card, CardContent } from "@/components/ui/card";
 import StepsContainer, {
   Step,
   StepContent,
@@ -17,6 +16,8 @@ import { createCustomEvent } from "@/lib/events";
 import Loader from "@/components/ui/Loader";
 import { useQueryState } from "nuqs";
 import { useCurrentVerificationStepQuery } from "@/api/mentorVerification";
+// TODO: Conditionally render this based on logged in user type
+import StudentVerification from "./StudentVerification";
 
 export default function PersonalDetails() {
   const [stepQueryParam, setStepQueryParam] = useQueryState("step");
@@ -62,7 +63,7 @@ export default function PersonalDetails() {
           {showActionButtons && (
             <div className="ml-auto flex items-center gap-6">
               <Link
-                href="/"
+                href="/" /** @todo change to profile url */
                 className="underline underline-offset-4 text-foreground"
               >
                 View Profile

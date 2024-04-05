@@ -83,7 +83,8 @@ export default function AppointmentSettingsPage() {
               <Button
                 disabled={
                   appointmentSettingsMutation.isPending ||
-                  appointmentSettingsQuery.isFetching
+                  appointmentSettingsQuery.isFetching ||
+                  appointmentSettingsQuery.isError
                 }
                 className="px-6"
               >
@@ -95,35 +96,45 @@ export default function AppointmentSettingsPage() {
             </div>
           </div>
 
-          {/* hourly rate */}
-          <HourlyRateFormField
-            control={form.control}
-            name="hourlyRate"
-            defaultValue={undefined}
-          />
+          {appointmentSettingsQuery.isError && (
+            <div className="absolute-center bg-secondary py-10 text-faded">
+              Something went wrong. Please try again later.
+            </div>
+          )}
 
-          {/* Weekly availability */}
-          <div className="flex flex-col gap-3">
-            <h6>Set your weekly hours</h6>
-            <WeeklyTimeSlots
-              control={form.control}
-              name="weeklyTimeSlots"
-              defaultValue={{
-                monday: { enabled: false, slots: [] },
-                tuesday: { enabled: false, slots: [] },
-                wednesday: { enabled: false, slots: [] },
-                thursday: { enabled: false, slots: [] },
-                friday: { enabled: false, slots: [] },
-                saturday: { enabled: false, slots: [] },
-                sunday: { enabled: false, slots: [] },
-              }}
-            />
-          </div>
-          <TimeGap
-            control={form.control}
-            name="timeGap"
-            defaultValue={{ active: false, gap: 15 }}
-          />
+          {appointmentSettingsQuery.isSuccess && (
+            <>
+              {/* hourly rate */}
+              <HourlyRateFormField
+                control={form.control}
+                name="hourlyRate"
+                defaultValue={undefined}
+              />
+
+              {/* Weekly availability */}
+              <div className="flex flex-col gap-3">
+                <h6>Set your weekly hours</h6>
+                <WeeklyTimeSlots
+                  control={form.control}
+                  name="weeklyTimeSlots"
+                  defaultValue={{
+                    monday: { enabled: false, slots: [] },
+                    tuesday: { enabled: false, slots: [] },
+                    wednesday: { enabled: false, slots: [] },
+                    thursday: { enabled: false, slots: [] },
+                    friday: { enabled: false, slots: [] },
+                    saturday: { enabled: false, slots: [] },
+                    sunday: { enabled: false, slots: [] },
+                  }}
+                />
+              </div>
+              <TimeGap
+                control={form.control}
+                name="timeGap"
+                defaultValue={{ active: false, gap: 15 }}
+              />
+            </>
+          )}
         </div>
       </form>
     </Form>

@@ -3,6 +3,7 @@ import { apiRoutes } from "./routes";
 import { createQueryKey, isEqualQueryKeys } from "@/lib/react-query/utils";
 import {
   IGetAchievementsResponse,
+  IGetRightsResponse,
   IGetVisibilityResponse,
 } from "@/interfaces/user";
 
@@ -26,6 +27,15 @@ export const useAchievementsQuery = () =>
 export const useVisibilityQuery = () =>
   useFetch<IGetVisibilityResponse>(getVisibilityQueryKey(), {
     staleTime: 1000 * 60, // 1 min
+  });
+
+/**
+ * A custom hook to fetch rights of a user.
+ * @returns The query result of type {@link IGetRightsResponse}.
+ */
+export const useRightsQuery = () =>
+  useFetch<IGetRightsResponse>(createQueryKey(apiRoutes.user.rights), {
+    staleTime: Infinity,
   });
 
 /**

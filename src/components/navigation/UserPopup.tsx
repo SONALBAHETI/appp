@@ -17,16 +17,17 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import React from "react";
+import { AppRoutes } from "@/constants/appRoutes";
 
 const QuickLinks = [
   {
     name: "Personal Settings",
-    href: "/settings/profile/personal-details",
+    href: AppRoutes.Settings.Profile.path,
     icon: IconType.SETTINGS,
   },
   {
     name: "Appointment Settings",
-    href: "/settings/appointments",
+    href: AppRoutes.Settings.Appointment.path,
     icon: IconType.USER,
   },
 ];
@@ -41,7 +42,7 @@ export default function UserPopup() {
     try {
       await mutationLogout.mutateAsync(undefined);
       queryClient.invalidateQueries();
-      router.push("/signin");
+      router.push(AppRoutes.Auth.Signin.path);
     } catch (error) {
       toast.error("Couldn't logout");
     }

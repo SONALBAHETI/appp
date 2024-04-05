@@ -1,6 +1,7 @@
 export interface ISignInWithEmailPasswordResponse {
   accessToken: IToken;
   userId: string;
+  isOnboarded: boolean;
 }
 
 export interface ISignUpWithEmailPasswordResponse {

@@ -2,12 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { AppRoutes } from "@/constants/appRoutes";
 
-// redirects to personal details page (first nav link)
+const DefaultRoute = AppRoutes.Settings.Profile.PersonalDetails;
+
+// redirects to personal details page
 export default function ProfileSettingsPage() {
   const router = useRouter();
   useEffect(() => {
-    router.push("/settings/profile/personal-details");
+    router.push(DefaultRoute.path);
   }, []);
   return null;
 }

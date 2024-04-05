@@ -1,6 +1,21 @@
+import { Permission, Role } from "@/constants/user";
+
 export {};
 
 declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      NEXT_PUBLIC_SERVER_BASE_URL: string;
+      NEXT_PUBLIC_FRONTEND_BASE_URL: string;
+      NEXT_PUBLIC_SOCKET_SERVER_URL: string;
+      NEXT_PUBLIC_SENDBIRD_APP_ID: string;
+      NEXT_PUBLIC_GOOGLE_CLIENT_ID: string;
+      NEXT_PUBLIC_STRIPE_STUDENT_MONTHLY_SUBSCRIPTION_PRICE_ID: string;
+      NEXT_PUBLIC_STRIPE_STUDENT_ANNUAL_SUBSCRIPTION_PRICE_ID: string;
+      NEXT_PUBLIC_STRIPE_CLINICIAN_MONTHLY_SUBSCRIPTION_PRICE_ID: string;
+      NEXT_PUBLIC_STRIPE_CLINICIAN_ANNUAL_SUBSCRIPTION_PRICE_ID: string;
+    }
+  }
   interface IToken {
     token: string;
     expires: Date;
@@ -12,6 +27,8 @@ declare global {
   interface INavLink {
     label: string;
     link: string;
+    permissions?: Permission[];
+    roles?: Role[];
   }
   interface IToggleOption {
     label: string;

@@ -1,22 +1,23 @@
 import { SideNavbar } from "@/components/ui/SideNavbar";
 import { Card, CardContent } from "@/components/ui/card";
+import { AppRoutes } from "@/constants/appRoutes";
 
 const sideNavLinks: INavLink[] = [
   {
     label: "Personal Details",
-    link: "/settings/profile/personal-details",
+    link: AppRoutes.Settings.Profile.PersonalDetails.path,
   },
   {
     label: "Verification Documents",
-    link: "/settings/profile/verification-documents",
+    link: AppRoutes.Settings.Profile.VerificationDocuments.path,
   },
   {
     label: "Bank Details",
-    link: "/settings/profile/bank-details",
+    link: AppRoutes.Settings.Profile.BankDetails.path,
   },
   {
     label: "Certifications & Badges",
-    link: "/settings/profile/certifications-and-badges",
+    link: AppRoutes.Settings.Profile.CertificationsAndBadges.path,
   },
 ];
 

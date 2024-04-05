@@ -20,6 +20,7 @@ export default function SideNavbar({ links }: SideNavbarProps) {
               activeClassName="text-accent-2 bg-accent-2/10 font-bold"
               inactiveClassName="hover:bg-muted transition duration-300 ease-in-out"
               href={item.link}
+              roles={item.roles}
             >
               {item.label}
             </NavLink>

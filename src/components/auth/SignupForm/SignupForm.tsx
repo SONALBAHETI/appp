@@ -27,6 +27,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useSignUpWithEmailPasswordMutation } from "@/api/auth";
 import { ISignUpWithEmailPasswordResponse } from "@/interfaces/auth";
 import { AxiosError } from "axios";
+import { AppRoutes } from "@/constants/appRoutes";
 
 interface SignupFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -49,7 +50,7 @@ export default function SignupForm({ className, ...props }: SignupFormProps) {
         userId: response.userId,
         accessToken: response.accessToken,
       });
-      router.push("/verification/email/request");
+      router.push(AppRoutes.Verification.Email.Request.path);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(error.message);

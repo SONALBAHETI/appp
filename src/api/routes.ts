@@ -9,9 +9,12 @@ const baseUrls = {
   notifications: "/api/v1/notifications",
   onboarding: "/api/v1/onboarding",
   userMatch: "/api/v1/usermatch",
-  mentorVerification: "/api/v1/verification/mentor",
+  sheerIDVerification: "/api/v1/verification/identity",
+  mentorVerification: "/api/v1/verification/identity/mentor",
+  studentVerification: "/api/v1/verification/identity/student",
   settings: "/api/v1/settings",
   appointments: "/api/v1/appointments",
+  payment: "/api/v1/payment",
 };
 
 const notes = {
@@ -35,13 +38,27 @@ const userMatch = {
 const mentorVerification = {
   getCurrentStep: `${baseUrls.mentorVerification}/current-step`,
   submitVerificationData: `${baseUrls.mentorVerification}/submit-data`,
-  docUpload: `${baseUrls.mentorVerification}/doc-upload`,
   getOrgSearchUrl: `${baseUrls.mentorVerification}/organizations/search-url`,
   getOrganizations: (orgSearchUrl?: string, searchTerm?: string) =>
     `${baseUrls.mentorVerification}/organizations/search?orgSearchUrl=${
       orgSearchUrl && encodeURIComponent(orgSearchUrl)
     }&searchTerm=${searchTerm}`,
   submitData: `${baseUrls.mentorVerification}/submit-data`,
+};
+
+const studentVerification = {
+  getCurrentStep: `${baseUrls.studentVerification}/current-step`,
+  submitVerificationData: `${baseUrls.studentVerification}/submit-data`,
+  getOrgSearchUrl: `${baseUrls.studentVerification}/organizations/search-url`,
+  getOrganizations: (orgSearchUrl?: string, searchTerm?: string) =>
+    `${baseUrls.studentVerification}/organizations/search?orgSearchUrl=${
+      orgSearchUrl && encodeURIComponent(orgSearchUrl)
+    }&searchTerm=${searchTerm}`,
+  submitData: `${baseUrls.studentVerification}/submit-data`,
+};
+
+const sheerIDVerification = {
+  docUpload: `${baseUrls.sheerIDVerification}/doc-upload`,
 };
 
 const notifications = {
@@ -104,7 +121,8 @@ const profileSettings = {
 
 const accountSettings = {
   quickReplies: `${baseUrls.settings}/account/quick-replies`,
-  quickReply: (id: string) => `${baseUrls.settings}/account/quick-replies/${id}`,
+  quickReply: (id: string) =>
+    `${baseUrls.settings}/account/quick-replies/${id}`,
   notifications: `${baseUrls.settings}/account/notifications`,
   deactivateAccount: `${baseUrls.settings}/account/deactivate`,
   deleteAccount: `${baseUrls.settings}/account/delete`,
@@ -127,12 +145,14 @@ const auth = {
   resetPassword: `${baseUrls.auth}/reset-password`,
   signInWithEmailPassword: `${baseUrls.auth}/login/email-password`,
   signUpWithEmailPassword: `${baseUrls.auth}/register`,
+  refreshTokens: `${baseUrls.auth}/refresh-tokens`,
 };
 
 const user = {
   achievements: `${baseUrls.user}/achievements`,
   visibility: `${baseUrls.user}/visibility`,
   availability: `${baseUrls.user}/availability`,
+  rights: `${baseUrls.user}/rights`,
 };
 
 const chat = {
@@ -147,6 +167,25 @@ const appointment = {
   getAppointment: (id: string) => `${baseUrls.appointments}/${id}`,
 };
 
+const payment = {
+  checkout: {
+    subscription: `${baseUrls.payment}/checkout/subscription`,
+    credits: `${baseUrls.payment}/checkout/credits`,
+  },
+  stripe: {
+    enabled: `${baseUrls.payment}/stripe/enabled`,
+    connect: {
+      baseUrl: `${baseUrls.payment}/stripe/connect`,
+      status: `${baseUrls.payment}/stripe/connect/status`,
+      onboarding: `${baseUrls.payment}/stripe/connect/onboarding`,
+      login: `${baseUrls.payment}/stripe/connect/login`,
+    },
+  },
+  credits: `${baseUrls.payment}/credits`,
+  subscription: `${baseUrls.payment}/subscription`,
+  customerPortal: `${baseUrls.payment}/customer-portal`,
+};
+
 export const apiRoutes = {
   chat,
   user,
@@ -155,9 +194,12 @@ export const apiRoutes = {
   chatbot,
   userMatch,
   mentorVerification,
+  studentVerification,
+  sheerIDVerification,
   auth,
   notifications,
   onboarding,
   settings,
+  payment,
   logout: `${baseUrls.api}/auth/logout`,
 };

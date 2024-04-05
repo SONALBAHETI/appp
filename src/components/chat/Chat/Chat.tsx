@@ -1,6 +1,6 @@
 "use client";
 
-import SendbirdProvider from "@/providers/SendbirdProvider";
+import SendbirdProvider from "@/providers/chat/SendbirdProvider";
 import ChatView from "../ChatView";
 
 export default function Chat() {

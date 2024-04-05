@@ -18,6 +18,7 @@ import { useChatStore } from "@/store/useChatStore";
 import { useQuickRepliesQuery } from "@/api/accountSettings";
 import ProtectedComponent from "@/components/access-control/ProtectedComponent";
 import { Role } from "@/constants/user";
+import { useRightsQuery } from "@/api/user";
 
 export default function MessageInput() {
   /* Local states and refs */
@@ -38,7 +39,10 @@ export default function MessageInput() {
   const { selectedQuickReply, setSelectedQuickReply } = useChatStore();
 
   /* Server states */
-  const quickRepliesQuery = useQuickRepliesQuery();
+  const rightsQuery = useRightsQuery();
+  const quickRepliesQuery = useQuickRepliesQuery(
+    rightsQuery.data?.role === Role.MENTOR
+  );
 
   /* Side effects */
   useEffect(() => {

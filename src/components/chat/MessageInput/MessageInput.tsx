@@ -16,6 +16,8 @@ import "./sb-message-input.override.css";
 import QuickReplyPopup from "../QuickReply/QuickReplyPopup";
 import { useChatStore } from "@/store/useChatStore";
 import { useQuickRepliesQuery } from "@/api/accountSettings";
+import ProtectedComponent from "@/components/access-control/ProtectedComponent";
+import { Role } from "@/constants/user";
 
 export default function MessageInput() {
   /* Local states and refs */
@@ -56,7 +58,7 @@ export default function MessageInput() {
           }, 200);
         }
       }
-    }
+    };
     // there's no onchange handler on the SBMessageInput component :(
     if (messageInputRef.current) {
       messageInputRef.current.oninput = () => {
@@ -132,21 +134,23 @@ export default function MessageInput() {
                   />
                 </div>
               </li>
-              <li>
-                <QuickReplyPopup asChild>
-                  <div
-                    role="button"
-                    className="py-3 px-4 hover:bg-muted rounded-b-md cursor-pointer flex items-center gap-2"
-                  >
-                    <Icon
-                      type={IconType.ZAP}
-                      size={22}
-                      className="fill-light-bulb"
-                    />
-                    Quick Replies
-                  </div>
-                </QuickReplyPopup>
-              </li>
+              <ProtectedComponent allowedRoles={[Role.MENTOR]}>
+                <li>
+                  <QuickReplyPopup asChild>
+                    <div
+                      role="button"
+                      className="py-3 px-4 hover:bg-muted rounded-b-md cursor-pointer flex items-center gap-2"
+                    >
+                      <Icon
+                        type={IconType.ZAP}
+                        size={22}
+                        className="fill-light-bulb"
+                      />
+                      Quick Replies
+                    </div>
+                  </QuickReplyPopup>
+                </li>
+              </ProtectedComponent>
             </ul>
           </PopoverContent>
         </Popover>

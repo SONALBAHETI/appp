@@ -159,6 +159,8 @@ const user = {
 
 const chat = {
   getChatRequest: `${baseUrls.chatRequests}/:id`,
+  getPendingChatRequestToUser: (id: string) =>
+    `${baseUrls.chatRequests}/to/${id}`,
   getChatRequests: `${baseUrls.chatRequests}`,
   acceptChatRequest: `${baseUrls.chatRequests}/accept`,
   rejectChatRequest: `${baseUrls.chatRequests}/reject`,

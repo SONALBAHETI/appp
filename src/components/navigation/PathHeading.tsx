@@ -1,22 +1,36 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { NAV_ROUTES } from "./routes";
-
-const { DASHBOARD, CHAT, CHATBOT, NOTES } = NAV_ROUTES;
+import { AppRoutes } from "@/constants/appRoutes";
 
 const pathHeadingMap = new Map([
-  [DASHBOARD.path, "Dashboard"],
-  [CHAT.path, "Your chats"],
-  [CHATBOT.path, "Ask scottie anything!"],
-  [NOTES.path, "Notes"],
+  [AppRoutes.Dashboard.path, "Dashboard"],
+  [AppRoutes.Chat.path, "Your chats"],
+  [AppRoutes.Chatbot.path, "Ask scottie anything!"],
+  [AppRoutes.Notes.path, "Notes"],
+  [AppRoutes.Matches.path, "All mentors"],
 ]);
+
+const getMatchingPathRecursively: (pathname: string) => string | undefined = (
+  pathname: string
+) => {
+  if (pathHeadingMap.has(pathname)) {
+    return pathHeadingMap.get(pathname);
+  } else {
+    const lastSegmentRemoved = pathname.split("/").slice(0, -1).join("/");
+    if (lastSegmentRemoved) {
+      return getMatchingPathRecursively(lastSegmentRemoved);
+    } else {
+      return "";
+    }
+  }
+};
 
 interface IPathHeading extends React.HTMLAttributes<HTMLHeadingElement> {}
 
 export default function PathHeading({ ...props }: IPathHeading) {
   const pathname = usePathname();
-  const heading = pathHeadingMap.get(pathname);
+  const heading = getMatchingPathRecursively(pathname);
 
   return <h3 {...props}>{heading}</h3>;
 }

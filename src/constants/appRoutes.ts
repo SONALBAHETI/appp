@@ -100,6 +100,9 @@ export const AppRoutes = {
   },
   Notes: {
     path: "/notes",
+  },
+  Matches: {
+    path: "/matches",
   }
 };
 

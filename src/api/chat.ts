@@ -5,6 +5,7 @@ import {
   IGetChatRequestResponse,
   IGetChatRequestsResponse,
   IChatCredentials,
+  ICreateChatRequestResponse,
 } from "@/interfaces/chat";
 
 import { usePost, useFetch } from "@/lib/react-query";
@@ -12,6 +13,8 @@ import { createQueryKey, isEqualQueryKeys } from "@/lib/react-query/utils";
 
 export const getChatRequestQueryKey = (id: string) =>
   createQueryKey(pathToUrl(apiRoutes.chat.getChatRequest, { id }));
+export const getPendingChatRequestSentToUserQueryKey = (toUserId: string) =>
+  createQueryKey(apiRoutes.chat.getPendingChatRequestToUser(toUserId));
 export const getChatRequestsQueryKey = () =>
   createQueryKey(apiRoutes.chat.getChatRequests);
 export const getChatCredentialsQueryKey = () =>
@@ -46,6 +49,28 @@ export const useChatCredentialsQuery = () =>
   useFetch<IChatCredentials>(getChatCredentialsQueryKey(), {
     staleTime: Infinity,
   });
+
+export const usePendingChatRequestSentToUserQuery = (toUserId: string) =>
+  useFetch<IGetChatRequestResponse>(
+    getPendingChatRequestSentToUserQueryKey(toUserId)
+  );
+
+/**
+ * Custom hook for sending a chat request.
+ */
+export const useSendChatRequestMutation = (userId?: string) => {
+  const dependentQueryKeys = [];
+  if (userId) {
+    dependentQueryKeys.push(getPendingChatRequestSentToUserQueryKey(userId));
+  }
+  return usePost<
+    { userId: string; message: string },
+    ICreateChatRequestResponse
+  >({
+    queryKey: getChatRequestsQueryKey(),
+    dependentQueryKeys,
+  });
+};
 
 /**
  * Generates a mutation hook for accepting a chat request.

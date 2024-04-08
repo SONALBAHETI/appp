@@ -1,6 +1,5 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserProfileQuery } from "@/api/profileSettings";
 import Loader from "@/components/ui/Loader";
 import Icon, { IconType } from "@/components/ui/Icon";
@@ -18,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import React from "react";
 import { AppRoutes } from "@/constants/appRoutes";
+import ProfilePicture from "../ui/ProfilePicture";
 
 const QuickLinks = [
   {
@@ -48,22 +48,17 @@ export default function UserPopup() {
     }
   };
 
+  const profile = userProfileQuery.data?.profile;
+
   return (
     <Popover>
       <PopoverTrigger>
-        <Avatar className="w-12 h-12">
-          <AvatarImage
-            src={userProfileQuery.data?.profile.picture}
-            alt="user profile picture"
-          />
-          <AvatarFallback className="w-12 h-12">
-            {userProfileQuery.isPending ? (
-              <Loader />
-            ) : (
-              <Icon name="user" type={IconType.USER} />
-            )}
-          </AvatarFallback>
-        </Avatar>
+        <ProfilePicture
+          userName={`${profile?.firstName}${profile?.lastName}`}
+          profilePic={profile?.picture}
+          loading={userProfileQuery.isPending}
+          className="w-12 h-12"
+        />
       </PopoverTrigger>
       <PopoverContent side="bottom" align="end" className="p-4">
         <div className="flex flex-col">

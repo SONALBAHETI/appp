@@ -28,4 +28,6 @@ export enum IconType {
   ZAP = "Zap",
   PARTYPOPPER = "PartyPopper",
   WALLET = "Wallet",
+  CALENDAR = "Calendar",
+  CLOCK = "Clock",
 }

@@ -30,6 +30,10 @@ export interface IGetChatRequestsResponse {
   chatRequests: IChatRequest[];
 }
 
+export interface ICreateChatRequestResponse {
+  chatRequest: IChatRequest;
+}
+
 export interface IUpdateChatRequestResponse {
   chatRequest: IChatRequest;
 }

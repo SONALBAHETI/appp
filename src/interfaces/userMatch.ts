@@ -14,6 +14,8 @@ export interface IMatch {
 export interface IUserMatch {
   requestedBy: string | object;
   matches: IMatch[];
+  createdAt: string; // timestamp
+  updatedAt: string; // timestamp
 }
 
 export interface IGetUserMatchResponse {

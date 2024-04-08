@@ -10,6 +10,6 @@ export const getUserMatchQueryKey = (id: string) =>
 // custom hook for querying user match
 export const useUserMatchQuery = (id: string) => {
   return useFetch<IGetUserMatchResponse>(getUserMatchQueryKey(id), {
-    staleTime: 1000 * 60 * 30, // 30 minutes
+    staleTime: Infinity,
   });
 };

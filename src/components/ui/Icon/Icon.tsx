@@ -33,6 +33,8 @@ import {
   Zap,
   PartyPopper,
   Wallet,
+  Calendar,
+  Clock,
 } from "lucide-react";
 
 function changeTypeToIconComponent(type: IconType) {
@@ -95,6 +97,10 @@ function changeTypeToIconComponent(type: IconType) {
       return Check;
     case IconType.WALLET:
       return Wallet;
+    case IconType.CALENDAR:
+      return Calendar;
+    case IconType.CLOCK:
+      return Clock;
     default:
       return Plus; // TODO: Choose default icon?
   }

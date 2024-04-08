@@ -15,6 +15,7 @@ const baseUrls = {
   settings: "/api/v1/settings",
   appointments: "/api/v1/appointments",
   payment: "/api/v1/payment",
+  feedback: "/api/v1/feedback",
 };
 
 const notes = {
@@ -190,6 +191,10 @@ const payment = {
   customerPortal: `${baseUrls.payment}/customer-portal`,
 };
 
+const feedback = {
+  reportUser: (id: string) => `${baseUrls.feedback}/report/user/${id}`,
+};
+
 export const apiRoutes = {
   chat,
   user,
@@ -205,5 +210,6 @@ export const apiRoutes = {
   onboarding,
   settings,
   payment,
+  feedback,
   logout: `${baseUrls.api}/auth/logout`,
 };

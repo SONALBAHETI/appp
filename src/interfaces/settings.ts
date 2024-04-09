@@ -19,6 +19,7 @@ export interface ISubmitExpertiseFormResponse {
 export interface IGetUserProfileResponse {
   profile: IProfile;
   email: string;
+  shareExtraDetailsForMatchmaking: boolean;
 }
 
 export interface IAddDegreeResponse {

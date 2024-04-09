@@ -52,8 +52,8 @@ export const AppRoutes = {
       PersonalDetails: {
         path: "/settings/profile/personal-details",
       },
-      VerificationDocuments: {
-        path: "/settings/profile/verification-documents",
+      StudentVerification: {
+        path: "/settings/profile/student-verification",
       },
       BankDetails: {
         path: "/settings/profile/bank-details",

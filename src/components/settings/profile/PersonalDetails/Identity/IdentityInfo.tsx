@@ -36,13 +36,21 @@ import FileInput from "@/components/ui/FileInput";
 import Icon, { IconType } from "@/components/ui/Icon";
 import { IUploadProfilePictureResponse } from "@/interfaces/settings";
 import Loader from "@/components/ui/Loader";
+import { Role } from "@/constants/user";
+import ProtectedComponent from "@/components/access-control/ProtectedComponent";
+
+/**
+ * This component is labelled as "Personal details" in the UI.
+ */
 
 interface IIdentityInfoProps {
+  userRole: Role;
   onSubmitting: (isSubmitting: boolean) => void;
   onComplete?: () => void;
 }
 
 export default function IdentityInfo({
+  userRole,
   onSubmitting,
   onComplete,
 }: IIdentityInfoProps) {
@@ -82,18 +90,23 @@ export default function IdentityInfo({
   const identityInfoFormMutation = useIdentityInfoFormMutation();
   const profilePictureMutation = useProfilePictureMutation();
 
+  const isMentor =
+    userRole === Role.MENTOR || userRole === Role.UNVERIFIED_MENTOR;
+
   const form = useForm<IdentityInfoFormSchema>({
     resolver: zodResolver(IdentityInfoFormSchema),
     mode: "onSubmit",
     defaultValues: {
       email: resume?.profile?.email || "",
+      postalCode: !isMentor ? "12345" : "", // so that form validation doesn't fail when user is not a mentor
     },
   });
 
-  const formRef = useRef<HTMLFormElement>(null);
+  const isShareMoreDetailsEnabled = form.watch(
+    "shareExtraDetailsForMatchmaking"
+  );
 
-  const [isShareMoreDetailsEnabled, setShareMoreDetailsEnabled] =
-    React.useState<boolean>(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     const handleSaveAndNextEvent = () => {
@@ -115,6 +128,11 @@ export default function IdentityInfo({
       setProfilePicUrl(userProfileQuery.data.profile.picture);
       // set email
       form.setValue("email", userProfileQuery.data.email);
+      // set share more details
+      form.setValue(
+        "shareExtraDetailsForMatchmaking",
+        userProfileQuery.data.shareExtraDetailsForMatchmaking
+      );
       // set form values from profile data
       Object.keys(userProfileQuery.data.profile).forEach((key) => {
         if (
@@ -148,9 +166,6 @@ export default function IdentityInfo({
     } finally {
       onSubmitting(false);
     }
-  }
-  function handleShareMoreDetailsToggle(checked: boolean) {
-    setShareMoreDetailsEnabled(checked);
   }
 
   // handle profile picture upload
@@ -356,7 +371,7 @@ export default function IdentityInfo({
             {/* state and postal code  */}
             <h6 className="pt-4">Location</h6>
             <div className="flex space-x-4">
-              <div className="flex-grow w-1/2">
+              <div className="flex-grow md:flex-grow-0 w-1/2">
                 <FormField
                   control={form.control}
                   name="state"
@@ -377,28 +392,32 @@ export default function IdentityInfo({
                 />
               </div>
 
-              <div className="flex-grow w-2/4 relative">
-                <div className="relative">
-                  <FormField
-                    control={form.control}
-                    name="postalCode"
-                    defaultValue=""
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>Postal Code</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="98101"
-                            autoComplete="postal-code"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+              <ProtectedComponent
+                allowedRoles={[Role.UNVERIFIED_MENTOR, Role.MENTOR]}
+              >
+                <div className="flex-grow w-2/4 relative">
+                  <div className="relative">
+                    <FormField
+                      control={form.control}
+                      name="postalCode"
+                      defaultValue=""
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Postal Code</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="98101"
+                              autoComplete="postal-code"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-              </div>
+              </ProtectedComponent>
             </div>
 
             {/* bio input */}
@@ -414,9 +433,7 @@ export default function IdentityInfo({
                       <FormLabel>Write your bio</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Type your message here"
-                          autoCapitalize="words"
-                          autoComplete="given-about"
+                          placeholder="Enter your bio here"
                           {...field}
                         />
                       </FormControl>
@@ -433,10 +450,15 @@ export default function IdentityInfo({
                   defaultValue=""
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel>A fun fact about you (Optional)</FormLabel>
+                      <FormLabel>
+                        A fun fact about you{" "}
+                        <span className="text-muted-foreground">
+                          (optional)
+                        </span>
+                      </FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Type your message here"
+                          placeholder="Share a quirky tidbit about yourself!"
                           {...field}
                         />
                       </FormControl>
@@ -479,8 +501,23 @@ export default function IdentityInfo({
             {/* Identity, Ethnicity, ReligiousAffiliation */}
             <div className="pt-4">
               <div className="flex items-center space-x-2">
-                <Switch onCheckedChange={handleShareMoreDetailsToggle} />
-                <h6>Share more details for better matches</h6>
+                <FormField
+                  control={form.control}
+                  name="shareExtraDetailsForMatchmaking"
+                  defaultValue={false}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <h6 className="mb-1">Share more details for better matches</h6>
               </div>
               <p className="text-muted-foreground mt-1">
                 Understanding your background helps us connect you with the

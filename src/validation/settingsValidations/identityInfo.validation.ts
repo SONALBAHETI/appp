@@ -42,7 +42,7 @@ const IdentitySchema = z.string().optional();
 
 const EthnicitySchema = z.string().optional();
 
-export const IdentityInfoFormSchema = z.object({
+const CommonIdentityFormSchema = {
   firstName: FirstNameSchema,
   lastName: LastNameSchema,
   email: EmailSchema,
@@ -50,13 +50,25 @@ export const IdentityInfoFormSchema = z.object({
   gender: GenderSchema,
   dateOfBirth: DOBSchema,
   state: StateSchema,
-  postalCode: PostalCodeSchema,
   bio: BioSchema,
   funFact: FunFactSchema,
   personalInterests: z.array(z.string()).default([]),
   identity: IdentitySchema,
   ethnicity: EthnicitySchema,
   religiousAffiliations: z.array(z.string()).default([]),
+  shareExtraDetailsForMatchmaking: z.boolean().optional().default(false),
+};
+
+export const IdentityInfoFormSchema = z.object({
+  ...CommonIdentityFormSchema,
+  postalCode: PostalCodeSchema,
+});
+
+export const StudentIdentityInfoFormSchema = z.object({
+  ...CommonIdentityFormSchema,
 });
 
 export type IdentityInfoFormSchema = z.infer<typeof IdentityInfoFormSchema>;
+export type StudentIdentityInfoFormSchema = z.infer<
+  typeof StudentIdentityInfoFormSchema
+>;

@@ -36,11 +36,12 @@ export const getSubmitStudentVerificationDataMutationKey = () =>
  *
  * @returns the response containing the current verification step
  */
-export const useCurrentVerificationStepQuery = () =>
+export const useCurrentStudentVerificationStepQuery = (enabled?: boolean) =>
   useFetch<IGetCurrentVerificationStepResponse>(
     getCurrentVerificationStepQueryKey(),
     {
       staleTime: 1000 * 60 * 5, // 5 minutes
+      enabled,
     }
   );
 

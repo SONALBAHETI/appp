@@ -1,4 +1,4 @@
-import { useCurrentVerificationStepQuery } from "@/api/studentVerification";
+import { useCurrentStudentVerificationStepQuery } from "@/api/studentVerification";
 import Loader from "@/components/ui/Loader";
 import StudentVerificationDetailForm from "./StudentVerificationDetailForm";
 import VerificationSuccessful from "../License/VerificationSuccessful";
@@ -13,7 +13,7 @@ export default function StudentVerification({
   onSubmitting,
 }: IStudentVerificationProps) {
   const { data, isPending, isRefetching, isError } =
-    useCurrentVerificationStepQuery();
+    useCurrentStudentVerificationStepQuery();
 
   if (isPending || isRefetching) {
     return (

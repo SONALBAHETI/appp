@@ -4,16 +4,8 @@ import { AppRoutes } from "@/constants/appRoutes";
 
 const sideNavLinks: INavLink[] = [
   {
-    label: "Personal Details",
+    label: "Profile Settings",
     link: AppRoutes.Settings.Profile.PersonalDetails.path,
-  },
-  {
-    label: "Verification Documents",
-    link: AppRoutes.Settings.Profile.VerificationDocuments.path,
-  },
-  {
-    label: "Bank Details",
-    link: AppRoutes.Settings.Profile.BankDetails.path,
   },
   {
     label: "Certifications & Badges",

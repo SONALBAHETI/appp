@@ -72,7 +72,7 @@ export const StepsList = React.forwardRef<
         if (React.isValidElement(child)) {
           if (child.type === Step) {
             return (
-              <>
+              <div className="flex items-center">
                 {index !== 0 && (
                   <div
                     className={`h-[1.5px] ${
@@ -88,7 +88,7 @@ export const StepsList = React.forwardRef<
                   stepNumber={index}
                   {...child.props}
                 />
-              </>
+              </div>
             );
           } else if (child.type !== StepContent) {
             return <child.type {...child.props} />;

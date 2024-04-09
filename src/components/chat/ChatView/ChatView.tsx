@@ -51,7 +51,9 @@ export default function ChatView() {
 
         <ChatChannelProvider channelUrl={currentChannelUrl}>
           <div className="flex-grow bg-background rounded-lg">
-            {activeTab === TAB.CHAT && <GroupChannelConversation />}
+            {(activeTab === TAB.CHAT || activeTab == TAB.FAVORITES) && (
+              <GroupChannelConversation />
+            )}
             {activeTab === TAB.REQUESTS && (
               <>
                 {selectedChatRequestId && (

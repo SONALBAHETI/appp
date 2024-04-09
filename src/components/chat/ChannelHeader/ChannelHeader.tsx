@@ -4,7 +4,6 @@ import { useSendbirdStateContext } from "@sendbird/uikit-react";
 import type { GroupChannel } from "@sendbird/chat/groupChannel";
 import Icon from "@/components/ui/Icon";
 import { IconType } from "@/components/ui/Icon/type";
-import ButtonIcon from "@/components/ui/ButtonIcon";
 import { useEffect, useState } from "react";
 import ChannelHeaderSkeleton from "./ChannelHeaderSkeleton";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -18,6 +17,7 @@ import {
 } from "@/api/user";
 import { toast } from "react-toastify";
 import { ISendbirdUserMetadata } from "@/interfaces/chat";
+import ChannelHeaderActions from "./ChannelHeaderActions";
 
 export default function ChannelHeader() {
   /* Local states */
@@ -88,7 +88,7 @@ export default function ChannelHeader() {
         .scholarnetics_user_id;
       if (scholarneticsUserId !== otherMemberScholarneticsId) {
         setOtherMemberScholarneticsId(
-          (chatUser?.metaData as ISendbirdUserMetadata)?.scholarnetics_user_id
+          (chatUser.metaData as ISendbirdUserMetadata)?.scholarnetics_user_id
         );
       }
     } else {
@@ -122,12 +122,8 @@ export default function ChannelHeader() {
             }`}
             onClick={handleFavoriteToggle}
           />
-          {/* More button */}
-          <ButtonIcon
-            variant="ghost"
-            iconType={IconType.MORE_VERTICAL}
-            iconSize={22}
-          />
+          {/* Actions menu */}
+          <ChannelHeaderActions memberId={otherMemberScholarneticsId} />
         </div>
       </div>
     </ChannelHeaderSkeleton>
